@@ -16,3 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('tes_sensor', 'SensorController@tes');
+Route::get('tes_sensor_arduino/{id}/{suhu}/{kelembapan}/{asap}', 'SensorController@arduino');
