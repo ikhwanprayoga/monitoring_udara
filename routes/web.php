@@ -23,9 +23,15 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/beranda', 'BerandaController@index')->name('beranda');
-Route::get('/data', 'DataController@index')->name('data');
+Route::get('beranda', 'BerandaController@index')->name('beranda');
+Route::get('data', 'DataController@index')->name('data');
 
-Route::group(['prefix' => 'master'], function() {
-	Route::get('kategori-udara', 'MasterKategoriUdaraController@index')->name('master-kategori-udara');
-});
+Route::get('kategori-udara', 'KategoriUdaraController@index')->name('kategori-udara');
+Route::get('get-kategori-udara', 'KategoriUdaraController@getData')->name('get-kategori-udara');
+Route::post('kategori-udara/tambah', 'KategoriUdaraController@tambah')->name('kategori-udara-tambah');
+Route::post('kategori-udara/ubah', 'KategoriUdaraController@ubah')->name('kategori-udara-ubah');
+Route::get('kategori-udara/hapus', 'KategoriUdaraController@hapus')->name('kategori-udara-hapus');
+
+
+Route::get('rekomendasi', 'RekomendasiController@index')->name('rekomendasi');
+

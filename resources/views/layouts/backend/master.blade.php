@@ -13,15 +13,16 @@
     <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
     <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ url('app-assets/css/vendors.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ url('app-assets/vendors/css/charts/chartist.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ url('app-assets/vendors/css/charts/chartist-plugin-tooltip.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/vendors.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/charts/chartist.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/charts/chartist-plugin-tooltip.css')}}">
     <!-- END VENDOR CSS-->
     <!-- BEGIN CHAMELEON  CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ url('app-assets/css/app.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/app.css')}}">
     <!-- END CHAMELEON  CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ url('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ url('app-assets/css/core/colors/palette-gradient.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/colors/palette-gradient.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('dataTable/jquery.dataTables.css')}}">
 
     @yield('css')
   </head>
@@ -68,31 +69,16 @@
           </li>
           <li id="data" class=" nav-item"><a href="{{ route('data') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
           </li>
-          <li class=" nav-item"><a href="#"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Master</span></a>
-            <ul class="menu-content">
-              <li id="kategori_udara"><a class="menu-item" href="{{ route('master-kategori-udara') }}">Kategori Udara</a>
-              </li>
-              <li id="rekomendasi"><a class="menu-item" href="#">Rekomendasi</a>
-              </li>
-            </ul>
+          <li id="kategori-udara" class=" nav-item"><a href="{{ route('kategori-udara') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Kategori Udara</span></a>
+          </li>
+          <li id="rekomendasi" class=" nav-item"><a href="{{ route('rekomendasi') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Rekomendasi</span></a>
           </li>
         </ul>
       </div>
       <div class="navigation-background"></div>
     </div>
-
-    <div class="app-content content">
-      <div class="content-wrapper">
-        <div class="content-wrapper-before"></div>
-        <div class="content-header row">
-        </div>
-        <div class="content-body">
-          @yield('content');
-        </div>
-      </div>
-    </div>
-    <!-- ////////////////////////////////////////////////////////////////////////////-->
-
+    
+    @yield('content')
 
     <footer class="footer footer-static footer-light navbar-border navbar-shadow">
       <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">{{ date('Y')}}  &copy; Copyright Ikhwan Prayoga</span>
@@ -100,12 +86,13 @@
     </footer>
 
     <!-- BEGIN VENDOR JS-->
-    <script src="{{ url('app-assets/vendors/js/vendors.min.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('app-assets/vendors/js/vendors.min.js')}}" type="text/javascript"></script>
     <!-- BEGIN VENDOR JS-->
     <!-- BEGIN CHAMELEON  JS-->
-    <script src="{{ url('app-assets/js/core/app-menu.js')}}" type="text/javascript"></script>
-    <script src="{{ url('app-assets/js/core/app.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('app-assets/js/core/app-menu.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('app-assets/js/core/app.js')}}" type="text/javascript"></script>
     <!-- END CHAMELEON  JS-->
+    <script src="{{ asset('dataTable/jquery.dataTables.js') }}" type="text/javascript"></script>
     @yield('js')
   </body>
 </html>
