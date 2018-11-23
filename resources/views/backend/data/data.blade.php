@@ -67,7 +67,7 @@
 
 @section('js')
 <script>
-    $('#data').addClass('active');
+    $('#allData').addClass('active');
 </script>
 <script>
     var table = $('#table').DataTable({

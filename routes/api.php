@@ -18,4 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('tes_sensor', 'SensorController@tes');
-Route::get('tes_sensor_arduino/{id}/{suhu}/{kelembapan}/{asap}', 'SensorController@arduino');
+Route::get('tes_sensor_arduino/{id}/{suhu}/{kelembapan}/{asap}/{co}/{pm10}', 'SensorController@arduino');
+
+Route::get('kirim/{kode_alat}/{suhu}/{kelembapan}/{asap}/{co}/{pm10}', 'SensorController@kirim');
+

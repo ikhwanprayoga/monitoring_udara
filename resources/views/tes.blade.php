@@ -22,6 +22,14 @@
 			<div id="asap"></div>
 		</div>
 
+		<div>co : 
+			<div id="co"></div>
+		</div>
+
+		<div>pm10 : 
+			<div id="pm10"></div>
+		</div>
+
 		<h1>tes nilai sensor2</h1>
 		<div>suhu : 
 			<div id="suhu2"></div>
@@ -33,6 +41,14 @@
 
 		<div>asap : 
 			<div id="asap2"></div>
+		</div>
+
+		<div>co : 
+			<div id="co_2"></div>
+		</div>
+
+		<div>pm10 : 
+			<div id="pm10_2"></div>
 		</div>
 	</div>
 
@@ -47,6 +63,8 @@
 					$('#suhu').html(val.suhu);
 					$('#kelembapan').html(val.kelembapan);
 					$('#asap').html(val.asap);
+					$('#co').html(val.co);
+					$('#pm10').html(val.pm10);
 				});
 
 				$.get('{{ url('node2') }}', function (val2) {
@@ -54,6 +72,8 @@
 					$('#suhu2').html(val2.suhu);
 					$('#kelembapan2').html(val2.kelembapan);
 					$('#asap2').html(val2.asap);
+					$('#co_2').html(val2.co);
+					$('#pm10_2').html(val2.pm10);
 				});
 			}
 			setInterval(baca, 1000);

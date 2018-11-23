@@ -1,10 +1,12 @@
 @extends('layouts.backend.master')
 
 @section('header')
-<title>Kategori Udara</title>
+<title>Master Kategori Udara</title>
 @endsection
 
 @section('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/extensions/toastr.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/extensions/toastr.css') }}">
 @endsection
 
 @section('content')
@@ -217,28 +219,30 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('app-assets/vendors/js/extensions/toastr.min.js') }}" type="text/javascript"></script>
+
 <script>
     $('#kategori-udara').addClass('active');
 </script>
 <script>
     var table = $('#table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: '{{ route('get-kategori-udara') }}',
-                    data: function (d) {
-                        
-                    }
-                },
-                columns: [
-                    {data: 'nama_kategori_udara', name: 'nama_kategori_udara'},
-                    {data: 'pm10_min', name: 'pm10_min'},
-                    {data: 'pm10_max', name: 'pm10_max'},
-                    {data: 'co_min', name: 'co_min'},
-                    {data: 'co_max', name: 'co_max'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false }
-                ]
-            });
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route('get-kategori-udara') }}',
+            data: function (d) {
+                
+            }
+        },
+        columns: [
+            {data: 'nama_kategori_udara', name: 'nama_kategori_udara'},
+            {data: 'pm10_min', name: 'pm10_min'},
+            {data: 'pm10_max', name: 'pm10_max'},
+            {data: 'co_min', name: 'co_min'},
+            {data: 'co_max', name: 'co_max'},
+            {data: 'action', name: 'action', orderable: false, searchable: false }
+        ]
+    });
 </script>
 <script>
     $('#modal_edit').on('show.bs.modal', function (event) {
@@ -268,4 +272,25 @@
         $('#nama_kategori_udara_hapus').val(nama_kategori_udara);
     });
 </script>
+
+@if (session()->has('ubah'))
+<script>
+    $(document).ready(function () {
+        toastr.success('Data Telah di Ubah', 'Berhasil', {"closeButton": true, timeOut: 2000});
+    });
+</script>
+@elseif (session()->has('tambah'))
+<script>
+    $(document).ready(function () {
+        toastr.success('Data Baru Telah di Tambah', 'Berhasil', {"closeButton": true, timeOut: 2000});
+    });
+</script>
+@elseif (session()->has('hapus'))
+<script>
+    $(document).ready(function () {
+        toastr.error('Data Telah di Hapus', 'Berhasil', {"closeButton": true, timeOut: 2000});
+    });
+</script>
+@endif
+
 @endsection

@@ -1,7 +1,7 @@
 @extends('layouts.backend.master')
 
 @section('header')
-<title>Data</title>
+<title>Data Realtime</title>
 @endsection
 
 @section('css')
@@ -13,7 +13,7 @@
     <div class="content-wrapper-before"></div>
     <div class="content-header row">
       <div class="content-header-left col-md-4 col-12 mb-2">
-        <h3 class="content-header-title">Data</h3>
+        <h3 class="content-header-title">Data Realtime</h3>
       </div>
       <div class="content-header-right col-md-8 col-12">
         <div class="breadcrumbs-top float-md-right">
@@ -21,7 +21,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('beranda') }}">Beranda</a>
               </li>
-              <li class="breadcrumb-item"><a href="#">Data</a>
+              <li class="breadcrumb-item"><a href="#">Realtime</a>
               </li>
             </ol>
           </div>
@@ -34,7 +34,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Basic Tables</h4>
+                        <h4 class="card-title">Data Realtime</h4>
                     </div>
                     <div class="card-content collapse show">
                         <div class="card-body">
@@ -67,7 +67,7 @@
 
 @section('js')
 <script>
-    $('#data').addClass('active');
+    $('#realtime').addClass('active');
 </script>
 <script>
     var table = $('#table').DataTable({

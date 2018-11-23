@@ -67,11 +67,26 @@
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
           <li id="beranda" class=" nav-item"><a href="{{ route('beranda') }}"><i class="ft-home"></i><span class="menu-title" data-i18n="">Beranda</span></a>
           </li>
-          <li id="data" class=" nav-item"><a href="{{ route('data') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
+          <li id="data" class=" nav-item"><a href="#"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
+            <ul class="menu-content">
+              <li id="realtime"><a class="menu-item" href="{{ route('realtime') }}">Data Realtime</a>
+              </li>
+              <li id="allData"><a class="menu-item" href="{{ route('data') }}">Semua Data</a>
+              </li>
+            </ul>
           </li>
-          <li id="kategori-udara" class=" nav-item"><a href="{{ route('kategori-udara') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Kategori Udara</span></a>
-          </li>
+          
           <li id="rekomendasi" class=" nav-item"><a href="{{ route('rekomendasi') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Rekomendasi</span></a>
+          </li>
+          <li id="master" class=" nav-item"><a href="#"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Master</span></a>
+            <ul class="menu-content">
+              <li id="kategori-udara" class=" nav-item"><a href="{{ route('kategori-udara') }}">Kategori Udara</a>
+              </li>
+              <li id="nodesensor"><a class="menu-item" href="{{ route('node-sensor') }}">Node Sensor</a>
+              </li>
+              <li id="wilayah"><a class="menu-item" href="{{ route('wilayah') }}">Wilayah</a>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>

@@ -10,7 +10,7 @@ class KategoriUdaraController extends Controller
 {
     public function index()
     {
-    	return view('backend.kategori_udara.index');
+    	return view('backend.master.kategori_udara');
     }
 
     public function getData()
@@ -19,7 +19,7 @@ class KategoriUdaraController extends Controller
 
     	return Datatables::of($data)
     		->addColumn('action', function ($data) {
-    			return '<a data-toggle="modal" data-target="#modal_edit" class="btn btn-sm btn-warning"
+    			return '<a data-toggle="modal" href="#modal_edit" class="btn btn-sm btn-warning"
     						data-id="'.$data->id.'"
     						data-nama_kategori_udara="'.$data->nama_kategori_udara.'"
     						data-pm10_min="'.$data->pm10_min.'"
@@ -27,7 +27,7 @@ class KategoriUdaraController extends Controller
     						data-co_min="'.$data->co_min.'"
     						data-co_max="'.$data->co_max.'"
     					><i class="ft ft-edit"></i>Ubah</a>
-    					<a data-toggle="modal" data-target="#modal_hapus" 
+    					<a data-toggle="modal" href="#modal_hapus" 
     						data-id="'.$data->id.'" 
     						data-nama_kategori_udara="'.$data->nama_kategori_udara.'" 
     					data-toggle="modal" class="btn btn-sm btn-danger"><i class="ft ft-trash"></i>Hapus</a>';
@@ -40,7 +40,7 @@ class KategoriUdaraController extends Controller
     	$input = $request->all();
     	$tambah = KategoriUdara::create($input);
 
-    	return redirect()->back();
+    	return redirect()->back()->with('tambah', true);
     }
 
     public function ubah(Request $request)
@@ -48,7 +48,7 @@ class KategoriUdaraController extends Controller
     	$data = $request->only('id','nama_kategori_udara','pm10_min','pm10_max','co_min','co_max');
     	$ubah = KategoriUdara::where('id', $data['id'])->update($data);
 
-    	return redirect()->back();
+    	return redirect()->back()->with('ubah', true);;
     }
 
     public function hapus(Request $request)
@@ -56,6 +56,6 @@ class KategoriUdaraController extends Controller
     	$id = $request->id;
     	$hapus = KategoriUdara::where('id', $id)->delete();
 
-    	return redirect()->back();
+    	return redirect()->back()->with('hapus', true);;
     }
 }
