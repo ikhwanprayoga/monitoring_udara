@@ -5,6 +5,7 @@
 @endsection
 
 @section('css')
+
 @endsection
 
 @section('content')
@@ -30,6 +31,33 @@
     </div>
     <div class="content-body">
         {{-- content --}}
+        {{-- chat --}}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Simple Line Chart</h4>
+                        <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                        <div class="heading-elements">
+                            <ul class="list-inline mb-0">
+                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                <li><a data-action="close"><i class="ft-x"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-content collapse show">
+                        <div class="card-body chartjs">
+                                <div class="height-500">
+                            <div id="suhu"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- table --}}
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -50,7 +78,7 @@
                                             <th>Asap</th>
                                             <th>Suhu</th>
                                             <th>Kelembapan</th>
-                                            <th>Kategori Udara</th>
+                                            <th>Waktu</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -66,15 +94,70 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('app-assets/vendors/js/charts/chart.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript" src="{{ asset('js/canvasjs.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.canvasjs.min.js') }}"></script>
+
 <script>
     $('#realtime').addClass('active');
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var dataPoints = [{y : 0}];
+        var chart = new CanvasJS.Chart("suhu", {
+                title : {
+                    text : "Suhu"
+                },
+                axisY: {
+                    title : "(celcius)"
+                },
+                axisX: {
+                    title : "Nilai perdetik"
+                },
+                data : [{
+                        type : "splineArea",
+                        dataPoints : dataPoints
+                    }
+                ]
+            });
+
+        chart.render();
+
+        var yVal = 50, updateCount = 0;
+        var suhu = function () {
+            $.ajax({
+                method: 'GET',
+                url: 'api/grafik',
+                data: "",
+                dataType: 'json',
+                success: function (data) {
+                    $.each(data, function (key, val) {
+                        // console.log(val.suhu);
+                        yVal = val.suhu;
+                        updateCount++;
+                        
+                        console.log(yVal);
+                        
+                        dataPoints.push({
+                            y : yVal
+                        });
+
+                        chart.render();
+                    })
+                },
+            });
+        }
+        setInterval(suhu, 2000);
+    });
+</script>
+
 <script>
     var table = $('#table').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: '{{ route('get-data') }}',
+            url: '{{ route('getData-realtime') }}',
             data: function (d) {
                 // body...
             }
@@ -86,8 +169,9 @@
             {data: 'asap', name: 'asap'},
             {data: 'suhu', name: 'suhu'},
             {data: 'kelembapan', name: 'kelembapan'},
-            {data: 'kategori_udara_id', name: 'kategori_udara_id'}
+            {data: 'created_at', name: 'created_at'}
         ]
     });
 </script>
+
 @endsection

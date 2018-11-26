@@ -28,8 +28,12 @@ Route::get('data', 'DataController@index')->name('data');
 Route::get('get-data', 'DataController@getData')->name('get-data');
 
 Route::get('data-realtime', 'RealtimeController@index')->name('realtime');
+Route::get('getData-realtime', 'RealtimeController@getData')->name('getData-realtime');
 
 Route::get('rekomendasi', 'RekomendasiController@index')->name('rekomendasi');
+Route::post('rekomendasi/tambah', 'RekomendasiController@tambah')->name('rekomendasi-tambah');
+Route::post('rekomendasi/ubah', 'RekomendasiController@ubah')->name('rekomendasi-ubah');
+Route::get('rekomendasi/hapus', 'RekomendasiController@hapus')->name('rekomendasi-hapus');
 
 Route::group(['prefix' => 'master'], function() {
 
@@ -50,4 +54,7 @@ Route::group(['prefix' => 'master'], function() {
     Route::get('wilayah/hapus/{id}', 'MasterController@wilayah_hapus')->name('wilayah-hapus');
 
 });
+
+//send data ke tabel data
+Route::get('/store', 'MonitoringController@store');
 
