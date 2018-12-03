@@ -5,6 +5,15 @@
 @endsection
 
 @section('css')
+<style>
+    .filter{
+        padding-bottom: 2vw;
+    }
+    .card-header{
+        padding-bottom: 0vw;
+    }
+</style>
+
 @endsection
 
 @section('content')
@@ -38,19 +47,38 @@
                     </div>
                     <div class="card-content collapse show">
                         <div class="card-body">
-                            <p class="card-text">Using the most basic table markup, here’s how <code>.table</code>-based tables look in Bootstrap. You can use any example of below table for your table and it can be use with any type of bootstrap tables. </p>
-                            <p><span class="text-bold-600">Example 1:</span> Table with outer spacing</p>
+                            {{-- <p class="card-text">Using the most basic table markup, here’s how <code>.table</code>-based tables look in Bootstrap. You can use any example of below table for your table and it can be use with any type of bootstrap tables. </p> --}}
+                            <div class="row filter">
+
+                                <div class="col-md-4">
+                                    <label class="filter-label">Mulai Dari</label>
+                                    <input type="date" class="form-control pickadate mulai" name="mulai">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="filter-label">Sampai</label>
+                                    <input type="date" class="form-control pickadate akhir" name="akhir">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="filter-label">Filter by Kategori Kualitas Udara</label>
+                                    <select name="kategori_udara" class="form-control kategori_udara">
+                                      <option value="">--Pilih Kategori Kualitas Udara--</option>
+                                      @foreach($kategori_udara as $kategoris)
+                                          <option value="{{ $kategoris->id }}">{{ $kategoris->nama_kategori_udara }}</option>}
+                                      @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                     <thead>
                                         <tr>
-                                            <th>Kode Alat</th>
                                             <th>PM10</th>
                                             <th>CO</th>
                                             <th>Asap</th>
                                             <th>Suhu</th>
                                             <th>Kelembapan</th>
                                             <th>Kategori Udara</th>
+                                            <th>Created At</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -66,6 +94,7 @@
 @endsection
 
 @section('js')
+
 <script>
     $('#data').addClass('active');
 </script>
@@ -76,18 +105,37 @@
         ajax: {
             url: '{{ route('get-data') }}',
             data: function (d) {
-                // body...
+                d.mulai = $('input[name=mulai]').val();
+                d.akhir = $('input[name=akhir]').val();
+                d.kategori_udara = $('select[name=kategori_udara]').val();
+                // console.log(d.akhir);
             }
         },
         columns: [
-            {data: 'kode_alat', name: 'kode_alat'},
-            {data: 'pm10', name: 'pm10'},
-            {data: 'co', name: 'co'},
-            {data: 'asap', name: 'asap'},
-            {data: 'suhu', name: 'suhu'},
+            {data: 'pm10', name: 'data.pm10'},
+            {data: 'co', name: 'data.co'},
+            {data: 'asap', name: 'data.asap'},
+            {data: 'suhu', name: 'data.suhu'},
             {data: 'kelembapan', name: 'kelembapan'},
-            {data: 'kategori_udara_id', name: 'kategori_udara_id'}
+            {data: 'nama_kategori_udara', name: 'kategori_udara.nama_kategori_udara'},
+            {data: 'created_at', name: 'data.created_at'}
         ]
+    });
+
+    //filter date range
+    $('.mulai').on('change', function (e) {
+        table.draw();
+        e.preventDefault();
+    });
+
+    $('.akhir').on('change', function (e) {
+        table.draw();
+        e.preventDefault();
+    });
+
+    $('.kategori_udara').on('change', function (e) {
+        table.draw();
+        e.preventDefault();
     });
 </script>
 @endsection

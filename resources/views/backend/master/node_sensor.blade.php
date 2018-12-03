@@ -42,7 +42,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title">Tambah Kategori Kualitas Udara</h4>
+                                    <h4 class="modal-title">Tambah Node Sensor</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -94,7 +94,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Node Sensor</th>
-                                            <th>Kode Alat Sensor</th>
+                                            <th>Id Node Sensor</th>
                                             <th>Wilayah Sensor</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -104,13 +104,12 @@
                                         <tr>
                                             <th scope="row">{{ $key+1 }}</th>
                                             <td>{{ $val->nama }}</td>
-                                            <td>{{ $val->kode_alat }}</td>
+                                            <td>{{ $val->id }}</td>
                                             <td>{{ $val->nama_wilayah->wilayah }}</td>
                                             <td>
                                                 <a class="btn btn-sm btn-warning" href="#modal_edit" data-toggle="modal" 
                                                     data-id="{{ $val->id }}"
                                                     data-nama="{{ $val->nama }}"
-                                                    data-kode_alat="{{ $val->kode_alat }}"
                                                     data-wilayah_id="{{ $val->wilayah_id }}"
                                                 ><i class="ft ft-edit"></i> Ubah</a>
                                                 <a class="btn btn-sm btn-danger" href="#modal_hapus" data-toggle="modal"

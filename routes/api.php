@@ -22,7 +22,8 @@ Route::get('tes_sensor_arduino/{id}/{suhu}/{kelembapan}/{asap}/{co}/{pm10}', 'Se
 
 Route::get('kirims/{kode_alat}/{suhu}/{kelembapan}/{asap}/{co}/{pm10}', 'SensorController@kirim');
 
-Route::get('kirim_data/{kode_alat}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}', 'MonitoringController@monitoring');
+Route::get('kirim_data/{node_sensor_id}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}', 'MonitoringController@monitoring');
 
-Route::get('grafik', 'RealtimeController@grafik');
+// Route::get('grafik', 'RealtimeController@grafik');
+Route::get('grafik/{id}', 'MonitoringController@grafik')->name('grafik');
 

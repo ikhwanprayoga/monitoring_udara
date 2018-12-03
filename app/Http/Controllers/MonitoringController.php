@@ -3,52 +3,482 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Response;
 
 use App\Monitoring;
+use App\NodeSensor;
 use App\DataSementara;
+use App\DataPermenit;
 use App\Data;
 
 
 class MonitoringController extends Controller
 {
-    public function monitoring(Request $request, $kode_alat, $pm10, $co, $asap, $suhu, $kelembapan)
+	public function index()
+	{
+        $data = NodeSensor::orderBy('id', 'asc')->get();
+		return view('backend.monitoring.index', compact('data'));
+	}
+
+    public function monitoring_node($id)
     {
-    	$input['kode_alat'] = $request->kode_alat;
-    	$input['pm10'] 		= $request->pm10;
-    	$input['co'] 		= $request->co;
-    	$input['asap'] 		= $request->asap;
-    	$input['suhu'] 		= $request->suhu;
-    	$input['kelembapan'] = $request->kelembapan;
-
-    	$cek_kode_alat = Monitoring::where('kode_alat', $input['kode_alat'])->first();
-
-    	if (empty($cek_kode_alat)) {
-    		$simpan = Monitoring::create($input);
-    		// return "data baru";
-    		return redirect()->back();
-    	}
-
-    	if (isset($cek_kode_alat)) {
-	    	$id 		= $cek_kode_alat->id;
-	    	$kode_alat 	= $cek_kode_alat->kode_alat;
-    		$update = Monitoring::find($id)->update($input);
-    		// return "data di update";
-    		return redirect()->back();
-    	}
+        $sensor = NodeSensor::where('id', $id)->first();
+        return view('backend.monitoring.node', compact('sensor'));
     }
 
-    public function store()
+    public function monitoring(Request $request, $node_sensor_id, $pm10, $co, $asap, $suhu, $kelembapan)
+    {
+        $input['node_sensor_id']   = $request->node_sensor_id;
+    	$input['pm10'] 		       = $request->pm10;
+    	$input['co'] 		       = $request->co;
+    	$input['asap'] 		       = $request->asap;
+    	$input['suhu'] 		       = $request->suhu;
+    	$input['kelembapan']       = $request->kelembapan;
+
+
+    	$node_sensor_id = Monitoring::where('node_sensor_id', $input['node_sensor_id'])->first();
+
+    	if (empty($node_sensor_id)) {
+    		$simpan = Monitoring::create($input);
+    		// return "data baru";
+    		// return redirect()->back();
+    	}
+
+    	if (isset($node_sensor_id)) {
+	    	$id 		        = $node_sensor_id->id;
+    		$update = Monitoring::find($id)->update($input);
+    		// return "data di update";
+    		// return redirect()->back();
+    	}
+
+        //kirim data ke data sementara
+        $data = Monitoring::all();
+        foreach ($data as $key => $value) {
+            DataSementara::create([
+                'node_sensor_id' => $value->node_sensor_id,
+                'pm10'           => $value->pm10,
+                'co'             => $value->co,
+                'asap'           => $value->asap,
+                'suhu'           => $value->suhu,
+                'kelembapan'     => $value->kelembapan,
+            ]);
+        }
+
+        $dataPermenit1 = DataPermenit::first();
+
+        if (empty($dataPermenit1)) {
+            // return 'data permenit kosong';
+            $inputDataPermenit['pm10']      = DataSementara::avg('pm10');
+            $inputDataPermenit['co']        = DataSementara::avg('co');
+            $inputDataPermenit['asap']      = DataSementara::avg('asap');
+            $inputDataPermenit['suhu']      = DataSementara::avg('suhu');
+            $inputDataPermenit['kelembapan'] = DataSementara::avg('kelembapan');
+
+            $tambahDataPermenit = DataPermenit::create($inputDataPermenit);
+        }
+
+        $dataPermenit2 = DataPermenit::orderBy('id', 'desc')->first();
+
+        if ( isset($dataPermenit2) ) {
+            // return 'data menit tersedia';
+            $menit_lama = $dataPermenit2->created_at->format('Y-m-d H:i');
+            $menit_sekarang = DataSementara::orderBy('id', 'desc')->first()->created_at->format('Y-m-d H:i');
+
+            if ($menit_sekarang > $menit_lama) {
+                // return 'permenit';
+                $inputMenit['pm10']     = DataSementara::where('created_at', '<', $menit_sekarang)->avg('pm10');
+                $inputMenit['co']       = DataSementara::where('created_at', '<', $menit_sekarang)->avg('co');
+                $inputMenit['asap']     = DataSementara::where('created_at', '<', $menit_sekarang)->avg('asap');
+                $inputMenit['suhu']     = DataSementara::where('created_at', '<', $menit_sekarang)->avg('suhu');
+                $inputMenit['kelembapan'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('kelembapan');
+
+                $menit_data = DataSementara::select('created_at')
+                                ->orderBy('id', 'desc')
+                                ->first()
+                                ->created_at->format('Y-m-d H:i:s');
+
+                $inputMenit['created_at'] = $menit_data;
+
+                $kirim_data = DataPermenit::create($inputMenit);
+
+                $data_lama = DataSementara::where('created_at', '<', $menit_sekarang)->select('id')->get();
+                    
+                foreach ($data_lama as $key => $value) {
+                    $data = $value->id;
+
+                    $hapus_data_lama = DataSementara::where('id', $data)->delete();
+                }
+                // return 'berhasil permenit';
+            }
+
+            $dataPerjam1 = Data::first();
+
+            if (empty($dataPerjam1)) {
+                // return "jam kosong";
+                $inputDataPerjam['pm10']    = DataPermenit::avg('pm10');
+                $inputDataPerjam['co']      = DataPermenit::avg('co');
+                $inputDataPerjam['asap']    = DataPermenit::avg('asap');
+                $inputDataPerjam['suhu']    = DataPermenit::avg('suhu');
+                $inputDataPerjam['kelembapan'] = DataPermenit::avg('kelembapan');
+
+                if (($inputDataPerjam['pm10'] >= 0 && $inputDataPerjam['pm10'] <= 50) || ($inputDataPerjam['co'] >= 0 && $inputDataPerjam['co'] <= 50)) {
+                    $inputDataPerjam['kategori_udara_id'] = 1;
+                }
+                if (($inputDataPerjam['pm10'] >= 51 && $inputDataPerjam['pm10'] <= 100) || ($inputDataPerjam['co'] >= 51 && $inputDataPerjam['co'] <= 100)) {
+                    $inputDataPerjam['kategori_udara_id'] = 2;
+                }
+                if (($inputDataPerjam['pm10'] >= 101 && $inputDataPerjam['pm10'] <= 199) || ($inputDataPerjam['co'] >= 101 && $inputDataPerjam['co'] <= 199)) {
+                    $inputDataPerjam['kategori_udara_id'] = 3;
+                }
+                if (($inputDataPerjam['pm10'] >= 200 && $inputDataPerjam['pm10'] <= 299) || ($inputDataPerjam['co'] >= 200 && $inputDataPerjam['co'] <= 299)) {
+                    $inputDataPerjam['kategori_udara_id'] = 4;
+                }
+                if ($inputDataPerjam['pm10'] >= 300  || $inputDataPerjam['co'] >= 300 ) {
+                    $inputDataPerjam['kategori_udara_id'] = 5;
+                }
+
+                $tambahDataPermenit = Data::create($inputDataPerjam);
+                // return 'berhasil nambakan jam';
+            }
+
+            if (isset($dataPerjam1)) {
+                // return 'data jam ada';
+                $jam_lama = Data::orderBy('id', 'desc')
+                                ->first()
+                                ->created_at->format('Y-m-d H');
+                $jam_sekarang = DataPermenit::orderBy('id', 'desc')
+                                ->first()
+                                ->created_at->format('Y-m-d H');
+
+                if ($jam_sekarang > $jam_lama) {
+
+                    $inputJam['pm10']       = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('pm10');
+                    $inputJam['co']         = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('co');
+                    $inputJam['asap']       = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('asap');
+                    $inputJam['suhu']       = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('suhu');
+                    $inputJam['kelembapan'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('kelembapan');
+
+                    $jam_data = DataPermenit::select('created_at')
+                                    ->orderBy('id', 'desc')
+                                    ->first()
+                                    ->created_at->format('Y-m-d H:i:s');
+
+                    $inputJam['created_at'] = $jam_data;
+                    
+                    if (($inputJam['pm10'] >= 0 && $inputJam['pm10'] <= 50) || ($inputJam['co'] >= 0 && $inputJam['co'] <= 50)) {
+                        $inputJam['kategori_udara_id'] = 1;
+                    }
+                    if (($inputJam['pm10'] >= 51 && $inputJam['pm10'] <= 100) || ($inputJam['co'] >= 51 && $inputJam['co'] <= 100)) {
+                        $inputJam['kategori_udara_id'] = 2;
+                    }
+                    if (($inputJam['pm10'] >= 101 && $inputJam['pm10'] <= 199) || ($inputJam['co'] >= 101 && $inputJam['co'] <= 199)) {
+                        $inputJam['kategori_udara_id'] = 3;
+                    }
+                    if (($inputJam['pm10'] >= 200 && $inputJam['pm10'] <= 299) || ($inputJam['co'] >= 200 && $inputJam['co'] <= 299)) {
+                        $inputJam['kategori_udara_id'] = 4;
+                    }
+                    if ($inputJam['pm10'] >= 300  || $inputJam['co'] >= 300 ) {
+                        $inputJam['kategori_udara_id'] = 5;
+                    }
+
+                    $kirim_data = Data::create($inputJam);
+
+                    $data_lama = DataPermenit::where('created_at', '<', $jam_sekarang)->select('id')->get();
+                        
+                    foreach ($data_lama as $key => $value) {
+                        $data = $value->id;
+
+                        $hapus_data_lama = DataPermenit::where('id', $data)->delete();
+                    } 
+
+                    // return 'perjam berhasil';
+                }
+
+            }
+
+        }
+
+        // return 'menit dan jam gagal';
+
+    	// $this->store_data_sementara(); //strore ke data sementara
+        
+    }
+
+    // fungsi strore ke data sementara
+    public function store_data_sementara()
     {
     	$data = Monitoring::all();
     	foreach ($data as $key => $value) {
-    		Data::create([
-    			'kode_alat' => $value->kode_alat,
-    			'pm10' 		=> $value->pm10,
-    			'co' 		=> $value->co,
-    			'asap' 		=> $value->asap,
-    			'suhu' 		=> $value->suhu,
-    			'kelembapan' => $value->kelembapan,
+    		DataSementara::create([
+    			'node_sensor_id' => $value->node_sensor_id,
+    			'pm10' 		     => $value->pm10,
+    			'co' 		     => $value->co,
+    			'asap' 		     => $value->asap,
+    			'suhu' 		     => $value->suhu,
+    			'kelembapan'     => $value->kelembapan,
     		]);
     	}
+
+        $menit_sekarang = date('Y-m-d H:i');
+        $menit_lama = DataSementara::select('created_at')
+                        ->orderBy('id', 'desc')
+                        ->first()
+                        ->created_at->format('Y-m-d H:i');
+
+        $jam_sekarang = date('Y-m-d H');
+        $jam_lama = DataPermenit::select('created_at')
+                        ->orderBy('id', 'desc')
+                        ->first()
+                        ->created_at->format('Y-m-d H');
+
+        if ($menit_sekarang > $menit_lama) {
+            // return 'permenit';
+            $input['pm10'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('pm10');
+            $input['co'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('co');
+            $input['asap'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('asap');
+            $input['suhu'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('suhu');
+            $input['kelembapan'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('kelembapan');
+
+            $menit_data = DataSementara::select('created_at')
+                            ->orderBy('id', 'desc')
+                            ->first()
+                            ->created_at->format('Y-m-d H:i:s');
+            
+            $input['created_at'] = $menit_data;
+
+            $kirim_data = DataPermenit::create($input);
+
+            $data_lama = DataSementara::where('created_at', '<', $menit_sekarang)->select('id')->get();
+                
+            foreach ($data_lama as $key => $value) {
+                $data = $value->id;
+
+                $hapus_data_lama = DataSementara::where('id', $data)->delete();
+            }
+            // return 'berhasil permenit';
+            
+        }
+        if ($jam_sekarang > $jam_lama) {
+
+            $input['pm10'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('pm10');
+            $input['co'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('co');
+            $input['asap'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('asap');
+            $input['suhu'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('suhu');
+            $input['kelembapan'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('kelembapan');
+
+            $jam_data = DataPermenit::select('created_at')
+                            ->orderBy('id', 'desc')
+                            ->first()
+                            ->created_at->format('Y-m-d H:i:s');
+
+            $input['created_at'] = $jam_data;
+            
+            if (($input['pm10'] >= 0 && $input['pm10'] <= 50) || ($input['co'] >= 0 && $input['co'] <= 50)) {
+                $input['kategori_udara_id'] = 1;
+            }
+            if (($input['pm10'] >= 51 && $input['pm10'] <= 100) || ($input['co'] >= 51 && $input['co'] <= 100)) {
+                $input['kategori_udara_id'] = 2;
+            }
+            if (($input['pm10'] >= 101 && $input['pm10'] <= 199) || ($input['co'] >= 101 && $input['co'] <= 199)) {
+                $input['kategori_udara_id'] = 3;
+            }
+            if (($input['pm10'] >= 200 && $input['pm10'] <= 299) || ($input['co'] >= 200 && $input['co'] <= 299)) {
+                $input['kategori_udara_id'] = 4;
+            }
+            if ($input['pm10'] >= 300  || $input['co'] >= 300 ) {
+                $input['kategori_udara_id'] = 5;
+            }
+
+            $kirim_data = Data::create($input);
+
+            $data_lama = DataPermenit::where('created_at', '<', $jam_sekarang)->select('id')->get();
+                
+            foreach ($data_lama as $key => $value) {
+                $data = $value->id;
+
+                $hapus_data_lama = DataPermenit::where('id', $data)->delete();
+            } 
+
+            // return 'perjam berhasil';
+        }
+
+        return 'maseh transfer data';
+
+    }
+
+    public function store_permenit()
+    {
+        $menit_sekarang = date('Y-m-d H:i');
+        $menit_lama = DataSementara::select('created_at')
+                        ->orderBy('id', 'desc')
+                        ->first()
+                        ->created_at->format('Y-m-d H:i');
+
+        if ($menit_sekarang > $menit_lama) {
+            $input['pm10'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('pm10');
+            $input['co'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('co');
+            $input['asap'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('asap');
+            $input['suhu'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('suhu');
+            $input['kelembapan'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('kelembapan');
+
+            $menit_data = DataSementara::select('created_at')
+                            ->orderBy('id', 'desc')
+                            ->first()
+                            ->created_at->format('Y-m-d H:i:s');
+
+            $input['created_at'] = $menit_data;
+
+            $kirim_data = DataPermenit::create($input);
+
+            $data_lama = DataSementara::where('created_at', '<', $menit_sekarang)->select('id')->get();
+                
+            foreach ($data_lama as $key => $value) {
+                $data = $value->id;
+
+                $hapus_data_lama = DataSementara::where('id', $data)->delete();
+            }
+        }
+    }
+
+    public function strore_perjam()
+    {
+        $jam_sekarang = date('Y-m-d H');
+        $jam_lama = DataPermenit::select('created_at')
+                        ->orderBy('id', 'desc')
+                        ->first()
+                        ->created_at->format('Y-m-d H');
+
+        if ($jam_sekarang > $jam_lama) {
+
+            $input['pm10'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('pm10');
+            $input['co'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('co');
+            $input['asap'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('asap');
+            $input['suhu'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('suhu');
+            $input['kelembapan'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('kelembapan');
+
+            $jam_data = DataPermenit::select('created_at')
+                            ->orderBy('id', 'desc')
+                            ->first()
+                            ->created_at->format('Y-m-d H:i:s');
+
+            $input['created_at'] = $jam_data;
+            
+            if (($input['pm10'] >= 0 && $input['pm10'] <= 50) || ($input['co'] >= 0 && $input['co'] <= 50)) {
+                $input['kategori_udara_id'] = 1;
+            }
+            if (($input['pm10'] >= 51 && $input['pm10'] <= 100) || ($input['co'] >= 51 && $input['co'] <= 100)) {
+                $input['kategori_udara_id'] = 2;
+            }
+            if (($input['pm10'] >= 101 && $input['pm10'] <= 199) || ($input['co'] >= 101 && $input['co'] <= 199)) {
+                $input['kategori_udara_id'] = 3;
+            }
+            if (($input['pm10'] >= 200 && $input['pm10'] <= 299) || ($input['co'] >= 200 && $input['co'] <= 299)) {
+                $input['kategori_udara_id'] = 4;
+            }
+            if ($input['pm10'] >= 300  || $input['co'] >= 300 ) {
+                $input['kategori_udara_id'] = 5;
+            }
+
+            $kirim_data = Data::create($input);
+
+            $data_lama = DataPermenit::where('created_at', '<', $jam_sekarang)->select('id')->get();
+                
+            foreach ($data_lama as $key => $value) {
+                $data = $value->id;
+
+                $hapus_data_lama = DataPermenit::where('id', $data)->delete();
+            }   
+        }
+    }
+
+    //fungsi store dari data sementara ke data
+    public function store_data()
+    {
+        $menit_sekarang = date('Y-m-d H:i');
+        $menit_lama = DataSementara::select('created_at')
+                        ->orderBy('id', 'desc')
+                        ->first()
+                        ->created_at->format('Y-m-d H:i');
+        
+        if ($menit_sekarang > $menit_lama) {
+            $input['pm10'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('pm10');
+            $input['co'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('co');
+            $input['asap'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('asap');
+            $input['suhu'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('suhu');
+            $input['kelembapan'] = DataSementara::where('created_at', '<', $menit_sekarang)->avg('kelembapan');
+
+            $menit_data = DataSementara::select('created_at')
+                            ->orderBy('id', 'desc')
+                            ->first()
+                            ->created_at->format('Y-m-d H:i:s');
+
+            $input['created_at'] = $menit_data;
+
+            $kirim_data = DataPermenit::create($input);
+
+            $data_lama = DataSementara::where('created_at', '<', $menit_sekarang)->select('id')->get();
+                
+            foreach ($data_lama as $key => $value) {
+                $data = $value->id;
+
+                $hapus_data_lama = DataSementara::where('id', $data)->delete();
+            }
+        }
+
+        $jam_sekarang = date('Y-m-d H');
+        $jam_lama = DataPermenit::select('created_at')
+                        ->orderBy('id', 'desc')
+                        ->first()
+                        ->created_at->format('Y-m-d H');
+
+        if ($jam_sekarang > $jam_lama) {
+
+            $input['pm10'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('pm10');
+            $input['co'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('co');
+            $input['asap'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('asap');
+            $input['suhu'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('suhu');
+            $input['kelembapan'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('kelembapan');
+
+            $jam_data = DataPermenit::select('created_at')
+                            ->orderBy('id', 'desc')
+                            ->first()
+                            ->created_at->format('Y-m-d H:i:s');
+
+            $input['created_at'] = $jam_data;
+            
+            if (($input['pm10'] >= 0 && $input['pm10'] <= 50) || ($input['co'] >= 0 && $input['co'] <= 50)) {
+                $input['kategori_udara_id'] = 1;
+            }
+            if (($input['pm10'] >= 51 && $input['pm10'] <= 100) || ($input['co'] >= 51 && $input['co'] <= 100)) {
+                $input['kategori_udara_id'] = 2;
+            }
+            if (($input['pm10'] >= 101 && $input['pm10'] <= 199) || ($input['co'] >= 101 && $input['co'] <= 199)) {
+                $input['kategori_udara_id'] = 3;
+            }
+            if (($input['pm10'] >= 200 && $input['pm10'] <= 299) || ($input['co'] >= 200 && $input['co'] <= 299)) {
+                $input['kategori_udara_id'] = 4;
+            }
+            if ($input['pm10'] >= 300  || $input['co'] >= 300 ) {
+                $input['kategori_udara_id'] = 5;
+            }
+
+            $kirim_data = Data::create($input);
+
+            $data_lama = DataPermenit::where('created_at', '<', $jam_sekarang)->select('id')->get();
+                
+            foreach ($data_lama as $key => $value) {
+                $data = $value->id;
+
+                $hapus_data_lama = DataPermenit::where('id', $data)->delete();
+            }   
+        }else{
+            return;
+        }
+    }
+
+    public function grafik($id)
+    {
+    	$data = Monitoring::where('node_sensor_id', $id)->first();
+    	return response()->json($data);
     }
 }

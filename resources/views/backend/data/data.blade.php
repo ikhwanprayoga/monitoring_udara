@@ -34,7 +34,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Basic Tables</h4>
+                        <h4 class="card-title">Basic Tables data</h4>
                     </div>
                     <div class="card-content collapse show">
                         <div class="card-body">
@@ -44,15 +44,30 @@
                                 <table class="table" id="table">
                                     <thead>
                                         <tr>
-                                            <th>Kode Alat</th>
+                                            <th>node_sensor_id</th>
                                             <th>PM10</th>
                                             <th>CO</th>
                                             <th>Asap</th>
                                             <th>Suhu</th>
                                             <th>Kelembapan</th>
-                                            <th>Kategori Udara</th>
+                                            <th>created at</th>
+                                            <th>updated at</th>
                                         </tr>
                                     </thead>
+                                    <tbody>
+                                        @foreach ($data as $key => $val)
+                                            <tr>
+                                                <td>{{ $val->node_sensor_id }}</td>
+                                                <td>{{ $val->pm10 }}</td>
+                                                <td>{{ $val->co }}</td>
+                                                <td>{{ $val->asap }}</td>
+                                                <td>{{ $val->suhu }}</td>
+                                                <td>{{ $val->kelembapan }}</td>
+                                                <td>{{ $val->created_at }}</td>
+                                                <td>{{ $val->updated_at }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -69,25 +84,5 @@
 <script>
     $('#allData').addClass('active');
 </script>
-<script>
-    var table = $('#table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: '{{ route('get-data') }}',
-            data: function (d) {
-                // body...
-            }
-        },
-        columns: [
-            {data: 'kode_alat', name: 'kode_alat'},
-            {data: 'pm10', name: 'pm10'},
-            {data: 'co', name: 'co'},
-            {data: 'asap', name: 'asap'},
-            {data: 'suhu', name: 'suhu'},
-            {data: 'kelembapan', name: 'kelembapan'},
-            {data: 'kategori_udara_id', name: 'kategori_udara_id'}
-        ]
-    });
-</script>
+
 @endsection

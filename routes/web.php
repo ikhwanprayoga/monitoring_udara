@@ -24,8 +24,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('beranda', 'BerandaController@index')->name('beranda');
+
+Route::group(['prefix' => 'monitoring'], function() {
+    Route::get('/', 'MonitoringController@index')->name('monitoring');
+    Route::get('/node/{id}', 'MonitoringController@monitoring_node')->name('monitoring_node');
+});
+
 Route::get('data', 'DataController@index')->name('data');
 Route::get('get-data', 'DataController@getData')->name('get-data');
+
+Route::get('data/sementara', 'DataController@sementara')->name('sementara');
 
 Route::get('data-realtime', 'RealtimeController@index')->name('realtime');
 Route::get('getData-realtime', 'RealtimeController@getData')->name('getData-realtime');
@@ -56,5 +64,5 @@ Route::group(['prefix' => 'master'], function() {
 });
 
 //send data ke tabel data
-Route::get('/store', 'MonitoringController@store');
+// Route::get('/store', 'MonitoringController@store');
 
