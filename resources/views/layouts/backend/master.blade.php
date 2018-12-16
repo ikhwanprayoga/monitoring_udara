@@ -69,7 +69,7 @@
           </li>
           <li id="monitoring" class=" nav-item"><a href="{{ route('monitoring') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Monitoring</span></a>
           </li>
-          <li id="allData" class=" nav-item"><a href="{{ route('data') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
+          <li id="data" class=" nav-item"><a href="{{ route('data') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
           </li>
           {{-- <li id="data" class=" nav-item"><a href="#"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
             <ul class="menu-content">

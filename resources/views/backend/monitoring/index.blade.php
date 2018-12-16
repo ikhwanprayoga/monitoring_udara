@@ -47,7 +47,7 @@
                                 <div class="card-body">
                                     <h4 class="card-title">{{ $val->nama }}</h4>
                                     <p class="card-text">Wilayah    : {{ $val->nama_wilayah->wilayah }} </p>
-                                    <a href="{{ url('monitoring/node/'. $val->id) }}" >
+                                    <a href="{{ url('admin/monitoring/node/'. $val->id) }}" >
                                         <button type="button" class="btn btn-info btn-min-width mr-1 mb-1"><i class="ft-pause"></i> Monitoring</button>
                                     </a>
                                 </div>

@@ -99,7 +99,7 @@
 {{-- monitoring pm10 --}}
 <script type="text/javascript">
     $(document).ready(function () {
-        var dataPoints = [{x: 0, y: 0}];
+        var dataPoints = [{label: "", y: 0}];
 
         var chart = new CanvasJS.Chart("pm10", {
                 title : {
@@ -132,15 +132,18 @@
                 success: function (data) {
                        // $.each(data, function (key, val) {
                         yVal = data.pm10;
-                        // xVal = val.created_at;
+                        // rVal = data.updated_at;
 
-                        // console.log("pm10");
+                        jam = new Date();
+                        waktu = jam.getHours() + ":" + jam.getMinutes() + ":" + jam.getSeconds();
+
+                        console.log(waktu);
                         // updateCount++;
 
                         xVal++;
 
                         dataPoints.push({
-                            x : xVal, y : yVal 
+                            label : waktu, y : yVal 
                         });
 
                         console.log(dataPoints);
