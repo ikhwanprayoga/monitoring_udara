@@ -30,5 +30,6 @@ Route::get('grafik/{id}', 'MonitoringController@grafik')->name('grafik');
 Route::get('kirim_data/{node_sensor_id}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}', 'MonitoringController@monitoring');
 
 // get data realtime
-Route::get('/realtime/mobile', 'MobileController@realtime')->name('mobile.realtime');
+Route::get('/mobile/realtime', 'MobileController@realtime')->name('mobile-realtime');
+Route::get('/mobile/chart', 'MobileController@chart')->name('mobile-chart');
 

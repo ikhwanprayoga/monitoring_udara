@@ -96,328 +96,177 @@
     $('#monitoring').addClass('active');
 </script>
 
-{{-- monitoring pm10 --}}
-<script type="text/javascript">
-    $(document).ready(function () {
-        var dataPoints = [{label: "", y: 0}];
+{{-- monitoring realtime pm10 --}}
+<script>
+$(document).ready(function () {
+    var dataPointsPM10 = [];
+    var chartPM10 = new CanvasJS.Chart("pm10", {
+            title : {
+                text : "PM 10"
+            },
+            axisY: {
+                title : "PPM"
+            },
+            axisX: {
+                title : "Nilai perdetik"
+            },
+            data : [{
+                type : "area",
+                // xValueType: "dateTime",
+                dataPoints : dataPointsPM10
+            }]
+        });
+    chartPM10.render();
 
-        var chart = new CanvasJS.Chart("pm10", {
-                title : {
-                    text : "PM 10"
-                },
-                axisY: {
-                    title : "PPM"
-                },
-                axisX: {
-                    title : "Nilai perdetik"
-                },
-                data : [{
-                    type : "area",
-                    // xValueType: "dateTime",
-                    dataPoints : dataPoints
-                }]
+    //chart co
+    var dataPointsCO = [];
+    var chartCO = new CanvasJS.Chart("co", {
+            title : {
+                text : "Kabon Monoksida"
+            },
+            axisY: {
+                title : "PPM"
+            },
+            axisX: {
+                title : "Nilai perdetik"
+            },
+            data : [{
+                type : "area",
+                // xValueType: "dateTime",
+                dataPoints : dataPointsCO
+            }]
+        });
+    chartCO.render();
+
+    //chart asap
+    var dataPointsASAP = [];
+    var chartASAP = new CanvasJS.Chart("asap", {
+            title : {
+                text : "Asap"
+            },
+            axisY: {
+                title : "PPM"
+            },
+            axisX: {
+                title : "Nilai perdetik"
+            },
+            data : [{
+                type : "area",
+                // xValueType: "dateTime",
+                dataPoints : dataPointsASAP
+            }]
+        });
+    chartASAP.render();
+
+    //chart SUHU
+    var dataPointsSUHU = [];
+    var chartSUHU = new CanvasJS.Chart("suhu", {
+            title : {
+                text : "Suhu"
+            },
+            axisY: {
+                title : "Celsius"
+            },
+            axisX: {
+                title : "Nilai perdetik"
+            },
+            data : [{
+                type : "area",
+                // xValueType: "dateTime",
+                dataPoints : dataPointsSUHU
+            }]
+        });
+    chartSUHU.render();
+
+    //chart kelembapan
+    var dataPointsKELEMBAPAN = [];
+    var chartKELEMBAPAN = new CanvasJS.Chart("kelembapan", {
+            title : {
+                text : "Kelembapan"
+            },
+            axisY: {
+                title : "Persen %"
+            },
+            axisX: {
+                title : "Nilai perdetik"
+            },
+            data : [{
+                type : "area",
+                // xValueType: "dateTime",
+                dataPoints : dataPointsKELEMBAPAN
+            }]
+        });
+    chartKELEMBAPAN.render();
+
+    //get data from database
+    var xVal = 0;
+    var getData = function () {
+        $.getJSON('{{ url('api/grafik/'.$sensor->id) }}', function (data) {
+            time = new Date(data.updated_at);
+            hour = time.getHours();
+            min = time.getMinutes();
+            sec = time.getSeconds();
+            times = hour + ':' + min + ':' + sec;
+
+            xVals = xVal++;
+
+            yPM10 = data.pm10;
+            yCO = data.co;
+            yASAP = data.asap;
+            ySUHU = data.suhu;
+            yKELEMBAPAN = data.kelembapan;
+
+            // datapoints pm10
+            dataPointsPM10.push({
+                label : times , y : yPM10 , x : xVals
             });
+            if(dataPointsPM10.length > 10){
+                dataPointsPM10.shift();
+            }
 
-        chart.render();
-
-        var xVal = dataPoints.length + 1;
-        // var yVal = 50; 
-
-        var pm10 = function () {
-            $.ajax({
-                method: 'GET',
-                url: '{{ url('api/grafik/'.$sensor->id) }}',
-                data: "",
-                dataType: 'json',
-                success: function (data) {
-                       // $.each(data, function (key, val) {
-                        yVal = data.pm10;
-                        // rVal = data.updated_at;
-
-                        jam = new Date();
-                        waktu = jam.getHours() + ":" + jam.getMinutes() + ":" + jam.getSeconds();
-
-                        console.log(waktu);
-                        // updateCount++;
-
-                        xVal++;
-
-                        dataPoints.push({
-                            label : waktu, y : yVal 
-                        });
-
-                        console.log(dataPoints);
-
-                        // xVal++;
-                        if (dataPoints.length >  10 )
-                        {
-                            dataPoints.shift();                
-                        }
-
-                        chart.render();
-                    // })
-
-                },
+            // datapoints co
+            dataPointsCO.push({
+                label : times , y : yCO , x : xVals
             });
-        }
-        setInterval(pm10, 5000);
-    });
-</script>
-{{-- monitoring co --}}
-<script type="text/javascript">
-    $(document).ready(function () {
-        var dataPoints = [{x: 0, y: 0}];
+            if(dataPointsCO.length > 10){
+                dataPointsCO.shift();
+            }
 
-        var chart = new CanvasJS.Chart("co", {
-                title : {
-                    text : "CO (Karbon Monoksida)"
-                },
-                axisY: {
-                    title : "PPM"
-                },
-                axisX: {
-                    title : "Nilai perdetik"
-                },
-                data : [{
-                    type : "area",
-                    // xValueType: "dateTime",
-                    dataPoints : dataPoints
-                }]
+            // datapoints asap
+            dataPointsASAP.push({
+                label : times , y : yASAP , x : xVals
             });
+            if(dataPointsASAP.length > 10){
+                dataPointsASAP.shift();
+            }
 
-        chart.render();
-
-        var xVal = dataPoints.length + 1;
-        // var yVal = 50; 
-
-        var co = function () {
-            $.ajax({
-                method: 'GET',
-                url: '{{ url('api/grafik/'.$sensor->id) }}',
-                data: "",
-                dataType: 'json',
-                success: function (data) {
-                    // $.each(data, function (key, val) {
-                       
-                        yVal = data.co;
-                        // xVal = val.created_at;
-
-                        // console.log("co");
-                        // updateCount++;
-
-                        xVal++;
-
-                        dataPoints.push({
-                            x : xVal, y : yVal 
-                        });
-
-                        // console.log(dataPoints);
-
-                        // xVal++;
-                        if (dataPoints.length >  10 )
-                        {
-                            dataPoints.shift();                
-                        }
-
-                        chart.render();
-                    // })
-                },
+            // datapoints suhu
+            dataPointsSUHU.push({
+                label : times , y : ySUHU , x : xVals
             });
-        }
-        setInterval(co, 5000);
-    });
-</script>
-{{-- monitoring asap --}}
-<script type="text/javascript">
-    $(document).ready(function () {
-        var dataPoints = [{x: 0, y: 0}];
+            if(dataPointsSUHU.length > 10){
+                dataPointsSUHU.shift();
+            }
 
-        var chart = new CanvasJS.Chart("asap", {
-                title : {
-                    text : "Asap"
-                },
-                axisY: {
-                    title : "PPM"
-                },
-                axisX: {
-                    title : "Nilai perdetik"
-                },
-                data : [{
-                    type : "area",
-                    // xValueType: "dateTime",
-                    dataPoints : dataPoints
-                }]
+            // datapoints kelembapan
+            dataPointsKELEMBAPAN.push({
+                label : times , y : yKELEMBAPAN , x : xVals
             });
+            if(dataPointsKELEMBAPAN.length > 10){
+                dataPointsKELEMBAPAN.shift();
+            }
 
-        chart.render();
+            chartPM10.render();
+            chartCO.render();
+            chartASAP.render();
+            chartSUHU.render();
+            chartKELEMBAPAN.render();
 
-        var xVal = dataPoints.length + 1;
-        // var yVal = 50; 
-
-        var asap = function () {
-            $.ajax({
-                method: 'GET',
-                url: '{{ url('api/grafik/'.$sensor->id) }}',
-                data: "",
-                dataType: 'json',
-                success: function (data) {
-                    // $.each(data, function (key, val) {
-                       
-                        yVal = data.asap;
-                        // xVal = val.created_at;
-
-                        // console.log("asap");
-                        // updateCount++;
-
-                        xVal++;
-
-                        dataPoints.push({
-                            x : xVal, y : yVal 
-                        });
-
-                        // console.log(dataPoints);
-
-                        // xVal++;
-                        if (dataPoints.length >  10 )
-                        {
-                            dataPoints.shift();                
-                        }
-
-                        chart.render();
-                    // })
-                },
-            });
-        }
-        setInterval(asap, 5000);
-    });
-</script>
-{{-- monitoring suhu --}}
-<script type="text/javascript">
-    $(document).ready(function () {
-        var dataPoints = [{x: 0, y: 0}];
-
-        var chart = new CanvasJS.Chart("suhu", {
-                title : {
-                    text : "Suhu"
-                },
-                axisY: {
-                    title : "Celsius"
-                },
-                axisX: {
-                    title : "Nilai perdetik"
-                },
-                data : [{
-                    type : "area",
-                    // xValueType: "dateTime",
-                    dataPoints : dataPoints
-                }]
-            });
-
-        chart.render();
-
-        var xVal = dataPoints.length + 1;
-        // var yVal = 50; 
-
-        var suhu = function () {
-            $.ajax({
-                method: 'GET',
-                url: '{{ url('api/grafik/'.$sensor->id) }}',
-                data: "",
-                dataType: 'json',
-                success: function (data) {
-                    // $.each(data, function (key, val) {
-                       
-                        yVal = data.suhu;
-                        // xVal = val.created_at;
-
-                        // console.log(val.created_at);
-                        // updateCount++;
-
-                        xVal++;
-
-                        dataPoints.push({
-                            x : xVal, y : yVal 
-                        });
-
-                        // console.log(dataPoints);
-
-                        // xVal++;
-                        if (dataPoints.length >  10 )
-                        {
-                            dataPoints.shift();                
-                        }
-
-                        chart.render();
-                    // })
-                },
-            });
-        }
-        setInterval(suhu, 5000);
-    });
-</script>
-{{-- monitoring suhu --}}
-<script type="text/javascript">
-    $(document).ready(function () {
-        var dataPoints = [{x: 0, y: 0}];
-
-        var chart = new CanvasJS.Chart("kelembapan", {
-                title : {
-                    text : "Kelembapan"
-                },
-                axisY: {
-                    title : "%"
-                },
-                axisX: {
-                    title : "Nilai perdetik"
-                },
-                data : [{
-                    type : "area",
-                    // xValueType: "dateTime",
-                    dataPoints : dataPoints
-                }]
-            });
-
-        chart.render();
-
-        var xVal = dataPoints.length + 1;
-        // var yVal = 50; 
-
-        var kelembapan = function () {
-            $.ajax({
-                method: 'GET',
-                url: '{{ url('api/grafik/'.$sensor->id) }}',
-                data: "",
-                dataType: 'json',
-                success: function (data) {
-                    // $.each(data, function (key, val) {
-                       
-                        yVal = data.kelembapan;
-                        // xVal = val.created_at;
-
-                        // console.log(val.created_at);
-                        // updateCount++;
-
-                        xVal++;
-
-                        dataPoints.push({
-                            x : xVal, y : yVal 
-                        });
-
-                        // console.log(dataPoints);
-
-                        // xVal++;
-                        if (dataPoints.length >  10 )
-                        {
-                            dataPoints.shift();                
-                        }
-
-                        chart.render();
-                    // })
-                },
-            });
-        }
-        setInterval(kelembapan, 5000);
-    });
+            console.log(dataPointsPM10);
+        });
+    }
+    setInterval(getData, 1000);
+});
 </script>
 
 @endsection

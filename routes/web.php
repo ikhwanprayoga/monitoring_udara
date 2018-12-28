@@ -69,5 +69,12 @@ Route::group(['prefix' => 'admin'], function() {
 
 
 Route::get('mobile', function() {
-    return view('mobile.index');
+    $h = 0;
+    while ($h < 24) {
+        $key = date('H:i', strtotime(date('Y-m-d') . ' + ' . $h . ' hours'));
+        $value = date('h:i A', strtotime(date('Y-m-d') . ' + ' . $h . ' hours'));
+        $formatter[$key] = $value;
+        $h++;
+    }
+    return $formatter;
 })->name('mobile');

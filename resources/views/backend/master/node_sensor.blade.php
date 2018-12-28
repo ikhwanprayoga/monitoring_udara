@@ -172,7 +172,6 @@
                         </div>
                     </div>
                     {{-- modal hapus --}}
-                    {{-- modal ubah --}}
                     <div class="modal fade text-left" id="modal_hapus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">

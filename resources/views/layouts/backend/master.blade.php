@@ -79,12 +79,12 @@
               </li>
             </ul>
           </li> --}}
-          <li id="rekomendasi" class=" nav-item"><a href="{{ route('rekomendasi') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Rekomendasi</span></a>
-          </li>
           <li id="master" class=" nav-item"><a href="#"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Master</span></a>
             <ul class="menu-content">
-              <li id="kategori-udara" class=" nav-item"><a href="{{ route('kategori-udara') }}">Kategori Udara</a>
+              <li id="rekomendasi" class=" nav-item"><a href="{{ route('rekomendasi') }}">Rekomendasi</span></a>
               </li>
+              {{-- <li id="kategori-udara" class=" nav-item"><a href="{{ route('kategori-udara') }}">Kategori Udara</a>
+              </li> --}}
               <li id="nodesensor"><a class="menu-item" href="{{ route('node-sensor') }}">Node Sensor</a>
               </li>
               <li id="wilayah"><a class="menu-item" href="{{ route('wilayah') }}">Wilayah</a>

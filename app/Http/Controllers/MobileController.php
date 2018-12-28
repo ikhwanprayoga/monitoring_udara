@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Monitoring;
+use App\Data;
 
 class MobileController extends Controller
 {
@@ -18,4 +19,22 @@ class MobileController extends Controller
 
         return response()->json($data, 200);
     }
+
+    public function chart()
+    {
+        $date = date('Y-m-d');
+        $data = Data::where('created_at', 'LIKE', '%' .$date. '%', '')->get();
+
+        // for ($i = 0; $i < 24; $i++) {
+        //     $key = date('H:i', strtotime(date('Y-m-d') . ' + ' . $i . ' hours'));
+        //     $value = date('h:i A', strtotime(date('Y-m-d') . ' + ' . $i . ' hours'));
+        //     $formatter[$key] = $value;
+
+        // }
+
+        // return $formatter;
+
+        return response()->json($data, 200);
+    }
+
 }
