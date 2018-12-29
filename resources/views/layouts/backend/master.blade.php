@@ -23,6 +23,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/colors/palette-gradient.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('dataTable/jquery.dataTables.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/forms/validation/form-validation.css') }}">
 
     @yield('css')
   </head>
@@ -90,6 +91,8 @@
               <li id="wilayah"><a class="menu-item" href="{{ route('wilayah') }}">Wilayah</a>
               </li>
             </ul>
+          </li>
+          <li id="operator" class=" nav-item"><a href="{{ route('operator') }}"><i class="ft-users"></i><span class="menu-title" data-i18n="">Operator</span></a>
           </li>
         </ul>
       </div>

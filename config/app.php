@@ -149,6 +149,7 @@ return [
 
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Package Service Providers...

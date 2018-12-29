@@ -64,6 +64,13 @@ Route::group(['prefix' => 'admin'], function() {
 
     });
 
+    Route::group(['prefix' => 'operator'], function () {
+        Route::get('/', 'OperatorController@index')->name('operator');
+        Route::post('tambah', 'OperatorController@tambah')->name('operator-tambah');
+        Route::post('ubah/{id}', 'OperatorController@ubah')->name('operator-ubah');
+        Route::post('hapus/{id}', 'OperatorController@hapus')->name('operator-hapus');
+    });
+
 
 });
 
