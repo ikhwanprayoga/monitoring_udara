@@ -67,9 +67,9 @@
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
           <li id="beranda" class=" nav-item"><a href="{{ route('beranda') }}"><i class="ft-home"></i><span class="menu-title" data-i18n="">Beranda</span></a>
           </li>
-          <li id="monitoring" class=" nav-item"><a href="{{ route('monitoring') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Monitoring</span></a>
+          <li id="monitoring" class=" nav-item"><a href="{{ route('monitoring') }}"><i class="ft-activity"></i><span class="menu-title" data-i18n="">Monitoring</span></a>
           </li>
-          <li id="data" class=" nav-item"><a href="{{ route('data') }}"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
+          <li id="data" class=" nav-item"><a href="{{ route('data') }}"><i class="ft-file-text"></i><span class="menu-title" data-i18n="">Data</span></a>
           </li>
           {{-- <li id="data" class=" nav-item"><a href="#"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
             <ul class="menu-content">
@@ -79,7 +79,7 @@
               </li>
             </ul>
           </li> --}}
-          <li id="master" class=" nav-item"><a href="#"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Master</span></a>
+          <li id="master" class=" nav-item"><a href="#"><i class="ft-grid"></i><span class="menu-title" data-i18n="">Master</span></a>
             <ul class="menu-content">
               <li id="rekomendasi" class=" nav-item"><a href="{{ route('rekomendasi') }}">Rekomendasi</span></a>
               </li>

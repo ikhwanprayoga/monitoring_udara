@@ -99,7 +99,7 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
-                                                                <form class="card-body" action="{{ url('master/wilayah/ubah/'.$val->id) }}" method="POST" enctype="multipart/form-data">
+                                                                <form class="card-body" action="{{ url('admin/master/wilayah/ubah/'.$val->id) }}" method="POST" enctype="multipart/form-data">
                                                                     <input type="hidden" value="{{ $val->id }}">
                                                                     {{ csrf_field() }}
                                                                     <div class="form-body">
@@ -133,9 +133,9 @@
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
                                                                 </div>
-                                                                <form class="card-body" action="{{ url('master/wilayah/hapus/'.$val->id) }}" method="GET" enctype="multipart/form-data">
-                                                                    <input type="hidden" value="{{ $val->id }}">
+                                                                <form class="card-body" action="{{ url('admin/master/wilayah/hapus/'.$val->id) }}" method="GET" enctype="multipart/form-data">
                                                                     {{ csrf_field() }}
+                                                                    <input type="hidden" value="{{ $val->id }}">
                                                                     <div class="form-body">
                                                                         <div class="row">
                                                                             <div class="col-md-12">

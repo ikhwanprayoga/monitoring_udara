@@ -5,7 +5,9 @@
 @endsection
 
 @section('css')
-
+<link rel="stylesheet" type="text/css" href="{{ asset('app-assets/fonts/simple-line-icons/style.min.css') }}">
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/pages/chat-application.css') }}"> --}}
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/pages/advanced-cards.css') }}"> --}}
 @endsection
 
 @section('content')
@@ -15,6 +17,67 @@
         <div class="content-header row">
         </div>
         <div class="content-body">
+            <div class="row">
+                <div class="col-xl-7 col-xs-12">
+                    <section id="chartjs-polar-charts">
+                        <div class="row">
+                            <!-- Polar Chart -->
+                            <div class="col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Node Sensor Perwilayah</h4>
+                                        
+                                    </div>
+                                    <div class="card-content collapse show">
+                                        <div class="card-body">
+                                                <div class="height-400">
+                                            <canvas id="polar-chart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="col-xl-5 col-xs-12">
+                    <div class="col-xl-12 col-lg-6 col-md-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex">
+                                        <div class="align-self-top">
+                                            <i class="icon-eye icon-opacity info font-large-4"></i>
+                                        </div>
+                                        <div class="media-body text-right align-self-bottom mt-3">
+                                            <span class="d-block mb-1 font-medium-1">Jumlah Sensor</span>
+                                            <h1 class="info mb-0">{{ $sensor->count() }}</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-6 col-md-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <div class="media d-flex">
+                                        <div class="align-self-top">
+                                            <i class="icon-pointer icon-opacity warning font-large-4"></i>
+                                        </div>
+                                        <div class="media-body text-right align-self-bottom mt-3">
+                                            <span class="d-block mb-1 font-medium-1">Jumlah Wilayah</span>
+                                            <h1 class="warning mb-0">{{ $wilayah->count() }}</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="card">
@@ -60,18 +123,11 @@
 @section('js')
 <script type="text/javascript" src="{{ asset('js/canvasjs.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jquery.canvasjs.min.js') }}"></script>
+<script src="{{ asset('app-assets/vendors/js/charts/chart.min.js') }}" type="text/javascript"></script>
 
 <script>
     $('#beranda').addClass('active');
 </script>
-
-{{-- <script>
-    window.onload = function () {
-
-    
-
-    }
-</script> --}}
 
 <script>
     $(document).ready(function () {
@@ -95,7 +151,7 @@
         var chart = new CanvasJS.Chart("chart", {
             animationEnabled: true,
             title:{
-                text: "PM 10"
+                text: "PM 10, Karbon Monoksida, Asap"
             },
             axisX:{
                 title: "Data Perjam"
@@ -183,5 +239,69 @@
     });
 </script>
 
+<script>
+/*=========================================================================================
+    File Name: polar.js
+    Description: Chartjs polar chart
+    ----------------------------------------------------------------------------------------
+    Item Name: Chameleon Admin - Modern Bootstrap 4 WebApp & Dashboard HTML Template + UI Kit
+    Version: 1.0
+    Author: ThemeSelection
+    Author URL: https://themeforest.net/user/themeselect
+==========================================================================================*/
+
+// Polar chart
+// ------------------------------
+$(window).on("load", function(){
+
+//Get the context of the Chart canvas element we want to select
+var ctx = $("#polar-chart");
+
+// Chart Options
+var chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    responsiveAnimationDuration:500,
+    legend: {
+        position: 'top',
+    },
+    title: {
+        display: false,
+        text: 'Chart.js Polar Area Chart'
+    },
+    scale: {
+      ticks: {
+        beginAtZero: true
+      },
+      reverse: false
+    },
+    animation: {
+        animateRotate: false
+    }
+};
+
+// Chart Data
+var chartData = {
+    labels: {!! json_encode($data_wilayah) !!},
+    datasets: [{
+        data: {!! json_encode($node_perwilayah['node_perwilayah']) !!},
+        backgroundColor: ['#666EE8', '#28D094', '#FF4961','#1E9FF2', '#FF9149', '#70c710'],
+        label: 'My dataset' // for legend
+    }],
+};
+
+var config = {
+    type: 'polarArea',
+
+    // Chart Options
+    options : chartOptions,
+
+    data : chartData
+};
+
+// Create the chart
+var polarChart = new Chart(ctx, config);
+});
+</script>
 
 @endsection

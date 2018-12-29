@@ -39,22 +39,20 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-deck">
-                    <div class="row">
-                        @foreach ($data as $key => $val)
-                        <div class="col-md-4 col-xs-12" style="padding-bottom: 3vw; padding-right: 0vw;padding-left: 0vw;">
-                            <div class="card">
-                                <img class="card-img-top img-fluid" src="app-assets/images/slider/slider-5.png" alt="Card image cap" />
-                                <div class="card-body">
-                                    <h4 class="card-title">{{ $val->nama }}</h4>
-                                    <p class="card-text">Wilayah    : {{ $val->nama_wilayah->wilayah }} </p>
-                                    <a href="{{ url('admin/monitoring/node/'. $val->id) }}" >
-                                        <button type="button" class="btn btn-info btn-min-width mr-1 mb-1"><i class="ft-pause"></i> Monitoring</button>
-                                    </a>
-                                </div>
+                    @foreach ($data as $key => $val)
+                    <div class="col-md-4 col-xs-12" style="padding-bottom: 3vw; padding-right: 0vw;padding-left: 0vw;">
+                        <div class="card">
+                            <img class="card-img-top img-fluid" src="{{ asset('app-assets/images/slider/slider-5.png') }}" alt="Card image cap" />
+                            <div class="card-body">
+                                <h4 class="card-title">{{ $val->nama }}</h4>
+                                <p class="card-text">Wilayah    : {{ $val->nama_wilayah->wilayah }} </p>
+                                <a href="{{ url('admin/monitoring/node/'. $val->id) }}" >
+                                    <button type="button" class="btn btn-info btn-min-width mr-1 mb-1"><i class="ft-pause"></i> Monitoring</button>
+                                </a>
                             </div>
                         </div>
-                        @endforeach
                     </div>
+                    @endforeach
                 </div>
 
             </div>

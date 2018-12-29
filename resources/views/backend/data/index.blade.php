@@ -100,6 +100,7 @@
 </script>
 <script>
     var table = $('#table').DataTable({
+        "order" : [[6, "desc"]],
         processing: true,
         serverSide: true,
         ajax: {
