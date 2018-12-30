@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Data;
 use App\MasterWilayah;
 use App\NodeSensor;
+use App\User;
 
 class BerandaController extends Controller
 {
@@ -16,6 +17,7 @@ class BerandaController extends Controller
 		$data = Data::where('created_at', 'LIKE', '%' .$date. '%')->get();
 		$wilayah = MasterWilayah::all();
 		$sensor = NodeSensor::all();
+		$user = User::all();
     	
 		// show data sensor perwilayah
 		foreach ($wilayah as $key => $value) {
@@ -24,7 +26,7 @@ class BerandaController extends Controller
 
 		$node_perwilayah = $this->chartWilayah();
 
-    	return view('backend.beranda.index', compact('data', 'wilayah', 'sensor', 'data_wilayah', 'node_perwilayah'));
+    	return view('backend.beranda.index', compact('data', 'wilayah', 'sensor', 'data_wilayah', 'node_perwilayah', 'user'));
 	}
 	
 	private function chartWilayah()

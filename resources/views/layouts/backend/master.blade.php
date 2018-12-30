@@ -39,11 +39,20 @@
               <li class="nav-item d-none d-md-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a></li>
             </ul>
             <ul class="nav navbar-nav float-right">
-              <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">             <span class="avatar avatar-online"><img src="{{ asset('app-assets/images/portrait/small/avatar-s-19.png') }}" alt="avatar"></span></a>
+              <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">             <span class="avatar avatar-online"><img src="{{ asset('file/operator/'.Auth::user()->foto) }}" alt="avatar"></span></a>
                 <div class="dropdown-menu dropdown-menu-right">
-                  <div class="arrow_box_right"><a class="dropdown-item" href="#"><span class="avatar avatar-online"><img src="{{ asset('app-assets/images/portrait/small/avatar-s-19.png') }}" alt="avatar"><span class="user-name text-bold-700 ml-1">John Doe</span></span></a>
-                    <div class="dropdown-divider"></div><a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> Edit Profile</a><a class="dropdown-item" href="email-application.html"><i class="ft-mail"></i> My Inbox</a><a class="dropdown-item" href="project-summary.html"><i class="ft-check-square"></i> Task</a><a class="dropdown-item" href="chat-application.html"><i class="ft-message-square"></i> Chats</a>
-                    <div class="dropdown-divider"></div><a class="dropdown-item" href="login.html"><i class="ft-power"></i> Logout</a>
+                  <div class="arrow_box_right"><a class="dropdown-item" href="#"><span class="avatar avatar-online"><img src="{{ asset('file/operator/'.Auth::user()->foto) }}" alt="avatar"><span class="user-name text-bold-700 ml-1">{{ Auth::user()->name }}</span></span></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                          <i class="ft-power"></i>{{ __('Logout') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </a>
                   </div>
                 </div>
               </li>
@@ -59,7 +68,7 @@
     <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true" data-img="{{ asset('app-assets/images/backgrounds/02.jpg') }}">
       <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">       
-          <li class="nav-item mr-auto"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="Chameleon admin logo" src="{{ asset('app-assets/images/logo/logo.png') }}"/>
+          <li class="nav-item mr-auto"><a class="navbar-brand" href="{{ route('beranda') }}"><img class="brand-logo" alt="Chameleon admin logo" src="{{ asset('app-assets/images/logo/logo.png') }}"/>
               <h3 class="brand-text">Chameleon</h3></a></li>
           <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
         </ul>
@@ -92,8 +101,10 @@
               </li>
             </ul>
           </li>
+          @role('superadmin')
           <li id="operator" class=" nav-item"><a href="{{ route('operator') }}"><i class="ft-users"></i><span class="menu-title" data-i18n="">Operator</span></a>
           </li>
+          @endrole
         </ul>
       </div>
       <div class="navigation-background"></div>

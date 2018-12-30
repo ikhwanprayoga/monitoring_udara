@@ -86,6 +86,14 @@
                                                             </script>
                                                         @endif
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="">Role / Hak Akses</label>
+                                                        <select class="form-control" name="role" id="role" required>
+                                                            @foreach ($role as $item)
+                                                            <option value="{{ $item->name }}" >{{ $item->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                     <fieldset class="form-group">
                                                         <label>Foto Operator</label>
                                                         <div class="custom-file">
@@ -122,6 +130,7 @@
                                                 <th>No</th>
                                                 <th>Nama</th>
                                                 <th>Email</th>
+                                                <th>Role/Hak Akses</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -131,6 +140,13 @@
                                                 <td>{{ $key+1 }}</td>
                                                 <td>{{ $val->name }}</td>
                                                 <td>{{ $val->email }}</td>
+                                                <td>
+                                                    @if(!empty($val->getRoleNames()))
+                                                        @foreach($val->getRoleNames() as $v)
+                                                            <label class="badge badge-success">{{ $v }}</label>
+                                                        @endforeach
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <!-- Button ubah modal -->
                                                     <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#ubah{{ $val->id }}"><i class="ft ft-edit"></i>
@@ -185,6 +201,15 @@
                                                                                             });
                                                                                         </script>
                                                                                     @endif
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="">Role / Hak Akses</label>
+                                                                                    <select class="form-control" name="role" id="role" required>
+                                                                                        <option value="{{ $item->name }}" >--- {{ $val->name }} ---</option>
+                                                                                        @foreach ($role as $item)
+                                                                                        <option value="{{ $item->name }}" >{{ $item->name }}</option>
+                                                                                        @endforeach
+                                                                                    </select>
                                                                                 </div>
                                                                                 <fieldset class="form-group">
                                                                                     <label>Foto Operator</label>

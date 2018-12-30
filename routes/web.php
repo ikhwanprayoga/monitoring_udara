@@ -24,7 +24,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::group(['prefix' => 'admin'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
     
     Route::get('beranda', 'BerandaController@index')->name('beranda');
 
@@ -64,7 +64,7 @@ Route::group(['prefix' => 'admin'], function() {
 
     });
 
-    Route::group(['prefix' => 'operator'], function () {
+    Route::group(['prefix' => 'operator', 'middleware' => ['role:superadmin']], function () {
         Route::get('/', 'OperatorController@index')->name('operator');
         Route::post('tambah', 'OperatorController@tambah')->name('operator-tambah');
         Route::post('ubah/{id}', 'OperatorController@ubah')->name('operator-ubah');

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Image;
+use DB;
 
 use App\User;
 
@@ -12,7 +15,8 @@ class OperatorController extends Controller
     public function index()
     {
         $data = User::all();
-        return view('backend.operator.index', compact('data'));
+        $role = Role::all();
+        return view('backend.operator.index', compact('data', 'role'));
     }
 
     public function tambah(Request $request)
@@ -22,6 +26,7 @@ class OperatorController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'foto' => 'required|mimes:jpeg,jpg,png|max:3000',
+            'role' => 'required',
         ]);
 
         $input = $request->only(['name', 'email', 'password', 'foto']);
@@ -34,6 +39,8 @@ class OperatorController extends Controller
             'password' => Hash::make($input['password']),
             'foto' => $file_name
         ]);
+
+        $simpan->assignRole($request['role']);
 
         Image::make($request->foto)->resize(300, 300)->save('file/operator/'.$file_name);
 
@@ -72,16 +79,17 @@ class OperatorController extends Controller
             Image::make($request['foto'])->resize(300, 300)->save('file/operator/'.$file_name);
 
         }
-
         $operator->save();
-
+        DB::table('model_has_roles')->where('model_id',$id)->delete();
+        $operator->assignRole($request['role']);
         return redirect()->back()->with('ubah', true);
     }
 
-    public function hapus($id)
+    public function hapus(Request $request, $id)
     {
         $operator = User::find($id);
         unlink('file/operator/'.$operator->foto);
+        DB::table('model_has_roles')->where('model_id',$id)->delete();
         $operator->delete();
         
         return redirect()->back()->with('hapus', true);
