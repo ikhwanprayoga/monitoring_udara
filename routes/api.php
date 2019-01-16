@@ -33,3 +33,31 @@ Route::get('kirim_data/{node_sensor_id}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}',
 Route::get('/mobile/realtime', 'MobileController@realtime')->name('mobile-realtime');
 Route::get('/mobile/chart', 'MobileController@chart')->name('mobile-chart');
 
+// push notifikasi route
+Route::get('sendPush', 'firebase\FirebaseController@send');
+
+
+//tutorial web push
+Route::post('/save-subscription/{id}',function($id, Request $request){
+  // dd('ha');
+  $user = \App\User::find($id);
+
+  $user->updatePushSubscription($request->input('endpoint'), $request->input('keys.p256dh'), $request->input('keys.auth'));
+  $user->notify(new \App\Notifications\GenericNotification("Welcome To WebPush", "You will now get all of our push notifications"));
+  return response()->json([
+    'success' => true
+  ]);
+});
+
+Route::post('/send-notification/{id}', function($id, Request $request){
+  $user = \App\User::find($id);
+  $user->notify(new \App\Notifications\GenericNotification($request->title, $request->body));
+  return response()->json([
+    'success' => true
+  ]);
+});
+
+Route::get('/tes', function () {
+  $user = \App\User::find(1);
+  $user->notify(new \App\Notifications\GenericNotification("Welcome To WebPush", "You will now get all of our push notifications"));
+});

@@ -74,6 +74,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
 
 });
 
+//route mobile
+
+
+// route firebase
+Route::get('firebase', 'firebase\FirebaseController@index');
+Route::get('firebase/send', 'firebase\FirebaseController@send');
+Route::get('firebase/fcm', 'firebase\FirebaseController@fcm');
+
 
 Route::get('mobile', function() {
     $h = 0;

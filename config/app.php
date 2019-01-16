@@ -149,6 +149,7 @@ return [
 
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        LaravelFCM\FCMServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 
         /*
@@ -215,6 +216,9 @@ return [
 
         // 'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
+
+        // fcm brozot
+        'FCM'      => LaravelFCM\Facades\FCM::class,
 
     ],
 
