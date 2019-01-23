@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('base');
 
 Route::get('nilai', 'SensorController@nilai');
 Route::get('node1', 'SensorController@node1');
@@ -22,7 +22,6 @@ Route::get('node2', 'SensorController@node2');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
     
@@ -75,21 +74,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
 });
 
 //route mobile
-
+Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth']], function () {
+    Route::get('beranda', 'BerandaController@index')->name('mobile.beranda');
+    Route::get('data', 'DataController@index')->name('mobile.data');
+});
 
 // route firebase
 Route::get('firebase', 'firebase\FirebaseController@index');
 Route::get('firebase/send', 'firebase\FirebaseController@send');
 Route::get('firebase/fcm', 'firebase\FirebaseController@fcm');
-
-
-Route::get('mobile', function() {
-    $h = 0;
-    while ($h < 24) {
-        $key = date('H:i', strtotime(date('Y-m-d') . ' + ' . $h . ' hours'));
-        $value = date('h:i A', strtotime(date('Y-m-d') . ' + ' . $h . ' hours'));
-        $formatter[$key] = $value;
-        $h++;
-    }
-    return $formatter;
-})->name('mobile');

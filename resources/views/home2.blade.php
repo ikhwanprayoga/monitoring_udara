@@ -20,6 +20,27 @@
                   </div>
                 </div>
 
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>s</th>
+                                <th>s</th>
+                                <th>s</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for ($i = 0; $i < 10; $i++)
+                            <tr>
+                                <td scope="row">s</td>
+                                <td>s</td>
+                                <td>s</td>
+                            </tr>
+                            @endfor
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
