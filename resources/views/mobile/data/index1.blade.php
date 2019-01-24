@@ -1,7 +1,7 @@
 @extends('layouts.mobile.app')
 
 @section('header')
-<title>Data Ringkasan</title>
+<title>Data</title>
 @endsection
 
 @section('css')
@@ -15,11 +15,6 @@
 .nav.nav-tabs.nav-only-icon .nav-item .nav-link {
     font-size: 1rem;
 }
-
-.table_ringkasan {
-    padding-right: 1rem;
-    padding-left: 1rem;
-}
 </style>
 @endsection
 
@@ -27,28 +22,57 @@
     <div class="app-content content">
       <div class="content-wrapper">
         <div class="content-body">
-            <div class="row">
-                <div class="col-7">
-                    <a href="{{ route('mobile.data') }}">
-                        <button type="button" class="btn btn-primary btn-sm mb-1" id="button_ringkasan">Ringkasan - Hari Ini</button>
-                    </a>
+            <section id="tabs-with-icons">
+                <div class="row match-height">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs nav-only-icon nav-top-border no-hover-bg">
+                            <li class="nav-item">
+                            <a class="nav-link actives" id="baseOnlyIcon-tab11" data-toggle="tab" aria-controls="tabOnlyIcon11" href="#tabOnlyIcon11" aria-expanded="true">Ringkasan</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link active" id="baseOnlyIcon-tab12" data-toggle="tab" aria-controls="tabOnlyIcon11" href="#tabOnlyIcon12" aria-expanded="true">Detail</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-1">
+                            <div role="tabpanel" class="tab-pane actives" id="tabOnlyIcon11" aria-expanded="true" aria-labelledby="baseOnlyIcon-tab11">
+                                <table class="table table-responsive" id="table_ringkasan">
+                                    <thead class="bg-primary white">
+                                        <tr>
+                                            <th>Waktu</th>
+                                            <th>Kualitas</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="tab-pane active" id="tabOnlyIcon12" aria-labelledby="baseOnlyIcon-tab12">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="filter-label">Mulai Dari</label>
+                                        <input type="date" class="form-control pickadate mulai" name="mulai">
+                                    </div>
+                                    <div class="col-4">
+                                        <label class="filter-label">Sampai</label>
+                                        <input type="date" class="form-control pickadate akhir" name="akhir">
+                                    </div>
+                                </div>
+                                <table class="table table-responsive" id="table_detail">
+                                    <thead class="bg-primary white">
+                                        <tr>
+                                            <th>waktu</th>
+                                            <th>pm10</th>
+                                            <th>co</th>
+                                            <th>asap</th>
+                                            <th>suhu</th>
+                                            <th>kelembapan</th>
+                                            <th>kualitas</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <a href="{{ route('mobile.data.detail') }}">
-                        <button type="button" class="btn btn-success btn-sm mb-1" id="button_semua">Semua</button>
-                    </a>
-                </div>
-            </div>
-            <div class="row table_ringkasan">
-                <table class="table table-responsive" id="table_ringkasan">
-                    <thead class="bg-primary white">
-                        <tr>
-                            <th>Waktu</th>
-                            <th>Kualitas</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            </section>
         </div>
       </div>
     </div>
@@ -97,7 +121,8 @@
 @endsection
 
 @section('js')
-<script>
+{{-- <script>
+$(window).on('load', function () {
     var table_ringkasan = $('#table_ringkasan').DataTable({
         processing: false,
         saerverSide: true,
@@ -149,6 +174,44 @@
         
     });
 
-</script>
+});
+</script> --}}
 
+<script>
+    var table_detail = $('#table_detail').DataTable({
+        processing: true,
+        saerverSide: true,
+        searching: false,
+        paging: false,
+        info: false ,
+        ajax: {
+            url: '{{ route('mobile.getData.detail') }}',
+            data: function (d) {
+                d.mulai = $('input[name=mulai]').val();
+                d.akhir = $('input[name=akhir]').val();
+                console.log(d.mulai);
+            }
+        },
+        columns: [
+            { data: 'created_at', name: 'created_at' },
+            { data: 'pm10', name: 'pm10' },
+            { data: 'co', name: 'co' },
+            { data: 'asap', name: 'asap' },
+            { data: 'suhu', name: 'suhu' },
+            { data: 'kelembapan', name: 'kelembapan' },
+            { data: 'kategori_udara_id', name: 'kategori_udara_id' }
+        ]
+    });
+
+    //filter table detail
+    $('.mulai').on('change', function (e) {
+        table_detail.draw();
+        e.preventDefault();
+    });
+
+    $('.akhir').on('change', function (e) {
+        table_detail.draw();
+        e.preventDefault();
+    });
+</script>
 @endsection

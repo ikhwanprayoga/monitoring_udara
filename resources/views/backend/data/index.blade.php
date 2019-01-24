@@ -109,7 +109,7 @@
                 d.mulai = $('input[name=mulai]').val();
                 d.akhir = $('input[name=akhir]').val();
                 d.kategori_udara = $('select[name=kategori_udara]').val();
-                // console.log(d.akhir);
+                console.log(d.akhir);
             }
         },
         columns: [

@@ -77,6 +77,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
 Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth']], function () {
     Route::get('beranda', 'BerandaController@index')->name('mobile.beranda');
     Route::get('data', 'DataController@index')->name('mobile.data');
+    Route::get('data/detail', 'DataController@detail')->name('mobile.data.detail');
 
     // yajra get data
     Route::get('getData/ringkasan', 'DataController@getData_ringkasan')->name('mobile.getData.ringkasan');

@@ -1,7 +1,7 @@
 @extends('layouts.mobile.app')
 
 @section('header')
-<title>Data Ringkasan</title>
+<title>Data Detail</title>
 @endsection
 
 @section('css')
@@ -14,11 +14,6 @@
 
 .nav.nav-tabs.nav-only-icon .nav-item .nav-link {
     font-size: 1rem;
-}
-
-.table_ringkasan {
-    padding-right: 1rem;
-    padding-left: 1rem;
 }
 </style>
 @endsection
@@ -33,14 +28,24 @@
                         <button type="button" class="btn btn-primary btn-sm mb-1" id="button_ringkasan">Ringkasan - Hari Ini</button>
                     </a>
                 </div>
-                <div class="col-4">
+                <div class="col-2">
                     <a href="{{ route('mobile.data.detail') }}">
                         <button type="button" class="btn btn-success btn-sm mb-1" id="button_semua">Semua</button>
                     </a>
                 </div>
             </div>
-            <div class="row table_ringkasan">
-                <table class="table table-responsive" id="table_ringkasan">
+            <div class="row hidden" id="filter_semua">
+                <div class="col-4">
+                    <label class="filter-label">Mulai</label>
+                    <input type="date" class="form-control pickadate mulai" name="mulai">
+                </div>
+                <div class="col-4">
+                    <label class="filter-label">Sampai</label>
+                    <input type="date" class="form-control pickadate akhir" name="akhir">
+                </div>
+            </div>
+            <div class="row pr-1 pl-1 pt-1">
+                <table class="table table-responsive" id="table_detail">
                     <thead class="bg-primary white">
                         <tr>
                             <th>Waktu</th>
@@ -98,14 +103,19 @@
 
 @section('js')
 <script>
-    var table_ringkasan = $('#table_ringkasan').DataTable({
-        processing: false,
+    var table_detail = $('#table_detail').DataTable({
+        processing: true,
         saerverSide: true,
         searching: false,
-        paging: false,
+        paging: true,
         info: false,
         ajax: {
-            url: '{{ route('mobile.getData.ringkasan') }}'
+            url: '{{ route('mobile.getData.detail') }}',
+            data: function (d) {
+                d.mulai = $('input[name=mulai]').val();
+                d.akhir = $('input[name=akhir]').val();
+                console.log($('input[name=mulai]').val());
+            }
         },
         columns: [
             { data: 'created_at', name: 'created_at' },
@@ -114,6 +124,17 @@
         columnDefs: [
             {"className": "text-center", "targets": "_all", "width": "100%"}
         ]
+    });
+
+    //filter date range
+    $('.mulai').on('change', function (e) {
+        table_detail.draw();
+        e.preventDefault();
+    });
+
+    $('.akhir').on('change', function (e) {
+        table_detail.draw();
+        e.preventDefault();
     });
 
     $('#modal_rincian').on('show.bs.modal', function (event) {
@@ -149,6 +170,13 @@
         
     });
 
+    // $('#button_semua').click(function () {
+    //     $('#filter_semua').removeClass("hidden");
+    // });
+
+    // $('#button_ringkasan').click(function () {
+    //     $('#filter_semua').addClass("hidden");
+    // });
 </script>
 
 @endsection
