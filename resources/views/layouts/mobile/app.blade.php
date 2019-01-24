@@ -25,16 +25,32 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('dataTable/jquery.dataTables.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/plugins/forms/validation/form-validation.css') }}">
 
+    <style>
+      .header-navbar {
+        max-height: 2rem !important;
+        min-height: 2rem !important;
+      }
+      /* .side_item {
+        height: 4rem;
+      }
+      .lebar_menu {
+        width: 70% !important;
+      }
+      .navbar_header_lebar {
+        width: 100%;
+      } */
+    </style>
+
     @yield('css')
   </head>
-  <body class="vertical-layout vertical-menu 2-columns   menu-expanded fixed-navbar" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns">
+  <body class="vertical-layout vertical-menu 2-columns menu-expanded fixed-navbar pt-3" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns">
 
-    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light" style="max-height: 3rem;"> 
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light"> 
       <div class="navbar-wrapper">
         <div class="navbar-container content">
           <div class="collapse navbar-collapse show" id="navbar-mobile">
             <ul class="nav navbar-nav mr-auto float-left">
-              <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
+              <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs pb-0 pt-1" href="#"><i class="ft-menu font-medium-5"></i></a></li>
               <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
             </ul>
             <ul class="nav navbar-nav float-right">
@@ -64,8 +80,8 @@
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
 
-    <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true" data-img="{{ asset('app-assets/images/backgrounds/02.jpg') }}">
-      <div class="navbar-header">
+    <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow lebar_menu" data-scroll-to-active="true" data-img="{{ asset('app-assets/images/backgrounds/02.jpg') }}">
+      <div class="navbar-header navbar_header_lebar">
         <ul class="nav navbar-nav flex-row">       
           <li class="nav-item mr-auto"><a class="navbar-brand" href="{{ route('mobile.beranda') }}"><img class="brand-logo" alt="Chameleon admin logo" src="{{ asset('app-assets/images/logo/logo.png') }}"/>
               <h3 class="brand-text">Chameleon</h3></a></li>
@@ -74,11 +90,11 @@
       </div>
       <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-          <li id="" class=" nav-item"><a href="{{ route('mobile.beranda') }}"><i class="ft-home"></i><span class="menu-title" data-i18n="">Beranda</span></a>
+          <li id="" class="side_item nav-item"><a href="{{ route('mobile.beranda') }}"><i class="ft-home"></i><span class="menu-title" data-i18n="">Beranda</span></a>
           </li>
-          <li id="" class=" nav-item"><a href="{{ route('mobile.data') }}"><i class="ft-activity"></i><span class="menu-title" data-i18n="">Data</span></a>
+          <li id="" class="side_item nav-item"><a href="{{ route('mobile.data') }}"><i class="ft-activity"></i><span class="menu-title" data-i18n="">Data</span></a>
           </li>
-          <li id="" class=" nav-item"><a href="{{ route('mobile.setting') }}"><i class="ft-settings"></i><span class="menu-title" data-i18n="">Setting</span></a>
+          <li id="" class="side_item nav-item"><a href="{{ route('mobile.setting') }}"><i class="ft-settings"></i><span class="menu-title" data-i18n="">Setting</span></a>
           </li>
         </ul>
       </div>

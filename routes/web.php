@@ -76,7 +76,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
 //route mobile
 Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth']], function () {
     Route::get('beranda', 'BerandaController@index')->name('mobile.beranda');
-    
+
     Route::get('data', 'DataController@index')->name('mobile.data');
     Route::get('data/detail', 'DataController@detail')->name('mobile.data.detail');
 
@@ -85,6 +85,11 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['a
     Route::get('getData/detail', 'DataController@getData_detail')->name('mobile.getData.detail');
 
     Route::get('setting', 'SettingController@index')->name('mobile.setting');
+});
+
+// route push notification
+Route::group(['prefix' => 'member', 'namespace' => 'member'], function () {
+    Route::get('cek/{member}', 'MemberController@cek')->name('member.cek');
 });
 
 // route firebase
