@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+// use DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +57,11 @@ Route::post('/send-notification/{id}', function($id, Request $request){
     'success' => true
   ]);
 });
+
+Route::get('/delete-subscription/{id}', function ($id, Request $request) {
+  $del  = DB::table('push_subscriptions')->where('user_id', $id)->delete();
+  return response()->json($del, 200);
+})->name('delete.subscription');
 
 Route::get('/tes', function () {
   $user = \App\User::find(1);

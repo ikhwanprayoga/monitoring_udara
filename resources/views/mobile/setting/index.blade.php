@@ -48,7 +48,7 @@
                                             <div class="col-8 pr-0 pl-0 text-left" id="p_kota">Sambas</div>
                                         </div>
                                         <div class="row pl-1">
-                                            <button type="button" name="" id="btn_subscribe" class="btn btn-primary btn-sm btn-block btn-sub"><i class="ft-bell" id="btn_icon"></i></button>
+                                            <button type="button" onclick="enableNotifications()" name="" id="btn_subscribe" class="btn btn-primary btn-sm btn-block btn-sub"><i class="ft-bell" id="btn_icon"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -68,18 +68,18 @@
 <script>
     // var btn_sub = document.querySelector('#btn_icon');
 
-    $('#btn_subscribe').click(function () {
-        $('#btn_icon').removeClass("ft-bell").addClass("ft-bell-off");
-    });
+    // $('#btn_subscribe').click(function () {
+    //     $('#btn_icon').removeClass("ft-bell").addClass("ft-bell-off");
+    // });
 
-    $.get('{{ route('member.cek', ['member' => auth::user()->id]) }}', function (data) {
-        if (data == 1) {
-            // console.log('ada');
-            $('#btn_icon').removeClass("ft-bell").addClass("ft-bell-off");
-        } else {
-            $('#btn_icon').removeClass("ft-bell");
-        }
-    });
+    // $.get('{{ route('member.cek', ['member' => auth::user()->id]) }}', function (data) {
+    //     if (data == 1) {
+    //         // console.log('ada');
+    //         $('#btn_icon').removeClass("ft-bell").addClass("ft-bell-off");
+    //     } else {
+    //         $('#btn_icon').removeClass("ft-bell");
+    //     }
+    // });
 
     
 

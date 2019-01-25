@@ -116,6 +116,171 @@
     <script src="{{ asset('app-assets/js/core/app.js')}}" type="text/javascript"></script>
     <!-- END CHAMELEON  JS-->
     <script src="{{ asset('dataTable/jquery.dataTables.js') }}" type="text/javascript"></script>
+    
     @yield('js')
+
+    <script>
+    let isSubscribe = false;
+    
+    function cek_member_status() {
+      $.get('{{ route('member.cek', ['member' => auth::user()->id]) }}', function (data) {
+          if (data == 1) {
+            isSubscribe = true;
+            updateBTN(1);
+          } else {
+            isSubscribe = false;
+            updateBTN(0);
+          }
+      });
+    }
+
+    function updateBTN(isSubscribe) {
+      if (isSubscribe) {
+        $('#btn_icon').removeClass("ft-bell").addClass("ft-bell-off");
+      } else {
+        $('#btn_icon').addClass("ft-bell");
+      }
+    }
+
+    function sendSubcriptionToBackEnd(subscription) {
+        return fetch('{{ asset('api/save-subscription/'.Auth::user()->id) }}', {
+          method: 'post',
+          headers: {
+            'Content-Type' : 'aplication/json'
+          },
+          body: JSON.stringify(subscription)
+        })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('bad status dari server!');
+          }
+
+          return response.json();
+        })
+        .then(function (responseData) {
+          if (!(responseData.data && responseData.data.success)) {
+            console.log(responseData.data);
+            throw new Error('bad response dari server!');
+          }
+        })
+    }
+
+    function getSWRegistration() {
+        var promise = new Promise(function(resolve, reject) {
+            if (_registration != null) {
+                resolve(_registration);
+            } else {
+                reject(Error('it broke'));
+            }
+        })
+
+        return promise;
+    }
+
+    function subscribeUserToPush() {
+        getSWRegistration()
+        .then(function (registration) {
+            console.log(registration);
+            const subscribeOptions = {
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(
+                    "{{ env('VAPID_PUBLIC_KEY') }}"
+                )
+            }
+
+            return registration.pushManager.subscribe(subscribeOptions);
+        })
+        .then(function (pushSubscription) {
+            console.log('push notifikasi diterima', JSON.stringify(pushSubscription));
+            sendSubcriptionToBackEnd(pushSubscription);
+            isSubscribe = true;
+            updateBTN(isSubscribe);
+            return pushSubscription;
+        })
+        .catch(function (err) {
+            console.log('user failed subscribe', err);
+        })
+    }
+
+    function askPermission() {
+        return new Promise(function (resolve, reject) {
+            const permissionResult = Notification.requestPermission(function (result) {
+                resolve(result);
+            })
+
+            if (permissionResult) {
+                permissionResult.then(resolve, reject);
+            }
+        })
+        .then(function (permissionResult) {
+            if (permissionResult !== 'granted') {
+                throw new Error('tidak setuju berlangganan');
+            } else {
+                subscribeUserToPush();
+            }
+        })
+    }
+
+    function disPushNotification() {
+        $.get('{{ route('delete.subscription', ['id' => auth::user()->id]) }}', function (data) {
+          if (data == 1) {
+            console.log('subscription berhasil di hapus!');
+            updateBTN(0);
+          } else {
+            console.log('ada masal dengan server !');
+          }
+        });
+    }
+
+    function enableNotifications() {
+        console.log('enable nof clik');
+
+        if (isSubscribe) {
+          console.log('hapus subscribe');
+          disPushNotification();
+          isSubscribe = false;
+        } else {
+          console.log('berhasil subscribe');
+          askPermission();
+        }
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+
+    cek_member_status();
+
+    var _registration = null;
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+        console.log('server worker and push notification i supported');
+        
+        navigator.serviceWorker.register('/sw/service-worker.js')
+        .then(function (swReg) {
+            console.log('sw registered', swReg);
+
+            _registration = swReg;
+            return swReg;
+        })
+        .catch(function (error) {
+            console.log('sw error', error);
+        })
+    } else {
+        console.warn('push notification not support');
+        //tulis text tombol , 'push not support'
+    }
+    
+    </script>
   </body>
 </html>
