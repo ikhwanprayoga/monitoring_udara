@@ -72,26 +72,26 @@
                             <div class="card-footer text-center p-1">
                                 <div class="row">
                                     <div class="col-6 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400">263.3</p><br>
+                                        <p class="font-medium-1 text-bold-400" id="m_pm10">0</p><br>
                                         <p class="blue-grey lighten-2 mb-0">pm10</p>
                                     </div>
                                     <div class="col-6 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400">58%</p><br>
+                                        <p class="font-medium-1 text-bold-400" id="m_co">0</p><br>
                                         <p class="blue-grey lighten-2 mb-0">co</p>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-4 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400">263.3</p><br>
+                                        <p class="font-medium-1 text-bold-400" id="m_asap">0</p><br>
                                         <p class="blue-grey lighten-2 mb-0">asap</p>
                                     </div>
                                     <div class="col-4 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400">58%</p><br>
+                                        <p class="font-medium-1 text-bold-400" id="m_suhu">0</p><br>
                                         <p class="blue-grey lighten-2 mb-0">suhu</p>
                                     </div>
                                     <div class="col-4 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400">42%</p><br>
+                                        <p class="font-medium-1 text-bold-400" id="m_kelembapan">0</p><br>
                                         <p class="blue-grey lighten-2 mb-0">kelembapan</p>
                                     </div>
                                 </div>
@@ -108,5 +108,11 @@
 @endsection
 
 @section('js')
+<script>
+    var realtime_mobile = $.get('{{ route('mobile.monitoring') }}', function (data) {
+        console.log(data.pm10);
+    });
 
+    setInterval(realtime_mobile, 3000);
+</script>
 @endsection

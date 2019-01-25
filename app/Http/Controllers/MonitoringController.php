@@ -38,12 +38,14 @@ class MonitoringController extends Controller
 
     	$node_sensor_id = Monitoring::where('node_sensor_id', $input['node_sensor_id'])->first();
 
+        //jika node sensor blm ada maka di buat
     	if (empty($node_sensor_id)) {
     		$simpan = Monitoring::create($input);
     		// return "data baru";
     		// return redirect()->back();
     	}
 
+        //jika node sensor sudah ada maka di update
     	if (isset($node_sensor_id)) {
 	    	$id 		        = $node_sensor_id->id;
     		$update = Monitoring::find($id)->update($input);
@@ -63,16 +65,16 @@ class MonitoringController extends Controller
                 'kelembapan'     => $value->kelembapan,
             ]);
         }
-
+        //cek data permenit
         $dataPermenit1 = DataPermenit::first();
-
+        //jika kosong maka buat data
         if (empty($dataPermenit1)) {
             // return 'data permenit kosong';
-            $inputDataPermenit['pm10']      = DataSementara::avg('pm10');
-            $inputDataPermenit['co']        = DataSementara::avg('co');
-            $inputDataPermenit['asap']      = DataSementara::avg('asap');
-            $inputDataPermenit['suhu']      = DataSementara::avg('suhu');
-            $inputDataPermenit['kelembapan'] = DataSementara::avg('kelembapan');
+            $inputDataPermenit['pm10']          = DataSementara::avg('pm10');
+            $inputDataPermenit['co']            = DataSementara::avg('co');
+            $inputDataPermenit['asap']          = DataSementara::avg('asap');
+            $inputDataPermenit['suhu']          = DataSementara::avg('suhu');
+            $inputDataPermenit['kelembapan']    = DataSementara::avg('kelembapan');
 
             $tambahDataPermenit = DataPermenit::create($inputDataPermenit);
         }

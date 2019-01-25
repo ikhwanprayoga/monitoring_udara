@@ -34,6 +34,9 @@ Route::get('kirim_data/{node_sensor_id}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}',
 Route::get('/mobile/realtime', 'MobileController@realtime')->name('mobile-realtime');
 Route::get('/mobile/chart', 'MobileController@chart')->name('mobile-chart');
 
+//monitoring mobile rata2 nilai sensor per 3 detik yang update hari ini
+Route::get('mobile/monitoring', 'mobile\MonitoringController@monitoring')->name('mobile.monitoring');
+
 // push notifikasi route
 Route::get('sendPush', 'firebase\FirebaseController@send');
 
