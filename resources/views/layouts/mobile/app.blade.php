@@ -266,7 +266,7 @@
     if ('serviceWorker' in navigator && 'PushManager' in window) {
         console.log('server worker and push notification i supported');
         
-        navigator.serviceWorker.register('/sw/service-worker.js')
+        navigator.serviceWorker.register('{{ asset('service-worker.js') }}')
         .then(function (swReg) {
             console.log('sw registered', swReg);
 

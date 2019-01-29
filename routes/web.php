@@ -21,6 +21,12 @@ Route::get('node2', 'SensorController@node2');
 
 Auth::routes();
 
+//register
+Route::group(['prefix' => 'register', 'namespace' => 'mobile', 'middleware' => ['auth']], function () {
+    Route::get('step2', 'RegisterController@create_step2')->name('create.step2');
+    // Route::get('step2', 'RegisterController@post_step2')->name('post.step2');
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {

@@ -23,23 +23,17 @@ Route::get('tes_sensor_arduino/{id}/{suhu}/{kelembapan}/{asap}/{co}/{pm10}', 'Se
 
 Route::get('kirims/{kode_alat}/{suhu}/{kelembapan}/{asap}/{co}/{pm10}', 'SensorController@kirim');
 
-
 // Route::get('grafik', 'RealtimeController@grafik');
 Route::get('grafik/{id}', 'MonitoringController@grafik')->name('grafik');
 
 //api kirim data dari arduino
 Route::get('kirim_data/{node_sensor_id}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}', 'MonitoringController@monitoring');
 
-// get data realtime
-Route::get('/mobile/realtime', 'MobileController@realtime')->name('mobile-realtime');
-Route::get('/mobile/chart', 'MobileController@chart')->name('mobile-chart');
-
-//monitoring mobile rata2 nilai sensor per 3 detik yang update hari ini
-Route::get('mobile/monitoring', 'mobile\MonitoringController@monitoring')->name('mobile.monitoring');
-
 // push notifikasi route
 Route::get('sendPush', 'firebase\FirebaseController@send');
 
+//monitoring mobile rata2 nilai sensor per 3 detik yang update hari ini
+Route::get('mobile/monitoring', 'mobile\MonitoringController@monitoring')->name('mobile.monitoring');
 
 //tutorial web push
 Route::post('/save-subscription/{id}',function($id, Request $request){

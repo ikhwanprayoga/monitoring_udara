@@ -152,6 +152,9 @@ return [
         LaravelFCM\FCMServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 
+        //tambahan manual
+        App\Providers\HelperServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -219,6 +222,9 @@ return [
 
         // fcm brozot
         'FCM'      => LaravelFCM\Facades\FCM::class,
+
+        //helper waktu
+        'Waktu' => App\Helpers\Waktu::class,
 
     ],
 
