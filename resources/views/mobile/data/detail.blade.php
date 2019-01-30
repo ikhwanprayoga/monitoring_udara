@@ -34,6 +34,16 @@
                     </a>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <label class="filter-label">Mulai Dari</label>
+                    <input type="date" class="form-control pickadate mulai" name="mulai" id="mulai">
+                </div>
+                <div class="col-6">
+                    <label class="filter-label">Sampai</label>
+                    <input type="date" class="form-control pickadate akhir" name="akhir" id="akhir">
+                </div>
+            </div>
             <div class="row hidden" id="filter_semua">
                 <div class="col-4">
                     <label class="filter-label">Mulai</label>
@@ -102,40 +112,12 @@
 @endsection
 
 @section('js')
+{{-- <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('app-assets/js/scripts/tables/datatables/datatable-basic.min.js') }}" type="text/javascript"></script> --}}
+<script src="{{ asset('dataTable/jquery.dataTables.js') }}" type="text/javascript"></script>
+
+
 <script>
-    var table_detail = $('#table_detail').DataTable({
-        processing: true,
-        saerverSide: true,
-        searching: false,
-        paging: true,
-        info: false,
-        ajax: {
-            url: '{{ route('mobile.getData.detail') }}',
-            data: function (d) {
-                d.mulai = $('input[name=mulai]').val();
-                d.akhir = $('input[name=akhir]').val();
-                console.log($('input[name=mulai]').val());
-            }
-        },
-        columns: [
-            { data: 'created_at', name: 'created_at' },
-            { data: 'kualitas', name: 'kualitas' }
-        ],
-        columnDefs: [
-            {"className": "text-center", "targets": "_all", "width": "100%"}
-        ]
-    });
-
-    //filter date range
-    $('.mulai').on('change', function (e) {
-        table_detail.draw();
-        e.preventDefault();
-    });
-
-    $('.akhir').on('change', function (e) {
-        table_detail.draw();
-        e.preventDefault();
-    });
 
     $('#modal_rincian').on('show.bs.modal', function (event) {
         var nilai = $(event.relatedTarget);
@@ -177,6 +159,44 @@
     // $('#button_ringkasan').click(function () {
     //     $('#filter_semua').addClass("hidden");
     // });
+</script>
+
+<script>
+    let oTable = $('#table_detail').DataTable({
+
+        processing: true,
+        saerverSide: true,
+        // searching: false,
+        // paging: true,
+        // info: false,
+        ajax: {
+            url: '{{ route('mobile.getData.detail') }}',
+            data: function (d) {
+                d.mulai = $('input[name=mulai]').val();
+                d.akhir = $('input[name=akhir]').val();
+                console.log(d.mulai);
+            }
+        },
+        columns: [
+            { data: 'created_at', name: 'created_at' },
+            { data: 'kualitas', name: 'kualitas' }
+        ],
+        columnDefs: [
+            {"className": "text-center", "targets": "_all", "width": "100%"}
+        ]
+    });
+
+    //filter date range
+    $('.mulai').on('change', function (e) {
+        oTable.draw();
+        e.preventDefault();
+    });
+
+    $('.akhir').on('change', function (e) {
+        // oTable.draw();
+        oTable.draw();
+        e.preventDefault();
+    });
 </script>
 
 @endsection

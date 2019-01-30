@@ -1,5 +1,9 @@
 @extends('layouts.auth_master')
 
+@section('head')
+<title>Login</title>
+@endsection
+
 @section('content')
 <section class="flexbox-container">
     <div class="col-12 d-flex align-items-center justify-content-center">

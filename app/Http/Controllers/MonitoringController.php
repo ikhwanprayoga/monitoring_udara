@@ -212,4 +212,9 @@ class MonitoringController extends Controller
     	$data = Monitoring::where('node_sensor_id', $id)->first();
     	return response()->json($data);
     }
+
+    public function cobe($t)
+    {
+        return $t;
+    }
 }

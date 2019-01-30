@@ -115,7 +115,7 @@
     <script src="{{ asset('app-assets/js/core/app-menu.js')}}" type="text/javascript"></script>
     <script src="{{ asset('app-assets/js/core/app.js')}}" type="text/javascript"></script>
     <!-- END CHAMELEON  JS-->
-    <script src="{{ asset('dataTable/jquery.dataTables.js') }}" type="text/javascript"></script>
+    {{-- <script src="{{ asset('dataTable/jquery.dataTables.js') }}" type="text/javascript"></script> --}}
     
     @yield('js')
 

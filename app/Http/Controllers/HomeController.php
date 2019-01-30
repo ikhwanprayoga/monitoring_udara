@@ -32,7 +32,8 @@ class HomeController extends Controller
         if ($user->hasAnyRole(['superadmin', 'operator'])) {
             return redirect()->route('beranda');
         } else if (Auth::user()) {
-            return redirect()->route('create.step2');
+            // return redirect()->route('create.step2');
+            return redirect()->route('mobile.beranda');
         }else {
             // return redirect()->route('base');
             return redirect('/guest');        

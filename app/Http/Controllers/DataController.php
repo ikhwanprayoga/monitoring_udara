@@ -21,8 +21,7 @@ class DataController extends Controller
 
     public function getData(Request $request)
     {
-    	$data = Data::join('kategori_udara', 'data.kategori_udara_id', '=', 'kategori_udara.id')
-                    ->select(['data.id','data.pm10','data.co','data.asap','data.suhu','data.kelembapan','data.created_at','kategori_udara.nama_kategori_udara']);
+    	$data = Data::select(['id','pm10','co','asap','suhu','kelembapan','created_at','kategori_udara_id']);
 
             if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null) {
                 $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
@@ -32,6 +31,21 @@ class DataController extends Controller
                 $data->where('kategori_udara_id', $request->kategori_udara);
             }
 
-    	return Datatables::of($data)->make(true);
+        return Datatables::of($data)
+        ->addColumn('kategori_udara', function ($data) {
+            if ($data->kategori_udara_id == 1) {
+                return '<div class="badge badge-success">Baik</div>';
+            } elseif ($data->kategori_udara_id == 2) {
+                return '<div class="badge badge-primary">Sedang</div>';
+            } elseif ($data->kategori_udara_id == 3) {
+                return '<div class="badge badge-warning">Tidak Sehat</div>';
+            } elseif ($data->kategori_udara_id == 4) {
+                return '<div class="badge badge-danger">Sangat Tidak Sehat</div>';
+            } else {
+                return '<div class="badge badge-dark">Berbahaya</div>';
+            }
+        })
+        ->rawColumns(['kategori_udara'])
+        ->make(true);
     }
 }

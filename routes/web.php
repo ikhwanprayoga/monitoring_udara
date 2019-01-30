@@ -41,6 +41,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
     Route::get('data', 'DataController@index')->name('data');
     Route::get('get-data', 'DataController@getData')->name('get-data');
 
+    Route::get('notifikasi', 'NotifikasiController@index')->name('notifikasi');
+
     Route::get('data-realtime', 'RealtimeController@index')->name('realtime');
     Route::get('getData-realtime', 'RealtimeController@getData')->name('getData-realtime');
 
@@ -78,6 +80,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
 
 
 });
+
+//notifikasi
+Route::get('notifikasi-tes', 'NotifikasiController@tes')->name('notifikasi-tes');
 
 //route mobile
 Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth']], function () {

@@ -81,6 +81,8 @@
           </li>
           <li id="data" class=" nav-item"><a href="{{ route('data') }}"><i class="ft-file-text"></i><span class="menu-title" data-i18n="">Data</span></a>
           </li>
+          <li id="notifikasi" class=" nav-item"><a href="{{ route('notifikasi') }}"><i class="ft-bell"></i><span class="menu-title" data-i18n="">Notifikasi</span></a>
+          </li>
           {{-- <li id="data" class=" nav-item"><a href="#"><i class="ft-bar-chart-2"></i><span class="menu-title" data-i18n="">Data</span></a>
             <ul class="menu-content">
               <li id="realtime"><a class="menu-item" href="{{ route('realtime') }}">Data Realtime</a>
@@ -102,7 +104,7 @@
             </ul>
           </li>
           @role('superadmin')
-          <li id="operator" class=" nav-item"><a href="{{ route('operator') }}"><i class="ft-users"></i><span class="menu-title" data-i18n="">Operator</span></a>
+          <li id="operator" class=" nav-item"><a href="{{ route('operator') }}"><i class="ft-users"></i><span class="menu-title" data-i18n="">User</span></a>
           </li>
           @endrole
         </ul>

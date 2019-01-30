@@ -109,17 +109,21 @@
                 d.mulai = $('input[name=mulai]').val();
                 d.akhir = $('input[name=akhir]').val();
                 d.kategori_udara = $('select[name=kategori_udara]').val();
-                console.log(d.akhir);
+                // console.log(d.mulai);
+                // console.log(d.akhir);
             }
         },
         columns: [
-            {data: 'pm10', name: 'data.pm10'},
-            {data: 'co', name: 'data.co'},
-            {data: 'asap', name: 'data.asap'},
-            {data: 'suhu', name: 'data.suhu'},
+            {data: 'pm10', name: 'pm10'},
+            {data: 'co', name: 'co'},
+            {data: 'asap', name: 'asap'},
+            {data: 'suhu', name: 'suhu'},
             {data: 'kelembapan', name: 'kelembapan'},
-            {data: 'nama_kategori_udara', name: 'kategori_udara.nama_kategori_udara'},
-            {data: 'created_at', name: 'data.created_at'}
+            {data: 'kategori_udara', name: 'kategori_udara'},
+            {data: 'created_at', name: 'created_at'}
+        ],
+        columnDefs: [
+            {"targets": "_all", "className": "text-center",}
         ]
     });
 

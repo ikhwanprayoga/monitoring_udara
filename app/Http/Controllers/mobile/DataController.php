@@ -99,7 +99,7 @@ class DataController extends Controller
 
     public function getData_detail(Request $request)
     {
-        $data = Data::get();
+        $data = Data::select(['id','pm10','co','asap','suhu','kelembapan','created_at','kategori_udara_id']);
 
         if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null ) {
             $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
