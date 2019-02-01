@@ -186,6 +186,11 @@ class MonitoringController extends Controller
 
                     $kirim_data = Data::create($inputJam);
 
+                    //kirim notif berdasarkan kategori udara id
+                    if ($inputJam['kategori_udara_id'] == 3 || $inputJam['kategori_udara_id'] == 4 || $inputJam['kategori_udara_id'] == 5) {
+                        $this->kirim_notif($inputJam['kategori_udara_id']);
+                    }
+
                     $data_lama = DataPermenit::where('created_at', '<', $jam_sekarang)->select('id')->get();
                         
                     foreach ($data_lama as $key => $value) {
@@ -213,8 +218,9 @@ class MonitoringController extends Controller
     	return response()->json($data);
     }
 
-    public function cobe($t)
+    public function kirim_notif($kategori_udara)
     {
-        return $t;
+        $notif = app(NotifikasiController::class);
+        return $notif->send($kategori_udara);
     }
 }

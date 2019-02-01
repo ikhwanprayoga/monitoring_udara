@@ -49,17 +49,30 @@
                                                 <th>Kualitas Udara</th>
                                                 <th>Judul</th>
                                                 <th>Isi Pesan</th>
+                                                <th>Waktu</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach ($data as $item => $val)
                                             <tr>
-                                                <td>1</td>
-                                                <td>x</td>
-                                                <td>d</td>
-                                                <td>d</td>
-                                                <td>d</td>
+                                                <td>{{ $item+1 }}</td>
+                                                <td>{{ $val->nama_kategori->nama_kategori_udara }}</td>
+                                                <td>{{ $val->title }}</td>
+                                                <td>{!! $val->body !!}</td>
+                                                <td>
+                                                    <p>Pukul : {{ date('H:i', strtotime($val->created_at)) }}</p>
+                                                    <p>Hari : {{ Waktu::waktu_lengkap(date('Y-m-d', strtotime($val->created_at)), true) }}</p>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-danger" 
+                                                        data-id="{{ $val->id }}" 
+                                                        data-jam="{{ date('H:i', strtotime($val->created_at)) }}" 
+                                                        data-hari="{{ Waktu::waktu_lengkap(date('Y-m-d', strtotime($val->created_at)), true) }}"
+                                                    data-toggle="modal" data-target="#hapus"><i class="ft ft-trash"></i> Hapus</button>
+                                                </td>
                                             </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -70,7 +83,38 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
+
+<!-- Modal Hapus -->
+<div class="modal fade" id="hapus" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hapus Data Notifikas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <form action="{{ route('notifikasi-hapus') }}" method="get">
+                <input type="hidden" id="id_hapus" name="id">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-2">Jam : </div>
+                        <div class="col-10" id="jam_hapus"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">Hari : </div>
+                        <div class="col-10" id="hari_hapus"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
@@ -80,19 +124,21 @@
     $('#notifikasi').addClass('active');
 </script>
 
-@if (session()->has('ubah'))
 <script>
-    $(document).ready(function () {
-        toastr.success('Data Telah di Ubah', 'Berhasil', {"closeButton": true, timeOut: 2000});
+    $('#hapus').on('show.bs.modal', function (event) {
+        var nilai = $(event.relatedTarget);
+        var id = nilai.data('id');
+        var jam = nilai.data('jam');
+        var hari = nilai.data('hari');
+
+        $('#id_hapus').val(id);
+        $('#jam_hapus').html(jam);
+        $('#hari_hapus').html(hari);
+        
     });
 </script>
-@elseif (session()->has('tambah'))
-<script>
-    $(document).ready(function () {
-        toastr.success('Data Baru Telah di Tambah', 'Berhasil', {"closeButton": true, timeOut: 2000});
-    });
-</script>
-@elseif (session()->has('hapus'))
+
+@if (session()->has('hapus'))
 <script>
     $(document).ready(function () {
         toastr.error('Data Telah di Hapus', 'Berhasil', {"closeButton": true, timeOut: 2000});

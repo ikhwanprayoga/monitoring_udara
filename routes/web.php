@@ -42,6 +42,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
     Route::get('get-data', 'DataController@getData')->name('get-data');
 
     Route::get('notifikasi', 'NotifikasiController@index')->name('notifikasi');
+    Route::get('notifikasi/hapus/', 'NotifikasiController@hapus')->name('notifikasi-hapus');
 
     Route::get('data-realtime', 'RealtimeController@index')->name('realtime');
     Route::get('getData-realtime', 'RealtimeController@getData')->name('getData-realtime');
