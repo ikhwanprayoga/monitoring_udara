@@ -57,6 +57,11 @@
                         
                         </form>
                     </div>
+                    <p class="card-subtitle text-muted text-right font-small-3 mx-2 my-1">
+                        <span>Belum Punya Akun?
+                            <a href="{{ route('register') }}" class="card-link">Register</a>
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>

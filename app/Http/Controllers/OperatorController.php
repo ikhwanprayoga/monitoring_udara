@@ -16,7 +16,9 @@ class OperatorController extends Controller
     {
         $data = User::all();
         $role = Role::all();
-        return view('backend.operator.index', compact('data', 'role'));
+        $subscriber = DB::table('push_subscriptions')->join('users', 'push_subscriptions.user_id', '=', 'users.id')->select(['user_id'])->get();
+        
+        return view('backend.operator.index', compact('data', 'role', 'subscriber'));
     }
 
     public function tambah(Request $request)

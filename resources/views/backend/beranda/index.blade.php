@@ -85,7 +85,7 @@
                                             <i class="icon-users icon-opacity success font-large-4"></i>
                                         </div>
                                         <div class="media-body text-right align-self-bottom mt-3">
-                                            <span class="d-block mb-1 font-medium-1">Jumlah Operator</span>
+                                            <span class="d-block mb-1 font-medium-1">Jumlah User</span>
                                             <h1 class="warning mb-0">{{ $user->where('id', '!=', 1)->count() }}</h1>
                                         </div>
                                     </div>

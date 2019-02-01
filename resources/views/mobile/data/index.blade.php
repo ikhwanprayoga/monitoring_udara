@@ -97,6 +97,7 @@
 @endsection
 
 @section('js')
+<script src="{{ asset('dataTable/jquery.dataTables.js') }}" type="text/javascript"></script>
 <script>
     var table_ringkasan = $('#table_ringkasan').DataTable({
         processing: false,

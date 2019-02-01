@@ -1,7 +1,7 @@
 @extends('layouts.backend.master')
 
 @section('header')
-<title>Operator</title>
+<title>User</title>
 @endsection
 
 @section('css')
@@ -16,7 +16,7 @@
         <div class="content-wrapper-before"></div>
         <div class="content-header row">
         <div class="content-header-left col-md-4 col-12 mb-2">
-            <h3 class="content-header-title">Operator</h3>
+            <h3 class="content-header-title">User</h3>
         </div>
         <div class="content-header-right col-md-8 col-12">
             <div class="breadcrumbs-top float-md-right">
@@ -24,7 +24,7 @@
                 <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('beranda') }}">Beranda</a>
                 </li>
-                <li class="breadcrumb-item"><a href="#">Operator</a>
+                <li class="breadcrumb-item"><a href="#">User</a>
                 </li>
                 </ol>
             </div>
@@ -37,13 +37,13 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Tambah Operator</a>
+                            <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Tambah User</a>
                         </div>
                         <div class="modal fade text-left" id="modal-id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Tambah Operator</h4>
+                                        <h4 class="modal-title">Tambah User</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -146,6 +146,11 @@
                                                             <label class="badge badge-success">{{ $v }}</label>
                                                         @endforeach
                                                     @endif
+                                                    @foreach ($subscriber as $sub)
+                                                        @if ($val->id == $sub->user_id)
+                                                            <label class="badge badge-primary">Subscriber</label>
+                                                        @endif
+                                                    @endforeach
                                                 </td>
                                                 <td>
                                                     <!-- Button ubah modal -->
@@ -249,7 +254,7 @@
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">Hapus Data Operator</h5>
+                                                                    <h5 class="modal-title">Hapus Data User</h5>
                                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>

@@ -163,10 +163,9 @@
 
 <script>
     let oTable = $('#table_detail').DataTable({
-
         processing: true,
         saerverSide: true,
-        // searching: false,
+        searching: false,
         // paging: true,
         // info: false,
         ajax: {
@@ -175,6 +174,7 @@
                 d.mulai = $('input[name=mulai]').val();
                 d.akhir = $('input[name=akhir]').val();
                 console.log(d.mulai);
+                console.log(d.akhir);
             }
         },
         columns: [
@@ -188,13 +188,16 @@
 
     //filter date range
     $('.mulai').on('change', function (e) {
-        oTable.draw();
+        // alert('jancok');
+        $('#table_detail').DataTable().ajax.reload();
+        // oTable.draw();
         e.preventDefault();
     });
 
     $('.akhir').on('change', function (e) {
         // oTable.draw();
-        oTable.draw();
+        $('#table_detail').DataTable().ajax.reload();
+        // oTable.draw();
         e.preventDefault();
     });
 </script>
