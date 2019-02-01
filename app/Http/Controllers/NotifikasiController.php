@@ -26,11 +26,11 @@ class NotifikasiController extends Controller
 
         foreach ($subscriber as $key => $value) {
             $user = \App\User::find($value->user_id);
-            $user->notify(new \App\Notifications\GenericNotification('Peringatan! Kualitas Udara '.strip_tags($kualitas_udara), strip_tags($pesan)));
+            $user->notify(new \App\Notifications\GenericNotification('Peringatan! Kualitas Udara '.$kualitas_udara, strip_tags($pesan)));
             $res = $key+1;
         }
         
-        if ($res > 1) {
+        if ($res >= 1) {
             $input['kategori_udara_id'] = $kategori_udara_id;
             $input['title'] = 'Peringatan! Kualitas Udara'.$kualitas_udara;
             $input['body'] = $pesan;
@@ -50,9 +50,9 @@ class NotifikasiController extends Controller
         return redirect()->back()->with('hapus', true);
     }
 
-    public function tes()
+    public function tes($kategori_kualitas_udara)
     {
-        return $this->send(3);
+        return $this->send($kategori_kualitas_udara);
         $kk = app(MonitoringController::class);
         return $kk->cobe('tulah');
     }

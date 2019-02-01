@@ -83,7 +83,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
 });
 
 //notifikasi
-Route::get('notifikasi-tes', 'NotifikasiController@tes')->name('notifikasi-tes');
+Route::get('notifikasi-tes/{kategori_kualitas_udara}', 'NotifikasiController@tes')->name('notifikasi-tes');
 
 //route mobile
 Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth']], function () {
