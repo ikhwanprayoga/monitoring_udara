@@ -204,8 +204,8 @@
                                                                                 </div>
                                                                                 <div class="form-group">
                                                                                     <label for="">Role / Hak Akses</label>
-                                                                                    <select class="form-control" name="role" id="role" required>
-                                                                                        <option value="{{ $item->name }}" >--- {{ $val->name }} ---</option>
+                                                                                    <select class="form-control" name="role" id="role" >
+                                                                                        <option value="" >--- {!! $val->getRoleNames() !!} ---</option>
                                                                                         @foreach ($role as $item)
                                                                                         <option value="{{ $item->name }}" >{{ $item->name }}</option>
                                                                                         @endforeach

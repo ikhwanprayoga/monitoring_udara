@@ -69,8 +69,10 @@ class OperatorController extends Controller
             $this->validate($request, [
                 'foto' => 'required|mimes:jpeg,jpg,png|max:3000',
             ]);
-
-            unlink('file/operator/'.$operator->foto);
+            
+            if (is_file('file/operator/'.$operator->foto)) {
+                unlink('file/operator/'.$operator->foto);
+            }
             
             $foto_name = date('Ymdhis').$request['name'].'.jpg';
             $file_name = str_replace(' ', '', $foto_name);
@@ -80,15 +82,24 @@ class OperatorController extends Controller
 
         }
         $operator->save();
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
-        $operator->assignRole($request['role']);
+        
+        if ($request['role']) {
+            DB::table('model_has_roles')->where('model_id',$id)->delete();
+            $operator->assignRole($request['role']);
+        }
+
         return redirect()->back()->with('ubah', true);
     }
 
     public function hapus(Request $request, $id)
     {
         $operator = User::find($id);
-        unlink('file/operator/'.$operator->foto);
+        $file_foto = $operator->foto;
+        
+        if (is_file('file/operator/'.$file_foto)) {
+            unlink('file/operator/'.$operator->foto);
+        }
+
         DB::table('model_has_roles')->where('model_id',$id)->delete();
         $operator->delete();
         
