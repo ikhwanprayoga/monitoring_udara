@@ -88,6 +88,7 @@ Route::get('notifikasi-tes/{kategori_kualitas_udara}', 'NotifikasiController@tes
 //route mobile
 Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth']], function () {
     Route::get('beranda', 'BerandaController@index')->name('mobile.beranda');
+    Route::get('beranda/rekomendasi', 'BerandaController@rekomendasi')->name('mobile.beranda.rekomendasi');
 
     Route::get('data', 'DataController@index')->name('mobile.data');
     Route::get('data/detail', 'DataController@detail')->name('mobile.data.detail');
@@ -97,6 +98,7 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['a
     Route::get('getData/detail', 'DataController@getData_detail')->name('mobile.getData.detail');
 
     Route::get('setting', 'SettingController@index')->name('mobile.setting');
+
 });
 
 // route push notification

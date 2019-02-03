@@ -83,12 +83,53 @@
                     </div>
                 </div>
             </div>
+            <section id="basic-tabs-components">
+                <div class="row match-height" id="rekomendasi">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Rekomendasi</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <input type="hidden" id="aktif" value="{{ $aktif }}">
+                                    <p>Takes the basic nav from above and adds the <code>.nav-tabs</code> class to generate a tabbed interface. </p>
+                                    <ul class="nav nav-tabs">
+                                        @foreach ($data as $key => $val)
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="base-tab{{ $key+1 }}" data-toggle="tab" aria-controls="tab{{ $key+1 }}" href="#tab{{ $key+1 }}" aria-expanded="true">{{ $val->kategori_udara->nama_kategori_udara }}</a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                    <div class="tab-content px-1 pt-1">
+                                        @foreach ($data as $item => $value)
+                                        <div role="tabpanel" class="tab-pane" id="tab{{ $item+1 }}" aria-expanded="true" aria-labelledby="base-tab{{ $item+1 }}">
+                                            {!! $value->pesan_rekomendasi !!}
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
       </div>
     </div>
 @endsection
 
 @section('js')
+<script>
+    var aktif = $('#aktif').val();
+    if (aktif > 0) {
+        $('#base-tab' + aktif).addClass('active');
+        $('#tab' + aktif).addClass('active');
+    } else {
+        $('#basic-tabs-components').addClass('hidden');
+    }
+
+</script>
 <script>
     var max_baik_pm10 = 50;
     var max_sedang_pm10 = 100;

@@ -5,11 +5,23 @@ namespace App\Http\Controllers\mobile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Rekomendasi;
+use App\Notifikasi;
 
 class BerandaController extends Controller
 {
     public function index()
     {
-        return view('mobile.beranda.index');
+        $data = Rekomendasi::orderBy('kategori_udara_id', 'ASC')->get();
+        $aktif = 0;
+        return view('mobile.beranda.index', compact('data', 'aktif'));
+    }
+
+    public function rekomendasi()
+    {
+        $data = Rekomendasi::orderBy('kategori_udara_id', 'ASC')->get();
+        $aktif = Notifikasi::orderBy('id', 'DESC')->first()->kategori_udara_id;
+        
+        return view('mobile.beranda.index', compact('data', 'aktif'));
     }
 }

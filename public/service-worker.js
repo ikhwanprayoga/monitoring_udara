@@ -1,7 +1,6 @@
 var CACHE_NAME = 'KUAdra_siskom';
 
 var filesToCache = [
-  '/',
   'https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700',
   'https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css',
   '/app-assets/css/vendors.css',
@@ -29,44 +28,44 @@ self.addEventListener('install', function (event) {
   );
 });
 
-self.addEventListener('activate', function (event) {
-  event.waitUntil(
-    caches.keys().then(function (cacheNames) {
-      return Promise.all(
-        cacheNames.filter(function (cacheName) {
-          return cacheName != CACHE_NAME
-        }).map(function (cacheName) {
-          return caches.delete(cacheName);
-        })
-      );
-    })
-  );
-});
+// self.addEventListener('activate', function (event) {
+//   event.waitUntil(
+//     caches.keys().then(function (cacheNames) {
+//       return Promise.all(
+//         cacheNames.filter(function (cacheName) {
+//           return cacheName != CACHE_NAME
+//         }).map(function (cacheName) {
+//           return caches.delete(cacheName);
+//         })
+//       );
+//     })
+//   );
+// });
 
-self.addEventListener('fetch', function (event) {
-  event.respondWith(
-    caches.match(event.request)
-    .then(function (response) {
-      if (response) {
-        return response;
-      } else {
-        return fetch(event.request)
-        .then(function (res) {
-          return caches.open('dynamic')
-          .then(function (cache) {
-            cache.put(event.request.url, res.clone());
-            return res;
-            console.log(res);
-          })
-        })
-      }
-    })
-    .catch(function (err) {
-      return caches.match(event.request);
-      console.log(err);
-    })
-  );
-});
+// self.addEventListener('fetch', function (event) {
+//   event.respondWith(
+//     caches.match(event.request)
+//     .then(function (response) {
+//       if (response) {
+//         return response;
+//       } else {
+//         return fetch(event.request)
+//         .then(function (res) {
+//           return caches.open('dynamic')
+//           .then(function (cache) {
+//             cache.put(event.request.url, res.clone());
+//             return res;
+//             console.log(res);
+//           })
+//         })
+//       }
+//     })
+//     .catch(function (err) {
+//       return caches.match(event.request);
+//       console.log(err);
+//     })
+//   );
+// });
 
 self.addEventListener('push', function(event) {
   if (event.data) {
@@ -79,6 +78,29 @@ self.addEventListener('push', function(event) {
   } else {
     console.log('This push event has no data.');
   }
+});
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('Notification click: tag ', event.notification.tag);
+  event.notification.close();
+  var url = 'localhost:8000/mobile/beranda/rekomendasi';
+  console.log('kliknieto');
+  event.waitUntil(
+    clients.matchAll({
+        type: 'window'
+    })
+    .then(function(windowClients) {
+        for (var i = 0; i < windowClients.length; i++) {
+            var client = windowClients[i];
+            if (client.url === url && 'focus' in client) {
+                return client.focus();
+            }
+        }
+        if (clients.openWindow) {
+            return clients.openWindow(url);
+        }
+    })
+);
 });
 
 // self.addEventListener('fetch', function (e) {
