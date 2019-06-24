@@ -214,6 +214,7 @@
             }
         })
         .then(function (permissionResult) {
+          console.log(permissionResult);
             if (permissionResult !== 'granted') {
                 throw new Error('tidak setuju berlangganan');
             } else {

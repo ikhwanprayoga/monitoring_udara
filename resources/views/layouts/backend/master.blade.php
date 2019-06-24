@@ -104,7 +104,7 @@
             </ul>
           </li>
           @role('superadmin')
-          <li id="operator" class=" nav-item"><a href="{{ route('operator') }}"><i class="ft-users"></i><span class="menu-title" data-i18n="">User</span></a>
+          <li id="operator" class=" nav-item"><a href="{{ route('operator') }}"><i class="ft-users"></i><span class="menu-title" data-i18n="">Pengguna</span></a>
           </li>
           @endrole
         </ul>
