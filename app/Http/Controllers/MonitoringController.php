@@ -206,7 +206,7 @@ class MonitoringController extends Controller
 
         }
 
-        // return 'menit dan jam gagal';
+        // return 'yas';
 
     	// $this->store_data_sementara(); //strore ke data sementara
         
