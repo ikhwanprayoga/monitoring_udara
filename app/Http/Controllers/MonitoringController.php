@@ -212,6 +212,29 @@ class MonitoringController extends Controller
         
     }
 
+    public function status()
+    {
+        $datas = Monitoring::all();
+        $waktuSekarang = (int)date('YmdHis');
+
+        foreach ($datas as $key => $value) {
+
+            $updated_at = (int)date('YmdHis', strtotime($value->updated_at));
+
+            if (($waktuSekarang - $updated_at) <= 10) {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
+            
+            $data[$key]['id_sensor'] = $value->node_sensor_id;
+            $data[$key]['status'] = $status;
+            
+        }
+
+        return response()->json($data);
+    }
+
     public function grafik($id)
     {
     	$data = Monitoring::where('node_sensor_id', $id)->first();

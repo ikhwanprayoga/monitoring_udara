@@ -16,7 +16,11 @@ class DataController extends Controller
     public function index()
     {
         $today = date('Y-m-d');
-        $data = Data::where('created_at', 'LIKE', '%'.$today.'%')->orderBy('id', 'asc')->get();
+        $data = Data::where('created_at', 'LIKE', '%'.$today.'%')
+                    // ->select('id', 'pm10', 'co', 'asap', 'suhu', 'kelembapan', 'kategori_udara_id', 'created_at', 'updated_at')
+                    // ->cast(pm10 as decimal(10,2))
+                    ->orderBy('id', 'asc')
+                    ->get();
         
         return view('mobile.data.index', compact('data'));
     }
@@ -52,7 +56,7 @@ class DataController extends Controller
                         data-kategori_udara_id="'.$data->kategori_udara_id.'"
                 >Baik</a>';
             }elseif ($data->kategori_udara_id == 2) {
-                return '<div class="badge badge-primary" data-toggle="modal" href="#modal_rincian"
+                return '<div class="badge badge-info" data-toggle="modal" href="#modal_rincian"
                         data-id="'.$data->id.'"
                         data-pm10="'.$data->pm10.'"
                         data-co="'.$data->co.'"
@@ -82,7 +86,7 @@ class DataController extends Controller
                         data-kategori_udara_id="'.$data->kategori_udara_id.'"
                 >Sangat Tidak Sehat</div>';
             }else  {
-                return '<div class="badge badge-dark" data-toggle="modal" href="#modal_rincian"
+                return '<div class="badge badge-primary" data-toggle="modal" href="#modal_rincian"
                         data-id="'.$data->id.'"
                         data-pm10="'.$data->pm10.'"
                         data-co="'.$data->co.'"
@@ -121,7 +125,7 @@ class DataController extends Controller
                         data-kategori_udara_id="'.$data->kategori_udara_id.'"
                 >Baik</a>';
             }elseif ($data->kategori_udara_id == 2) {
-                return '<div class="badge badge-primary" data-toggle="modal" href="#modal_rincian"
+                return '<div class="badge badge-info" data-toggle="modal" href="#modal_rincian"
                         data-id="'.$data->id.'"
                         data-pm10="'.$data->pm10.'"
                         data-co="'.$data->co.'"
@@ -151,7 +155,7 @@ class DataController extends Controller
                         data-kategori_udara_id="'.$data->kategori_udara_id.'"
                 >Sangat Tidak Sehat</div>';
             }else  {
-                return '<div class="badge badge-dark" data-toggle="modal" href="#modal_rincian"
+                return '<div class="badge badge-primary" data-toggle="modal" href="#modal_rincian"
                         data-id="'.$data->id.'"
                         data-pm10="'.$data->pm10.'"
                         data-co="'.$data->co.'"

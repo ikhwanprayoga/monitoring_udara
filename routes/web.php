@@ -98,6 +98,7 @@ Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['a
     Route::get('getData/detail', 'DataController@getData_detail')->name('mobile.getData.detail');
 
     Route::get('setting', 'SettingController@index')->name('mobile.setting');
+    Route::post('setting/update/{id}', 'SettingController@update')->name('mobile.setting.update');
 
 });
 

@@ -44,6 +44,8 @@
                     <thead class="bg-primary white">
                         <tr>
                             <th>Waktu</th>
+                            <th>PM10</th>
+                            <th>CO</th>
                             <th>Kualitas</th>
                         </tr>
                     </thead>
@@ -110,7 +112,20 @@
         },
         columns: [
             { data: 'created_at', name: 'created_at' },
-            { data: 'kualitas', name: 'kualitas' }
+            { 
+                data: 'pm10', 
+                render: function (data, type, row) {
+                    return Number.parseFloat(row.pm10).toFixed(2)
+                }, 
+                name: 'pm10' 
+            },
+            { 
+                data: 'co', 
+                render: function (data, type, row) {
+                    return Number.parseFloat(row.co).toFixed(2)
+                }, 
+                name: 'co' },
+            { data: 'kualitas', name: 'kualitas' },
         ],
         columnDefs: [
             {"className": "text-center", "targets": "_all", "width": "100%"}
@@ -120,11 +135,11 @@
     $('#modal_rincian').on('show.bs.modal', function (event) {
         var nilai = $(event.relatedTarget);
         var id          =  nilai.data('id');
-        var pm10        =  nilai.data('pm10');
-        var co          =  nilai.data('co');
+        var pm10        =  nilai.data('pm10').toFixed(2);
+        var co          =  nilai.data('co').toFixed(2);
         var asap        =  nilai.data('asap');
-        var suhu        =  nilai.data('suhu');
-        var kelembapan  =  nilai.data('kelembapan');
+        var suhu        =  nilai.data('suhu').toFixed(2);
+        var kelembapan  =  nilai.data('kelembapan').toFixed(2);
         var kategori    =  nilai.data('kategori_udara_id');
         var created_at  =  nilai.data('created_at');
 
@@ -137,15 +152,15 @@
         $('#created_at_rincian').html(created_at);
 
         if (kategori == 1) {
-            $('#img_rincian').html('<img src="{{ asset('push.png') }}" alt="" srcset="" style="width: 100%;">');
+            $('#img_rincian').html('<img src="{{ asset('logo/ic-face-green.svg') }}" alt="" srcset="" style="width: 100%;">');
         } else if (kategori == 2) {
-            $('#img_rincian').html('<img src="{{ asset('img/modal_rincian/temp.png') }}" alt="" srcset="" style="width: 100%;">');
+            $('#img_rincian').html('<img src="{{ asset('logo/ic-face-blue.svg') }}" alt="" srcset="" style="width: 100%;">');
         } else if (kategori == 3) {
-            $('#img_rincian').html('<img src="{{ asset('push.png') }}" alt="" srcset="" style="width: 100%;">');
+            $('#img_rincian').html('<img src="{{ asset('logo/ic-face-yellow.svg') }}" alt="" srcset="" style="width: 100%;">');
         } else if (kategori == 4) {
-            $('#img_rincian').html('<img src="{{ asset('push.png') }}" alt="" srcset="" style="width: 100%;">');
+            $('#img_rincian').html('<img src="{{ asset('logo/ic-face-red.svg') }}" alt="" srcset="" style="width: 100%;">');
         } else {
-            $('#img_rincian').html('<img src="{{ asset('push.png') }}" alt="" srcset="" style="width: 100%;">');
+            $('#img_rincian').html('<img src="{{ asset('logo/ic-face-purple.svg') }}" alt="" srcset="" style="width: 100%;">');
         }
         
     });

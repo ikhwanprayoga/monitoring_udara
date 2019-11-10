@@ -1,7 +1,7 @@
 @extends('layouts.backend.master')
 
 @section('header')
-<title>User</title>
+<title>Pengguna</title>
 @endsection
 
 @section('css')
@@ -16,7 +16,7 @@
         <div class="content-wrapper-before"></div>
         <div class="content-header row">
         <div class="content-header-left col-md-4 col-12 mb-2">
-            <h3 class="content-header-title">User</h3>
+            <h3 class="content-header-title">Pengguna</h3>
         </div>
         <div class="content-header-right col-md-8 col-12">
             <div class="breadcrumbs-top float-md-right">
@@ -24,7 +24,7 @@
                 <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('beranda') }}">Beranda</a>
                 </li>
-                <li class="breadcrumb-item"><a href="#">User</a>
+                <li class="breadcrumb-item"><a href="#">Pengguna</a>
                 </li>
                 </ol>
             </div>
@@ -37,13 +37,13 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Tambah User</a>
+                            <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Tambah Pengguna</a>
                         </div>
                         <div class="modal fade text-left" id="modal-id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Tambah User</h4>
+                                        <h4 class="modal-title">Tambah Pengguna</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -76,6 +76,17 @@
                                                         @endif
                                                     </div>
                                                     <div class="form-group">
+                                                        <label>Alamat</label>
+                                                        <input type="alamat" name="alamat" class="form-control" placeholder="Masukkan Alamat" required>
+                                                        @if ($errors->has('alamat'))
+                                                            <script>
+                                                                $(document).ready(function () {
+                                                                    toastr.error('Periksa Kembali Alamat Operator!', 'Error', {"closeButton": true, timeOut: 5000});
+                                                                });
+                                                            </script>
+                                                        @endif
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label>Password</label>
                                                         <input type="password" name="password" class="form-control" placeholder="Miminal 6 Karakter" required>
                                                         @if ($errors->has('password'))
@@ -94,7 +105,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <fieldset class="form-group">
+                                                    {{-- <fieldset class="form-group">
                                                         <label>Foto Operator</label>
                                                         <div class="custom-file">
                                                             <input type="file" class="custom-file-input" name="foto" id="inputGroupFile01" required>
@@ -107,7 +118,7 @@
                                                                 });
                                                             </script>
                                                         @endif
-                                                    </fieldset>
+                                                    </fieldset> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -130,6 +141,7 @@
                                                 <th>No</th>
                                                 <th>Nama</th>
                                                 <th>Email</th>
+                                                <th>Alamat</th>
                                                 <th>Role/Hak Akses</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -140,6 +152,7 @@
                                                 <td>{{ $key+1 }}</td>
                                                 <td>{{ $val->name }}</td>
                                                 <td>{{ $val->email }}</td>
+                                                <td>{{ $val->alamat }}</td>
                                                 <td>
                                                     @if(!empty($val->getRoleNames()))
                                                         @foreach($val->getRoleNames() as $v)
@@ -197,6 +210,17 @@
                                                                                     @endif
                                                                                 </div>
                                                                                 <div class="form-group">
+                                                                                    <label>Alamat</label>
+                                                                                    <input type="text" name="alamat" value="{{ $val->alamat }}" class="form-control">
+                                                                                    @if ($errors->has('alamat'))
+                                                                                        <script>
+                                                                                            $(document).ready(function () {
+                                                                                                toastr.error('Periksa Kembali Alamat Operator!', 'Error', {"closeButton": true, timeOut: 5000});
+                                                                                            });
+                                                                                        </script>
+                                                                                    @endif
+                                                                                </div>
+                                                                                <div class="form-group">
                                                                                     <label>Password</label>
                                                                                     <input type="password" name="password" class="form-control">
                                                                                     @if ($errors->has('password'))
@@ -216,7 +240,7 @@
                                                                                         @endforeach
                                                                                     </select>
                                                                                 </div>
-                                                                                <fieldset class="form-group">
+                                                                                {{-- <fieldset class="form-group">
                                                                                     <label>Foto Operator</label>
                                                                                     <div class="custom-file">
                                                                                         <input type="file" class="custom-file-input" name="foto" id="inputGroupFile01">
@@ -229,7 +253,7 @@
                                                                                             });
                                                                                         </script>
                                                                                     @endif
-                                                                                </fieldset>
+                                                                                </fieldset> --}}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -254,7 +278,7 @@
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">Hapus Data User</h5>
+                                                                    <h5 class="modal-title">Hapus Data Pengguna</h5>
                                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>

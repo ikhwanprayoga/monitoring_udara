@@ -71,8 +71,8 @@
                     </div>
                     <div class="card-content collapse show">
                         <div class="card-body">
-                            <p class="card-text">Using the most basic table markup, here’s how <code>.table</code>-based tables look in Bootstrap. You can use any example of below table for your table and it can be use with any type of bootstrap tables. </p>
-                            <p><span class="text-bold-600">Example 1:</span> Table with outer spacing</p>
+                            <p class="card-text">Data wilayah yang dapat digunakan untuk pemasangan alat monitoring kualitas udara.</p>
+                            {{-- <p><span class="text-bold-600">Example 1:</span> Table with outer spacing</p> --}}
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>

@@ -26,6 +26,9 @@ Route::get('kirims/{kode_alat}/{suhu}/{kelembapan}/{asap}/{co}/{pm10}', 'SensorC
 // Route::get('grafik', 'RealtimeController@grafik');
 Route::get('grafik/{id}', 'MonitoringController@grafik')->name('grafik');
 
+//api cek online
+Route::get('status/', 'MonitoringController@status')->name('status-sensor');
+
 //api kirim data dari arduino
 Route::get('kirim_data/{node_sensor_id}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}', 'MonitoringController@monitoring');
 

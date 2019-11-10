@@ -265,7 +265,7 @@ $(document).ready(function () {
             console.log(dataPointsPM10);
         });
     }
-    setInterval(getData, 1000);
+    setInterval(getData, 3000);
 });
 </script>
 

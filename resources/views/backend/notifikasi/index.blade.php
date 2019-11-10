@@ -37,7 +37,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <p>header card</p>
+                            <p>Riwayat Notifikasi yang telah dikirimkan</p>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body">
@@ -75,6 +75,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    {{ $data->links() }}
                                 </div>
                             </div>
                         </div>

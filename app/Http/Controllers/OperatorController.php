@@ -27,24 +27,25 @@ class OperatorController extends Controller
             'name' => 'required|string|max:50',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'foto' => 'required|mimes:jpeg,jpg,png|max:3000',
+            // 'foto' => 'required|mimes:jpeg,jpg,png|max:3000',
             'role' => 'required',
         ]);
 
-        $input = $request->only(['name', 'email', 'password', 'foto']);
-        $foto_name = date('Ymdhis').$input['name'].'.jpg';
-        $file_name = str_replace(' ', '', $foto_name);
+        $input = $request->only(['name', 'email', 'password', 'alamat']);
+        // $foto_name = date('Ymdhis').$input['name'].'.jpg';
+        // $file_name = str_replace(' ', '', $foto_name);
         
         $simpan = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'alamat' => $input['alamat'],
             'password' => Hash::make($input['password']),
-            'foto' => $file_name
+            // 'foto' => $file_name
         ]);
 
         $simpan->assignRole($request['role']);
 
-        Image::make($request->foto)->resize(300, 300)->save('file/operator/'.$file_name);
+        // Image::make($request->foto)->resize(300, 300)->save('file/operator/'.$file_name);
 
         return redirect()->back()->with('tambah', true);
     }
@@ -59,6 +60,7 @@ class OperatorController extends Controller
 
         $operator->name = $request['name'];
         $operator->email = $request['email'];
+        $operator->alamat = $request['alamat'];
 
         if ($request['password']) {
             $this->validate($request, [
@@ -67,22 +69,22 @@ class OperatorController extends Controller
             $operator->password = Hash::make($request['password']);
         }
 
-        if ($request['foto']) {
-            $this->validate($request, [
-                'foto' => 'required|mimes:jpeg,jpg,png|max:3000',
-            ]);
+        // if ($request['foto']) {
+        //     $this->validate($request, [
+        //         'foto' => 'required|mimes:jpeg,jpg,png|max:3000',
+        //     ]);
             
-            if (is_file('file/operator/'.$operator->foto)) {
-                unlink('file/operator/'.$operator->foto);
-            }
+        //     if (is_file('file/operator/'.$operator->foto)) {
+        //         unlink('file/operator/'.$operator->foto);
+        //     }
             
-            $foto_name = date('Ymdhis').$request['name'].'.jpg';
-            $file_name = str_replace(' ', '', $foto_name);
-            $operator->foto = $file_name;
+        //     $foto_name = date('Ymdhis').$request['name'].'.jpg';
+        //     $file_name = str_replace(' ', '', $foto_name);
+        //     $operator->foto = $file_name;
 
-            Image::make($request['foto'])->resize(300, 300)->save('file/operator/'.$file_name);
+        //     Image::make($request['foto'])->resize(300, 300)->save('file/operator/'.$file_name);
 
-        }
+        // }
         $operator->save();
         
         if ($request['role']) {

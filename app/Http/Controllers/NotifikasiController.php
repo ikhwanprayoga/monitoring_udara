@@ -13,7 +13,7 @@ class NotifikasiController extends Controller
 {
     public function index()
     {
-        $data = Notifikasi::all();
+        $data = Notifikasi::paginate(10);
         return view('backend.notifikasi.index', compact('data'));
     }
 

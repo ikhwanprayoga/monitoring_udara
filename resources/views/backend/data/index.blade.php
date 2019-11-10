@@ -43,7 +43,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Basic Tables</h4>
+                        <h4 class="card-title">Data kualitas udara perjam</h4>
                     </div>
                     <div class="card-content collapse show">
                         <div class="card-body">
@@ -114,11 +114,38 @@
             }
         },
         columns: [
-            {data: 'pm10', name: 'pm10'},
-            {data: 'co', name: 'co'},
-            {data: 'asap', name: 'asap'},
-            {data: 'suhu', name: 'suhu'},
-            {data: 'kelembapan', name: 'kelembapan'},
+            {
+                data: 'pm10', 
+                name: 'pm10',
+                render: function (data, type, rows) {
+                    return Number.parseFloat(rows.pm10).toFixed(2) + ' u/m3'
+                }
+            },
+            {
+                data: 'co', 
+                name: 'co',
+                render: function (data, type, rows) {
+                    return Number.parseFloat(rows.co).toFixed(2) + ' ppm'
+                }
+            },
+            {
+                data: 'asap', 
+                name: 'asap'
+            },
+            {
+                data: 'suhu', 
+                name: 'suhu',
+                render: function (data, type, rows) {
+                    return Number.parseFloat(rows.suhu).toFixed(2) + ' C'
+                }
+            },
+            {
+                data: 'kelembapan', 
+                name: 'kelembapan',
+                render: function (data, type, rows) {
+                    return Number.parseFloat(rows.kelembapan).toFixed(2) + ' %'
+                }
+            },
             {data: 'kategori_udara', name: 'kategori_udara'},
             {data: 'created_at', name: 'created_at'}
         ],

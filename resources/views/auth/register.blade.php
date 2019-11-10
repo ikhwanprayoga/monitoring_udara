@@ -45,6 +45,17 @@
                                 </div>
                             </fieldset>
                             <fieldset class="form-group position-relative has-icon-left">
+                                <input id="alamat" type="alamat" class="round form-control{{ $errors->has('alamat') ? ' is-invalid' : '' }}" name="alamat" value="{{ old('alamat') }}" placeholder="Alamat  " required>
+                                @if ($errors->has('alamat'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('alamat') }}</strong>
+                                    </span>
+                                @endif
+                                <div class="form-control-position">
+                                    <i class="ft-globe"></i>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form-group position-relative has-icon-left">
                                 <input id="password" type="password" class="round form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Password" required>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
