@@ -18,6 +18,8 @@ class MonitoringController extends Controller
         $data['asap']       = Monitoring::where('updated_at', 'LIKE', '%'.$today.'%')->avg('asap');
         $data['suhu']       = Monitoring::where('updated_at', 'LIKE', '%'.$today.'%')->avg('suhu');
         $data['kelembapan'] = Monitoring::where('updated_at', 'LIKE', '%'.$today.'%')->avg('kelembapan');
+        $waktu              = Monitoring::where('updated_at', 'LIKE', '%'.$today.'%')->first()->updated_at;
+        $data['waktu']      = date('H:i:s', strtotime($waktu));
 
         return response()->json($data, 200);
     }

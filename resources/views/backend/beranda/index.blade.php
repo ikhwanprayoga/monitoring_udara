@@ -162,7 +162,7 @@
             time.setMinutes({{ $val->created_at->format('i') }});
             pm10.push({x: time.getTime(), y: {{ $val->pm10 }} });
             co.push({x: time.getTime(), y: {{ $val->co }} });
-            asap.push({x: time.getTime(), y: {{ $val->asap }} });
+            // asap.push({x: time.getTime(), y: {{ $val->asap }} });
             suhu.push({x: time.getTime(), y: {{ $val->suhu }} });
             kelembapan.push({x: time.getTime(), y: {{ $val->kelembapan }} });
         @endforeach
@@ -170,13 +170,13 @@
         var chart = new CanvasJS.Chart("chart", {
             animationEnabled: true,
             title:{
-                text: "PM 10, Karbon Monoksida, Asap"
+                text: "PM 10, Karbon Monoksida"
             },
             axisX:{
                 title: "Data Perjam"
             },
             axisY: {
-                title: "PPM"
+                title: "u/m3 dan ppm"
             },
             toolTip:{
                 shared: true
@@ -189,7 +189,7 @@
                     showInLegend: true,
                     xValueType: "dateTime",
                     xValueFormatString: "DD MMM YYYY, hh:mm TT",
-                    yValueFormatString: "####.00 ppm",
+                    yValueFormatString: "####.00 u/m3",
                     dataPoints: pm10
                 },
                 {

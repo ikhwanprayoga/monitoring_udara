@@ -26,14 +26,14 @@ Route::get('kirims/{kode_alat}/{suhu}/{kelembapan}/{asap}/{co}/{pm10}', 'SensorC
 // Route::get('grafik', 'RealtimeController@grafik');
 Route::get('grafik/{id}', 'MonitoringController@grafik')->name('grafik');
 
+// push notifikasi route
+Route::get('sendPush', 'firebase\FirebaseController@send');
+
 //api cek online
 Route::get('status/', 'MonitoringController@status')->name('status-sensor');
 
 //api kirim data dari arduino
 Route::get('kirim_data/{node_sensor_id}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}', 'MonitoringController@monitoring');
-
-// push notifikasi route
-Route::get('sendPush', 'firebase\FirebaseController@send');
 
 //monitoring mobile rata2 nilai sensor per 3 detik yang update hari ini
 Route::get('mobile/monitoring', 'mobile\MonitoringController@monitoring')->name('mobile.monitoring');

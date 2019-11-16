@@ -61,17 +61,17 @@
                                 
                             </div>
                             <div class="row">
-                                <div class="col-4">
+                                {{-- <div class="col-4">
                                     <div class="height-500">
                                         <div id="asap"></div>
                                     </div>
-                                </div>
-                                <div class="col-4">
+                                </div> --}}
+                                <div class="col-6">
                                     <div class="height-500">
                                         <div id="suhu"></div>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="height-500">
                                         <div id="kelembapan"></div>
                                     </div>
@@ -105,7 +105,7 @@ $(document).ready(function () {
                 text : "PM 10"
             },
             axisY: {
-                title : "PPM"
+                title : "u/m3"
             },
             axisX: {
                 title : "Nilai perdetik"
@@ -139,24 +139,24 @@ $(document).ready(function () {
     chartCO.render();
 
     //chart asap
-    var dataPointsASAP = [];
-    var chartASAP = new CanvasJS.Chart("asap", {
-            title : {
-                text : "Asap"
-            },
-            axisY: {
-                title : "PPM"
-            },
-            axisX: {
-                title : "Nilai perdetik"
-            },
-            data : [{
-                type : "area",
-                // xValueType: "dateTime",
-                dataPoints : dataPointsASAP
-            }]
-        });
-    chartASAP.render();
+    // var dataPointsASAP = [];
+    // var chartASAP = new CanvasJS.Chart("asap", {
+    //         title : {
+    //             text : "Asap"
+    //         },
+    //         axisY: {
+    //             title : "PPM"
+    //         },
+    //         axisX: {
+    //             title : "Nilai perdetik"
+    //         },
+    //         data : [{
+    //             type : "area",
+    //             // xValueType: "dateTime",
+    //             dataPoints : dataPointsASAP
+    //         }]
+    //     });
+    // chartASAP.render();
 
     //chart SUHU
     var dataPointsSUHU = [];
@@ -232,13 +232,13 @@ $(document).ready(function () {
                 dataPointsCO.shift();
             }
 
-            // datapoints asap
-            dataPointsASAP.push({
-                label : times , y : yASAP , x : xVals
-            });
-            if(dataPointsASAP.length > 10){
-                dataPointsASAP.shift();
-            }
+            // // datapoints asap
+            // dataPointsASAP.push({
+            //     label : times , y : yASAP , x : xVals
+            // });
+            // if(dataPointsASAP.length > 10){
+            //     dataPointsASAP.shift();
+            // }
 
             // datapoints suhu
             dataPointsSUHU.push({
@@ -258,7 +258,7 @@ $(document).ready(function () {
 
             chartPM10.render();
             chartCO.render();
-            chartASAP.render();
+            // chartASAP.render();
             chartSUHU.render();
             chartKELEMBAPAN.render();
 

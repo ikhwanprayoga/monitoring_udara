@@ -74,7 +74,6 @@
                                         <tr>
                                             <th>PM10</th>
                                             <th>CO</th>
-                                            <th>Asap</th>
                                             <th>Suhu</th>
                                             <th>Kelembapan</th>
                                             <th>Kategori Udara</th>
@@ -100,7 +99,7 @@
 </script>
 <script>
     var table = $('#table').DataTable({
-        "order" : [[6, "desc"]],
+        "order" : [[5, "desc"]],
         processing: true,
         serverSide: true,
         ajax: {
@@ -127,10 +126,6 @@
                 render: function (data, type, rows) {
                     return Number.parseFloat(rows.co).toFixed(2) + ' ppm'
                 }
-            },
-            {
-                data: 'asap', 
-                name: 'asap'
             },
             {
                 data: 'suhu', 

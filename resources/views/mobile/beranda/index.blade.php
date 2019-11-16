@@ -45,7 +45,7 @@
                 <div class="col-12 col-md-6">
                     <div class="card">
                         <div class="card-header p-1">
-                            <h4 class="card-title float-left">Realtime - <span class="blue-grey lighten-2 font-small-3 mb-0">{{ Waktu::waktu_lengkap(date('Y-m-d'), true) }}</span></h4>
+                            <h4 class="card-title float-left">Realtime - <span class="blue-grey lighten-2 font-small-3 mb-0">{{ Waktu::waktu_lengkap(date('Y-m-d'), true) }} - </span><span id="waktu" class="blue-grey lighten-2 font-small-3 mb-0">&nbsp;&nbsp; </span></h4>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-footer text-center p-1">
@@ -150,11 +150,12 @@
                 // $('#m_asap').html(data.asap.toFixed(2));
                 $('#m_suhu').html(data.suhu.toFixed(2));
                 $('#m_kelembapan').html(data.kelembapan.toFixed(2));
+                $('#waktu').html(' '+data.waktu);
 
                 var n_pm10 = data.pm10;
                 var n_co = data.co;
                 var n_asap = data.asap;
-                console.log('pm10: '+n_pm10+' co: '+data.co+' asap: '+data.asap+' suhu: '+data.suhu+' kelembapan: '+data.kelembapan)
+                console.log('pm10: '+n_pm10+' co: '+data.co+' asap: '+data.asap+' suhu: '+data.suhu+' kelembapan: '+data.kelembapan+ ' waktu: '+data.waktu)
 
                 if (n_pm10 <= max_baik_pm10 && n_co <= max_baik_co) {
                     $('#logoKualitasUdara').html('<img id="logoKualitasUdara" src="{{ asset('logo/ic-face-green.svg') }}" alt="" style="width: 175px;">')
