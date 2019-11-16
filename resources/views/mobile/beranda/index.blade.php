@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            <section id="basic-tabs-components">
+            {{-- <section id="basic-tabs-components">
                 <div class="row match-height" id="rekomendasi">
                     <div class="col-xl-12 col-lg-12">
                         <div class="card">
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> --}}
         </div>
       </div>
     </div>
