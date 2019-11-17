@@ -101,28 +101,6 @@ class MonitoringController extends Controller
 
                 $inputMenit['created_at'] = $menit_data;
 
-                //notif permenit
-                // if (($inputMenit['pm10'] >= 0 && $inputMenit['pm10'] <= 50) || ($inputMenit['co'] >= 0 && $inputMenit['co'] <= 50)) {
-                //     $kualitas_udara_sementara = 1;
-                // }
-                // if (($inputMenit['pm10'] >= 51 && $inputMenit['pm10'] <= 100) || ($inputMenit['co'] >= 51 && $inputMenit['co'] <= 100)) {
-                //     $kualitas_udara_sementara = 2;
-                // }
-                // if (($inputMenit['pm10'] >= 101 && $inputMenit['pm10'] <= 199) || ($inputMenit['co'] >= 101 && $inputMenit['co'] <= 199)) {
-                //     $kualitas_udara_sementara = 3;
-                // }
-                // if (($inputMenit['pm10'] >= 200 && $inputMenit['pm10'] <= 299) || ($inputMenit['co'] >= 200 && $inputMenit['co'] <= 299)) {
-                //     $kualitas_udara_sementara = 4;
-                // }
-                // if ($inputMenit['pm10'] >= 300  || $inputMenit['co'] >= 300 ) {
-                //     $kualitas_udara_sementara = 5;
-                // }
-                // //kirim notif berdasarkan kategori udara id
-                // if ($kualitas_udara_sementara == 3 || $kualitas_udara_sementara == 4 || $kualitas_udara_sementara == 5) {
-                //     $this->kirim_notif($kualitas_udara_sementara);
-                // }
-                //tutup notif permenit
-
                 $kirim_data = DataPermenit::create($inputMenit);
 
                 $data_lama = DataSementara::where('created_at', '<', $menit_sekarang)->select('id')->get();
@@ -181,10 +159,7 @@ class MonitoringController extends Controller
                     $inputJam['asap']       = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('asap');
                     $inputJam['suhu']       = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('suhu');
                     $inputJam['kelembapan'] = DataPermenit::where('created_at', '<', $jam_sekarang)->avg('kelembapan');
-
-                    $waktu = DataPermenit::where('created_at', '<', $jam_sekarang)->orderBy('id', 'desc')->first()->created_at;
-                    
-                    $inputJam['waktu'] = (int)date('H', strtotime($waktu));
+                    $inputJam['created_at'] = DataPermenit::where('created_at', '<', $jam_sekarang)->orderBy('id', 'desc')->first()->created_at;
 
                     $jam_data = DataPermenit::select('created_at')
                                     ->orderBy('id', 'desc')

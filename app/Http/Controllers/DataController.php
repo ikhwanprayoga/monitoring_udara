@@ -21,7 +21,7 @@ class DataController extends Controller
 
     public function getData(Request $request)
     {
-    	$data = Data::select(['id','pm10','co','suhu','kelembapan','created_at','kategori_udara_id']);
+    	$data = Data::select(['id','pm10','co','suhu','kelembapan','created_at','waktu','kategori_udara_id']);
 
             if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null) {
                 $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
@@ -45,7 +45,10 @@ class DataController extends Controller
                 return '<div class="badge badge-dark">Berbahaya</div>';
             }
         })
-        ->rawColumns(['kategori_udara'])
+        ->addColumn('waktu', function ($data){
+            return 'Pukul '.$data->waktu.' , '.date('d-m-Y', strtotime($data->created_at));
+        })
+        ->rawColumns(['kategori_udara', 'waktu'])
         ->make(true);
     }
 }

@@ -41,8 +41,8 @@ class DataController extends Controller
         }
 
         return Datatables::of($data)
-        ->editColumn('created_at', function ($data){
-            return date('H:i', strtotime($data->created_at));
+        ->addColumn('waktu', function ($data){
+            return 'Pukul '.$data->waktu.' , '.date('d-m-Y', strtotime($data->created_at));
         })
         ->addColumn('kualitas', function ($data){
             if ($data->kategori_udara_id == 1) {
@@ -97,21 +97,21 @@ class DataController extends Controller
                 >Berbahaya</div>';
             }
         })
-        ->rawColumns(['kualitas'])
+        ->rawColumns(['kualitas', 'waktu'])
         ->make(true);
     }
 
     public function getData_detail(Request $request)
     {
-        $data = Data::select(['id','pm10','co','asap','suhu','kelembapan','created_at','kategori_udara_id']);
+        $data = Data::select(['id','pm10','co','asap','suhu','kelembapan','created_at','waktu','kategori_udara_id']);
 
         if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null ) {
             $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
         }
 
         return Datatables::of($data)
-        ->editColumn('created_at', function ($data){
-            return date('d-m-Y H:i', strtotime($data->created_at));
+        ->addColumn('waktu', function ($data){
+            return 'Pukul '.$data->waktu.' , '.date('d-m-Y', strtotime($data->created_at));
         })
         ->addColumn('kualitas', function ($data){
             if ($data->kategori_udara_id == 1) {
@@ -166,7 +166,7 @@ class DataController extends Controller
                 >Berbahaya</div>';
             }
         })
-        ->rawColumns(['kualitas'])
+        ->rawColumns(['kualitas','waktu'])
         ->make(true);
     }
 }

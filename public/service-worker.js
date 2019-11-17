@@ -84,7 +84,7 @@ self.addEventListener('push', function(event) {
 self.addEventListener('notificationclick', function(event) {
   console.log('Notification click: tag ', event.notification.tag);
   event.notification.close();
-  var url = 'localhost:8000/mobile/beranda/rekomendasi';
+  var url = '/mobile/beranda/rekomendasi';
   console.log('kliknieto');
   event.waitUntil(
     clients.matchAll({

@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            {{-- <section id="basic-tabs-components">
+            <section id="basic-tabs-components">
                 <div class="row match-height" id="rekomendasi">
                     <div class="col-xl-12 col-lg-12">
                         <div class="card">
@@ -91,7 +91,7 @@
                             <div class="card-content">
                                 <div class="card-body">
                                     <input type="hidden" id="aktif" value="{{ $aktif }}">
-                                    <p>Takes the basic nav from above and adds the <code>.nav-tabs</code> class to generate a tabbed interface. </p>
+                                    <p>Beberapa hal yang dapat dilakukan untuk mengurangi efek negatif dari kualitas udara yang kurang baik</p>
                                     <ul class="nav nav-tabs">
                                         @foreach ($data as $key => $val)
                                         <li class="nav-item">
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-            </section> --}}
+            </section>
         </div>
       </div>
     </div>

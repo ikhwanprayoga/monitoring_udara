@@ -77,7 +77,7 @@
                                             <th>Suhu</th>
                                             <th>Kelembapan</th>
                                             <th>Kategori Udara</th>
-                                            <th>Created At</th>
+                                            <th>Waktu</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -142,7 +142,7 @@
                 }
             },
             {data: 'kategori_udara', name: 'kategori_udara'},
-            {data: 'created_at', name: 'created_at'}
+            {data: 'waktu', name: 'waktu'}
         ],
         columnDefs: [
             {"targets": "_all", "className": "text-center",}

@@ -180,7 +180,7 @@
             }
         },
         columns: [
-            { data: 'created_at', name: 'created_at' },
+            { data: 'waktu', name: 'waktu' },
             { 
                 data: 'pm10', 
                 render: function (data, type, row) {

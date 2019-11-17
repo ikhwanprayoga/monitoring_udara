@@ -158,8 +158,9 @@
 
         @foreach ($data as $key => $val)
             var time = new Date;
-            time.setHours({{ $val->created_at->format('H') }});
-            time.setMinutes({{ $val->created_at->format('i') }});
+            // time.setHours({{ $val->created_at->format('H') }});
+            time.setHours({{ $val->waktu }});
+            // time.setMinutes({{ $val->created_at->format('i') }});
             pm10.push({x: time.getTime(), y: {{ $val->pm10 }} });
             co.push({x: time.getTime(), y: {{ $val->co }} });
             // asap.push({x: time.getTime(), y: {{ $val->asap }} });
@@ -188,7 +189,8 @@
                     name: "pm10",
                     showInLegend: true,
                     xValueType: "dateTime",
-                    xValueFormatString: "DD MMM YYYY, hh:mm TT",
+                    // xValueFormatString: "DD MMM YYYY, hh:mm TT",
+                    xValueFormatString: "DD MMM YYYY, pukul HH",
                     yValueFormatString: "####.00 u/m3",
                     dataPoints: pm10
                 },
@@ -198,7 +200,7 @@
                     name: "co",
                     showInLegend: true,
                     xValueType: "dateTime",
-                    xValueFormatString: "DD MMM YYYY, hh:mm TT",
+                    xValueFormatString: "DD MMM YYYY, pukul HH",
                     yValueFormatString: "####.00 ppm",
                     dataPoints: co
                 },
@@ -208,7 +210,7 @@
                     name: "asap",
                     showInLegend: true,
                     xValueType: "dateTime",
-                    xValueFormatString: "DD MMM YYYY, hh:mm TT",
+                    xValueFormatString: "DD MMM YYYY, pukul HH",
                     yValueFormatString: "####.00 ppm",
                     dataPoints: asap
                 }
@@ -237,7 +239,8 @@
                     name: "suhu",
                     showInLegend: true,
                     xValueType: "dateTime",
-                    xValueFormatString: "DD MMM YYYY, hh:mm TT",
+                    // xValueFormatString: "DD MMM YYYY, hh:mm TT",
+                    xValueFormatString: "DD MMM YYYY, pukul HH",
                     yValueFormatString: "####.00 C",
                     dataPoints: suhu
                 },
@@ -247,7 +250,7 @@
                     name: "kelembapan",
                     showInLegend: true,
                     xValueType: "dateTime",
-                    xValueFormatString: "DD MMM YYYY, hh:mm TT",
+                    xValueFormatString: "DD MMM YYYY, pukul HH",
                     yValueFormatString: "####.00 '%'",
                     dataPoints: kelembapan
                 }
