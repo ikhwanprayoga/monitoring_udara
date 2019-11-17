@@ -44,7 +44,7 @@ Route::post('/save-subscription/{id}',function($id, Request $request){
   $user = \App\User::find($id);
 
   $user->updatePushSubscription($request->input('endpoint'), $request->input('keys.p256dh'), $request->input('keys.auth'));
-  $user->notify(new \App\Notifications\GenericNotification("Welcome To WebPush", "You will now get all of our push notifications"));
+  $user->notify(new \App\Notifications\GenericNotification("Terima kasih telah mengaktifkan webpush notification", "Kamu akan mendapatkan notifikasi ketika udara dalam kondisi tidak sehat."));
   return response()->json([
     'success' => true
   ]);

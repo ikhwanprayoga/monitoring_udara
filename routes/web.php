@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+    return redirect()->route('login');
     return view('welcome');
 })->name('base');
 
@@ -29,7 +30,7 @@ Route::group(['prefix' => 'register', 'namespace' => 'mobile', 'middleware' => [
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:superadmin']], function() {
     
     Route::get('beranda', 'BerandaController@index')->name('beranda');
 
@@ -86,7 +87,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function() {
 Route::get('notifikasi-tes/{kategori_kualitas_udara}', 'NotifikasiController@tes')->name('notifikasi-tes');
 
 //route mobile
-Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth', 'role:guest']], function () {
     Route::get('beranda', 'BerandaController@index')->name('mobile.beranda');
     Route::get('beranda/rekomendasi', 'BerandaController@rekomendasi')->name('mobile.beranda.rekomendasi');
 

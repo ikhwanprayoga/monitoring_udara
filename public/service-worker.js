@@ -80,6 +80,7 @@ self.addEventListener('push', function(event) {
   }
 });
 
+//click notif fuction
 self.addEventListener('notificationclick', function(event) {
   console.log('Notification click: tag ', event.notification.tag);
   event.notification.close();
