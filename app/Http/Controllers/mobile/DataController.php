@@ -34,6 +34,7 @@ class DataController extends Controller
     {
         $today = date('Y-m-d');
         $data = Data::where('created_at', 'like', '%'.$today.'%')
+                    ->orderBy('id', 'asc')
                     ->get();
 
         if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null ) {
@@ -97,13 +98,14 @@ class DataController extends Controller
                 >Berbahaya</div>';
             }
         })
-        ->rawColumns(['kualitas', 'waktu'])
+        ->addIndexColumn()
+        ->rawColumns(['kualitas', 'waktu', 'DT_RowIndex'])
         ->make(true);
     }
 
     public function getData_detail(Request $request)
     {
-        $data = Data::select(['id','pm10','co','asap','suhu','kelembapan','created_at','waktu','kategori_udara_id']);
+        $data = Data::select(['id','pm10','co','asap','suhu','kelembapan','created_at','waktu','kategori_udara_id'])->orderBy('id', 'asc');
 
         if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null ) {
             $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
@@ -166,7 +168,8 @@ class DataController extends Controller
                 >Berbahaya</div>';
             }
         })
-        ->rawColumns(['kualitas','waktu'])
+        ->addIndexColumn()
+        ->rawColumns(['kualitas','waktu', 'DT_RowIndex'])
         ->make(true);
     }
 }

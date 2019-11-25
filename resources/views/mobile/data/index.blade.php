@@ -43,6 +43,7 @@
                 <table class="table table-responsive" id="table_ringkasan">
                     <thead class="bg-primary white">
                         <tr>
+                            <th>No</th>
                             <th>Waktu</th>
                             <th>PM10</th>
                             <th>CO</th>
@@ -75,10 +76,10 @@
                                 <div class="col-6"><p>Co </p></div>
                                 <div class="col-6" id="co_rincian"></div>
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-6"><p>Asap </p></div>
                                 <div class="col-6" id="asap_rincian"></div>
-                            </div>
+                            </div> --}}
                             <div class="row">
                                 <div class="col-6"><p>Suhu </p></div>
                                 <div class="col-6" id="suhu_rincian"></div>
@@ -111,6 +112,7 @@
             url: '{{ route('mobile.getData.ringkasan') }}'
         },
         columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', width: '20px' },
             { data: 'waktu', name: 'waktu' },
             { 
                 data: 'pm10', 
@@ -144,9 +146,9 @@
         var created_at  =  nilai.data('created_at');
 
         $('#id_rincian').val(id);
-        $('#pm10_rincian').html(pm10).append("<small> ppm</small>");
+        $('#pm10_rincian').html(pm10).append("<small> u/m3</small>");
         $('#co_rincian').html(co).append("<small> ppm</small>");
-        $('#asap_rincian').html(asap).append("<small> ppm</small>");
+        // $('#asap_rincian').html(asap).append("<small> ppm</small>");
         $('#suhu_rincian').html(suhu).append("<small> C</small>");
         $('#kelembapan_rincian').html(kelembapan).append("<small> %</small>");
         $('#created_at_rincian').html(created_at);

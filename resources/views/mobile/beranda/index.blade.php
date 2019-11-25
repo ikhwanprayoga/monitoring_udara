@@ -52,7 +52,7 @@
                                 <div class="row">
                                     <div class="col-6 border-right-blue-grey border-right-lighten-5 text-center">
                                         <p class="font-medium-1 text-bold-400" id="m_pm10">0</p><br>
-                                        <p class="blue-grey lighten-2 mb-0">pm10 (ppm)</p>
+                                        <p class="blue-grey lighten-2 mb-0">pm10 (u/m3)</p>
                                     </div>
                                     <div class="col-6 border-right-blue-grey border-right-lighten-5 text-center">
                                         <p class="font-medium-1 text-bold-400" id="m_co">0</p><br>
