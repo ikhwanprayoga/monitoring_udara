@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Response;
 
 use App\Monitoring;
+use App\LogMonitoring;
 use App\NodeSensor;
 use App\DataSementara;
 use App\DataPermenit;
@@ -36,7 +37,19 @@ class MonitoringController extends Controller
     	$input['kelembapan']       = $request->kelembapan;
 
 
-    	$node_sensor_id = Monitoring::where('node_sensor_id', $input['node_sensor_id'])->first();
+        $node_sensor_id = Monitoring::where('node_sensor_id', $input['node_sensor_id'])->first();
+        
+        //log monitoring
+        $log_monitoring = LogMonitoring::create(
+            [
+                'node_sensor_id' => $request->node_sensor_id,
+                'pm10'           => $request->pm10,
+                'co'             => $request->co,
+                'asap'           => $request->asap,
+                'suhu'           => $request->suhu,
+                'kelembapan'     => $request->kelembapan,
+            ]
+        );
 
         //jika node sensor blm ada maka di buat
     	if (empty($node_sensor_id)) {
@@ -186,13 +199,12 @@ class MonitoringController extends Controller
                     
                     $inputJam['waktu'] = (int)date('H', strtotime($waktu));
 
-                    $jam_data = DataPermenit::select('created_at')
-                                    ->orderBy('id', 'desc')
-                                    ->first()
-                                    ->created_at->format('Y-m-d H:i:s');
+                    if ($inputJam['waktu'] == 23) {
+                        $inputJam['created_at'] = Data::orderBy('id', 'desc')->first()->created_at;
+                    } else {
+                        $inputJam['created_at'] = $waktu;
+                    }
 
-                    $inputJam['created_at'] = $jam_data;
-                    
                     if (($inputJam['pm10'] >= 0 && $inputJam['pm10'] <= 50) || ($inputJam['co'] >= 0 && $inputJam['co'] <= 50)) {
                         $inputJam['kategori_udara_id'] = 1;
                     }
