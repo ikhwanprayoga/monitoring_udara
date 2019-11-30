@@ -74,6 +74,7 @@
                                         <tr>
                                             <th>PM10</th>
                                             <th>CO</th>
+                                            <th>Asap</th>
                                             <th>Suhu</th>
                                             <th>Kelembapan</th>
                                             <th>Kategori Udara</th>
@@ -125,6 +126,18 @@
                 name: 'co',
                 render: function (data, type, rows) {
                     return Number.parseFloat(rows.co).toFixed(2) + ' ppm'
+                }
+            },
+            {
+                data: 'asap', 
+                name: 'asap',
+                render: function (data, type, rows) {
+                    if (rows.asap == 1) {
+                        return '<div class="badge badge-success">Tidak Terdeteksi</div>'
+                    } else {
+                        return '<div class="badge badge-danger">Terdeteksi</div>'
+                    }
+                    // return Number.parseFloat(rows.asap).toFixed(2) + ' ppm'
                 }
             },
             {

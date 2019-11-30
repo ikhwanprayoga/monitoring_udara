@@ -76,10 +76,10 @@
                                 <div class="col-6"><p>Co </p></div>
                                 <div class="col-6" id="co_rincian"></div>
                             </div>
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="col-6"><p>Asap </p></div>
                                 <div class="col-6" id="asap_rincian"></div>
-                            </div> --}}
+                            </div>
                             <div class="row">
                                 <div class="col-6"><p>Suhu </p></div>
                                 <div class="col-6" id="suhu_rincian"></div>
@@ -152,6 +152,12 @@
         $('#suhu_rincian').html(suhu).append("<small> C</small>");
         $('#kelembapan_rincian').html(kelembapan).append("<small> %</small>");
         $('#created_at_rincian').html(created_at);
+
+        if (asap == 1) {
+            $('#asap_rincian').html('<div class="badge badge-success">Tidak Terdeteksi</div>');
+        } else {
+            $('#asap_rincian').html('<div class="badge badge-danger">Terdeteksi</div>');
+        }
 
         if (kategori == 1) {
             $('#img_rincian').html('<img src="{{ asset('logo/ic-face-green.svg') }}" alt="" srcset="" style="width: 100%;">');
