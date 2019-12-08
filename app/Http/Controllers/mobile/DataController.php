@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 
 use App\Data;
-use App\DataSementara;
+use App\MasterWilayah;
 use App\DataPermenit;
 use App\KategoriUdara;
 
@@ -15,6 +15,7 @@ class DataController extends Controller
 {
     public function index()
     {
+        $wilayah = MasterWilayah::all();
         $today = date('Y-m-d');
         $data = Data::where('created_at', 'LIKE', '%'.$today.'%')
                     // ->select('id', 'pm10', 'co', 'asap', 'suhu', 'kelembapan', 'kategori_udara_id', 'created_at', 'updated_at')
@@ -22,23 +23,34 @@ class DataController extends Controller
                     ->orderBy('id', 'asc')
                     ->get();
         
-        return view('mobile.data.index', compact('data'));
+        return view('mobile.data.index', compact('data', 'wilayah'));
     }
 
     public function detail()
     {
-        return view('mobile.data.detail');
+        $wilayah = MasterWilayah::all();
+        return view('mobile.data.detail', compact('wilayah'));
     }
 
     public function getData_ringkasan(Request $request)
     {
         $today = date('Y-m-d');
-        $data = Data::where('created_at', 'like', '%'.$today.'%')
-                    ->orderBy('id', 'asc')
-                    ->get();
+        // $data = Data::where('created_at', 'like', '%'.$today.'%')
+        //             ->orderBy('id', 'asc')
+        //             ->get();
+        $data = Data::join('node_sensor', 'node_sensor.id', '=', 'data.node_sensor_id')
+                    ->join('master_wilayah', 'master_wilayah.id', '=', 'wilayah_id')
+                    ->select([
+                        'node_sensor.id',
+                        'node_sensor.nama',
+                        'node_sensor.wilayah_id',
+                        'master_wilayah.wilayah',
+                        'data.*',
+                    ])
+                    ->where('data.created_at', 'like', '%'.$today.'%');
 
-        if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null ) {
-            $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
+        if ($request->has('wilayah') && $request->wilayah != null) {
+            $data->where('wilayah_id', $request->wilayah);
         }
 
         return Datatables::of($data)
@@ -105,10 +117,23 @@ class DataController extends Controller
 
     public function getData_detail(Request $request)
     {
-        $data = Data::select(['id','pm10','co','asap','suhu','kelembapan','created_at','waktu','kategori_udara_id'])->orderBy('id', 'asc');
+        // $data = Data::select(['id','pm10','co','asap','suhu','kelembapan','created_at','waktu','kategori_udara_id'])->orderBy('id', 'asc');
+        $data = Data::join('node_sensor', 'node_sensor.id', '=', 'data.node_sensor_id')
+                    ->join('master_wilayah', 'master_wilayah.id', '=', 'wilayah_id')
+                    ->select([
+                        'node_sensor.id',
+                        'node_sensor.nama',
+                        'node_sensor.wilayah_id',
+                        'master_wilayah.wilayah',
+                        'data.*',
+                    ]);
 
         if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null ) {
             $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
+        }
+
+        if ($request->has('wilayah') && $request->wilayah != null) {
+            $data->where('wilayah_id', $request->wilayah);
         }
 
         return Datatables::of($data)

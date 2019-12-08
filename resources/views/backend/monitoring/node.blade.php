@@ -105,7 +105,7 @@ $(document).ready(function () {
                 text : "PM 10"
             },
             axisY: {
-                title : "u/m3"
+                title : "ug/m3"
             },
             axisX: {
                 title : "Nilai perdetik"

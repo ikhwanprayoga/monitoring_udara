@@ -35,11 +35,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
+                    <label class="filter-label">Wilayah</label>
+                    <select name="wilayah" class="form-control wilayah">
+                        <option value="">--Pilih Wilayah--</option>
+                        @foreach($wilayah as $wilayah)
+                            <option value="{{ $wilayah->id }}">{{ $wilayah->wilayah }}</option>}
+                        @endforeach
+                        </select>
+                </div>
+                <div class="col-4">
                     <label class="filter-label">Mulai Dari</label>
                     <input type="date" class="form-control pickadate mulai" name="mulai" id="mulai">
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <label class="filter-label">Sampai</label>
                     <input type="date" class="form-control pickadate akhir" name="akhir" id="akhir">
                 </div>
@@ -59,6 +68,7 @@
                     <thead class="bg-primary white">
                         <tr>
                             <th>No</th>
+                            <th>Wilayah</th>
                             <th>Waktu</th>
                             <th>PM10</th>
                             <th>CO</th>
@@ -134,7 +144,7 @@
         var created_at  =  nilai.data('created_at');
 
         $('#id_rincian').val(id);
-        $('#pm10_rincian').html(pm10).append("<small> u/m3</small>");
+        $('#pm10_rincian').html(pm10).append("<small> ug/m3</small>");
         $('#co_rincian').html(co).append("<small> ppm</small>");
         // $('#asap_rincian').html(asap).append("<small> ppm</small>");
         $('#suhu_rincian').html(suhu).append("<small> C</small>");
@@ -182,12 +192,14 @@
             data: function (d) {
                 d.mulai = $('input[name=mulai]').val();
                 d.akhir = $('input[name=akhir]').val();
+                d.wilayah = $('select[name=wilayah]').val();
                 console.log(d.mulai);
                 console.log(d.akhir);
             }
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', width: '20px' },
+            { data: 'wilayah', name: 'wilayah' },
             { data: 'waktu', name: 'waktu' },
             { 
                 data: 'pm10', 
@@ -219,6 +231,13 @@
     });
 
     $('.akhir').on('change', function (e) {
+        // oTable.draw();
+        $('#table_detail').DataTable().ajax.reload();
+        // oTable.draw();
+        e.preventDefault();
+    });
+
+    $('.wilayah').on('change', function (e) {
         // oTable.draw();
         $('#table_detail').DataTable().ajax.reload();
         // oTable.draw();

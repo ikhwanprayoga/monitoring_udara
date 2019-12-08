@@ -155,19 +155,17 @@
         var asap = [];
         var suhu = [];
         var kelembapan = [];
-
+        
         @foreach ($data as $key => $val)
             var time = new Date;
-            // time.setHours({{ $val->created_at->format('H') }});
             time.setHours({{ $val->waktu }});
-            // time.setMinutes({{ $val->created_at->format('i') }});
             pm10.push({x: time.getTime(), y: {{ $val->pm10 }} });
             co.push({x: time.getTime(), y: {{ $val->co }} });
             // asap.push({x: time.getTime(), y: {{ $val->asap }} });
             suhu.push({x: time.getTime(), y: {{ $val->suhu }} });
             kelembapan.push({x: time.getTime(), y: {{ $val->kelembapan }} });
         @endforeach
-
+        
         var chart = new CanvasJS.Chart("chart", {
             animationEnabled: true,
             title:{
@@ -177,7 +175,7 @@
                 title: "Data Perjam"
             },
             axisY: {
-                title: "u/m3 dan ppm"
+                title: "ug/m3 dan ppm"
             },
             toolTip:{
                 shared: true
@@ -191,7 +189,7 @@
                     xValueType: "dateTime",
                     // xValueFormatString: "DD MMM YYYY, hh:mm TT",
                     xValueFormatString: "DD MMM YYYY, pukul HH",
-                    yValueFormatString: "####.00 u/m3",
+                    yValueFormatString: "####.00 ug/m3",
                     dataPoints: pm10
                 },
                 {

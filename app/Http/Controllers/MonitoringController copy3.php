@@ -17,7 +17,7 @@ class MonitoringController extends Controller
 {
 	public function index()
 	{
-        $data = NodeSensor::orderBy('id', 'asc')->with('nama_wilayah')->get();
+        $data = NodeSensor::orderBy('id', 'asc')->get();
 		return view('backend.monitoring.index', compact('data'));
 	}
 
@@ -35,6 +35,9 @@ class MonitoringController extends Controller
     	$input['asap'] 		       = $request->asap;
     	$input['suhu'] 		       = $request->suhu;
     	$input['kelembapan']       = $request->kelembapan;
+
+
+        $node_sensor_id = $request->node_sensor_id;
         
         //log monitoring
         $log_monitoring = LogMonitoring::create(
@@ -48,7 +51,7 @@ class MonitoringController extends Controller
             ]
         );
 
-        $node_sensor = Monitoring::where('node_sensor_id', $node_sensor_id)->first();
+        $node_sensor= Monitoring::where('node_sensor_id', $node_sensor_id)->first();
         //jika node sensor blm ada maka di buat
     	if (empty($node_sensor)) {
     		$simpan = Monitoring::create($input);
@@ -57,22 +60,14 @@ class MonitoringController extends Controller
 
         //jika node sensor sudah ada maka di update
     	if (isset($node_sensor)) {
-    		$update = Monitoring::find($node_sensor->id)->update($input);
+	    	$id 		        = $node_sensor_id;
+    		$update = Monitoring::find($id)->update($input);
     		// return "data di update";
     	}
 
         //simpan data ke data sementara
-        $simpanDataSementara = DataSementara::create(
-            [
-                'node_sensor_id' => $request->node_sensor_id,
-                'pm10'           => $request->pm10,
-                'co'             => $request->co,
-                'asap'           => $request->asap,
-                'suhu'           => $request->suhu,
-                'kelembapan'     => $request->kelembapan,
-            ]
-        );
-        
+        DataSementara::create($input);
+
         //cek data permenit
         $dataPermenit1 = DataPermenit::where('node_sensor_id', $node_sensor_id)->first();
         //jika kosong maka buat data
@@ -87,30 +82,30 @@ class MonitoringController extends Controller
 
             $tambahDataPermenit = DataPermenit::create($inputDataPermenit);
         }
-        
+
         $dataPermenit2 = DataPermenit::where('node_sensor_id', $node_sensor_id)->orderBy('id', 'desc')->first();
 
         if ( isset($dataPermenit2) ) {
             // return 'data menit tersedia';
             $menit_lama = $dataPermenit2->created_at->format('Y-m-d H:i');
             $menit_sekarang = Monitoring::where('node_sensor_id', $node_sensor_id)->first()->updated_at->format('Y-m-d H:i');
-            
+
             if ($menit_sekarang > $menit_lama) {
-                
-                $inputMenit['node_sensor_id'] = $node_sensor_id;
-                $inputMenit['pm10']           = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('pm10');
-                $inputMenit['co']             = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('co');
-                $inputMenit['asap']           = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('asap');
-                $inputMenit['suhu']           = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('suhu');
-                $inputMenit['kelembapan']     = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('kelembapan');
+                // return 'permenit';
+                $inputDataPermenit['node_sensor_id'] = $node_sensor_id;
+                $inputMenit['pm10']                  = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('pm10');
+                $inputMenit['co']                    = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('co');
+                $inputMenit['asap']                  = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('asap');
+                $inputMenit['suhu']                  = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('suhu');
+                $inputMenit['kelembapan']            = DataSementara::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $menit_sekarang)->avg('kelembapan');
 
-                // $menit_data = DataSementara::where('node_sensor_id', $node_sensor_id)
-                //                 ->orderBy('id', 'desc')
-                //                 ->first()
-                //                 ->created_at->format('Y-m-d H:i:s');
+                $menit_data = DataSementara::where('node_sensor_id', $node_sensor_id)
+                                ->orderBy('id', 'desc')
+                                ->first()
+                                ->created_at->format('Y-m-d H:i:s');
 
-                // $inputMenit['created_at'] = $menit_data;
-                
+                $inputMenit['created_at'] = $menit_data;
+
                 //notif permenit
                 // if (($inputMenit['pm10'] >= 0 && $inputMenit['pm10'] <= 50) || ($inputMenit['co'] >= 0 && $inputMenit['co'] <= 50)) {
                 //     $kualitas_udara_sementara = 1;
@@ -134,7 +129,7 @@ class MonitoringController extends Controller
                 //tutup notif permenit
 
                 $kirim_data = DataPermenit::create($inputMenit);
-                
+
                 $data_lama = DataSementara::where('node_sensor_id', $node_sensor_id)->select('id')->get();
                     
                 foreach ($data_lama as $key => $value) {
@@ -142,7 +137,7 @@ class MonitoringController extends Controller
                 }
                 // return 'berhasil permenit';
             }
-            
+
             $dataPerjam1 = Data::where('node_sensor_id', $node_sensor_id)->first();
 
             if (empty($dataPerjam1)) {
@@ -180,35 +175,28 @@ class MonitoringController extends Controller
                                 ->orderBy('id', 'desc')
                                 ->first()
                                 ->created_at->format('Y-m-d H');
-                $monitoring = Monitoring::where('node_sensor_id', $node_sensor_id)
+                $jam_sekarang = Monitoring::where('node_sensor_id', $node_sensor_id)
                                 ->orderBy('id', 'desc')
-                                ->first();
-                
-                $jam_sekarang = $monitoring->updated_at->format('Y-m-d H');
-                // $created_at_sekarang = $monitoring->updated_at;
-                
-                if ($jam_sekarang > $jam_lama) {
-                    
-                    $inputJam['node_sensor_id']  = $node_sensor_id;
-                    $inputJam['pm10']            = DataPermenit::where('node_sensor_id', $node_sensor_id)->avg('pm10');
-                    $inputJam['co']              = DataPermenit::where('node_sensor_id', $node_sensor_id)->avg('co');
-                    $inputJam['asap']            = DataPermenit::where('node_sensor_id', $node_sensor_id)->avg('asap');
-                    $inputJam['suhu']            = DataPermenit::where('node_sensor_id', $node_sensor_id)->avg('suhu');
-                    $inputJam['kelembapan']      = DataPermenit::where('node_sensor_id', $node_sensor_id)->avg('kelembapan');
-                    
-                    $waktu = DataPermenit::where('node_sensor_id', $node_sensor_id)->orderBy('id', 'desc')->first()->created_at;
-                    
-                    $inputJam['waktu'] = (int)date('H', strtotime($waktu))-1;
+                                ->first()
+                                ->updated_at->format('Y-m-d H');
 
-                    if ($inputJam['waktu'] < 0) {
-                        // return '0';
-                        $inputJam['waktu'] = 23;
-                        // $inputJam['created_at'] = Data::where('node_sensor_id', $node_sensor_id)->orderBy('id', 'desc')->first()->created_at;
-                        $tanggal = Data::where('node_sensor_id', $node_sensor_id)->orderBy('id', 'desc')->first()->created_at;
-                        $inputJam['tanggal'] = date('Y-m-d', strtotime($tanggal));
+                if ($jam_sekarang > $jam_lama) {
+
+                    $inputJam['node_sensor_id']  = $node_sensor_id;
+                    $inputJam['pm10']            = DataPermenit::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $jam_sekarang)->avg('pm10');
+                    $inputJam['co']              = DataPermenit::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $jam_sekarang)->avg('co');
+                    $inputJam['asap']            = DataPermenit::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $jam_sekarang)->avg('asap');
+                    $inputJam['suhu']            = DataPermenit::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $jam_sekarang)->avg('suhu');
+                    $inputJam['kelembapan']      = DataPermenit::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $jam_sekarang)->avg('kelembapan');
+
+                    $waktu = DataPermenit::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $jam_sekarang)->orderBy('id', 'desc')->first()->created_at;
+                    
+                    $inputJam['waktu'] = (int)date('H', strtotime($waktu));
+
+                    if ($inputJam['waktu'] == 23) {
+                        $inputJam['created_at'] = Data::where('node_sensor_id', $node_sensor_id)->orderBy('id', 'desc')->first()->created_at;
                     } else {
-                        // return 'er';
-                        $inputJam['tanggal'] = date('Y-m-d', strtotime($waktu));
+                        $inputJam['created_at'] = $waktu;
                     }
 
                     if (($inputJam['pm10'] >= 0 && $inputJam['pm10'] <= 50) || ($inputJam['co'] >= 0 && $inputJam['co'] <= 50)) {
@@ -226,7 +214,7 @@ class MonitoringController extends Controller
                     if ($inputJam['pm10'] >= 300  || $inputJam['co'] >= 300 ) {
                         $inputJam['kategori_udara_id'] = 5;
                     }
-                    // return $inputJam;
+
                     $kirim_data = Data::create($inputJam);
 
                     //kirim notif berdasarkan kategori udara id
@@ -234,7 +222,7 @@ class MonitoringController extends Controller
                         $this->kirim_notif($inputJam['kategori_udara_id']);
                     }
 
-                    $data_lama = DataPermenit::where('node_sensor_id', $node_sensor_id)->get();
+                    $data_lama = DataPermenit::where('node_sensor_id', $node_sensor_id)->where('created_at', '<', $jam_sekarang)->get();
                         
                     foreach ($data_lama as $key => $value) {
                         $hapus_data_lama = DataPermenit::where('id', $value->id)->delete();

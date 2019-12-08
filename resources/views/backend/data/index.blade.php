@@ -49,14 +49,23 @@
                         <div class="card-body">
                             {{-- <p class="card-text">Using the most basic table markup, here’s how <code>.table</code>-based tables look in Bootstrap. You can use any example of below table for your table and it can be use with any type of bootstrap tables. </p> --}}
                             <div class="row filter">
-
                                 <div class="col-md-4">
-                                    <label class="filter-label">Mulai Dari</label>
-                                    <input type="date" class="form-control pickadate mulai" name="mulai">
+                                    <label class="filter-label">Wilayah</label>
+                                    <select name="wilayah" class="form-control wilayah">
+                                      <option value="">--Pilih Wilayah--</option>
+                                      @foreach($wilayah as $wilayah)
+                                          <option value="{{ $wilayah->id }}">{{ $wilayah->wilayah }}</option>}
+                                      @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="filter-label">Sampai</label>
-                                    <input type="date" class="form-control pickadate akhir" name="akhir">
+                                    <label class="filter-label">Node Sensor</label>
+                                    <select name="node_sensor" class="form-control node_sensor">
+                                      <option value="">--Pilih Node Sensor--</option>
+                                      @foreach($sensor as $node_sensor)
+                                          <option value="{{ $node_sensor->id }}">{{ $node_sensor->nama }}</option>}
+                                      @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="filter-label">Filter by Kategori Kualitas Udara</label>
@@ -67,11 +76,21 @@
                                       @endforeach
                                     </select>
                                 </div>
+                                <div class="col-md-6">
+                                    <label class="filter-label">Mulai Dari</label>
+                                    <input type="date" class="form-control pickadate mulai" name="mulai">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="filter-label">Sampai</label>
+                                    <input type="date" class="form-control pickadate akhir" name="akhir">
+                                </div>
                             </div>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                     <thead>
                                         <tr>
+                                            <th>Wilayah</th>
+                                            <th>Node</th>
                                             <th>PM10</th>
                                             <th>CO</th>
                                             <th>Asap</th>
@@ -100,25 +119,43 @@
 </script>
 <script>
     var table = $('#table').DataTable({
-        "order" : [[5, "desc"]],
+        "order" : [[8, "desc"]],
         processing: true,
         serverSide: true,
+        "searching": false,
         ajax: {
             url: '{{ route('get-data') }}',
             data: function (d) {
                 d.mulai = $('input[name=mulai]').val();
                 d.akhir = $('input[name=akhir]').val();
                 d.kategori_udara = $('select[name=kategori_udara]').val();
+                d.node_sensor = $('select[name=node_sensor]').val();
+                d.wilayah = $('select[name=wilayah]').val();
                 // console.log(d.mulai);
                 // console.log(d.akhir);
             }
         },
         columns: [
             {
+                data: 'wilayah', name: 'wilayah',
+            },
+            {
+                data: 'node_sensor', 
+                name: 'node_sensor',
+                render: function (data, type, rows) {
+                    // console.log(rows.node_sensor.nama)
+                    if (rows.nama == null) {
+                        return 'sensor belum terdaftar'
+                    } else {
+                        return rows.nama
+                    }
+                }
+            },
+            {
                 data: 'pm10', 
                 name: 'pm10',
                 render: function (data, type, rows) {
-                    return Number.parseFloat(rows.pm10).toFixed(2) + ' u/m3'
+                    return Number.parseFloat(rows.pm10).toFixed(2) + ' ug/m3'
                 }
             },
             {
@@ -163,6 +200,16 @@
     });
 
     //filter date range
+    $('.wilayah').on('change', function (e) {
+        table.draw();
+        e.preventDefault();
+    });
+
+    $('.node_sensor').on('change', function (e) {
+        table.draw();
+        e.preventDefault();
+    });
+
     $('.mulai').on('change', function (e) {
         table.draw();
         e.preventDefault();

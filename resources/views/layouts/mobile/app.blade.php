@@ -9,8 +9,8 @@
     <meta name="author" content="ThemeSelect">
     @yield('header')
     <link rel="manifest" href="{{ asset('manifest.json') }}">
-    <link rel="apple-touch-icon" href="{{ asset('app-assets/images/ico/apple-icon-120.png') }}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('app-assets/images/ico/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('logo/logokuadra.png') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('logo/logokuadra.png') }}">
     <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
     <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
     <!-- BEGIN VENDOR CSS-->
@@ -84,8 +84,8 @@
     <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow lebar_menu" data-scroll-to-active="true" data-img="{{ asset('app-assets/images/backgrounds/02.jpg') }}">
       <div class="navbar-header navbar_header_lebar">
         <ul class="nav navbar-nav flex-row">       
-          <li class="nav-item mr-auto"><a class="navbar-brand" href="{{ route('mobile.beranda') }}"><img class="brand-logo" alt="Chameleon admin logo" src="{{ asset('app-assets/images/logo/logo.png') }}"/>
-              <h3 class="brand-text">Chameleon</h3></a></li>
+          <li class="nav-item mr-auto"><a class="navbar-brand" href="{{ route('mobile.beranda') }}"><img class="brand-logo"  style="width: 198px; margin-top: -13px;" src="{{ asset('logo/kuadra.png') }}"/>
+              {{-- <h3 class="brand-text">Chameleon</h3></a></li> --}}
           <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
         </ul>
       </div>

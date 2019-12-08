@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 use App\Data;
 use App\MasterWilayah;
@@ -14,7 +15,17 @@ class BerandaController extends Controller
     public function index()
     {
     	$date = date('Y-m-d');
-		$data = Data::where('created_at', 'LIKE', '%' .$date. '%')->get();
+		// return $data = Data::where('created_at', 'LIKE', '%' .$date. '%')->get();
+		$data = Data::where('created_at', 'LIKE', '%' .$date. '%')
+							->select(
+								'waktu',
+								DB::raw('AVG(pm10) as pm10'), 
+								DB::raw('AVG(co) as co'), 
+								DB::raw('AVG(suhu) as suhu'), 
+								DB::raw('AVG(kelembapan) as kelembapan')
+							)
+							->groupBy('waktu')
+							->get();
 		$wilayah = MasterWilayah::all();
 		$sensor = NodeSensor::all();
 		$user = User::all();

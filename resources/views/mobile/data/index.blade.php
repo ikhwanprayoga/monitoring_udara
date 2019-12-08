@@ -39,11 +39,23 @@
                     </a>
                 </div>
             </div>
+            <div class="row" style="padding-bottom: 17px;">
+                <div class="col-12">
+                    <label class="filter-label">Wilayah</label>
+                    <select name="wilayah" class="form-control wilayah">
+                        <option value="">--Pilih Wilayah--</option>
+                        @foreach($wilayah as $wilayah)
+                            <option value="{{ $wilayah->id }}">{{ $wilayah->wilayah }}</option>}
+                        @endforeach
+                        </select>
+                </div>
+            </div>
             <div class="row table_ringkasan">
                 <table class="table table-responsive" id="table_ringkasan">
                     <thead class="bg-primary white">
                         <tr>
                             <th>No</th>
+                            <th>Wilayah</th>
                             <th>Waktu</th>
                             <th>PM10</th>
                             <th>CO</th>
@@ -103,16 +115,20 @@
 <script src="{{ asset('dataTable/jquery.dataTables.js') }}" type="text/javascript"></script>
 <script>
     var table_ringkasan = $('#table_ringkasan').DataTable({
-        processing: false,
+        processing: true,
         saerverSide: true,
         searching: false,
         paging: false,
         info: false,
         ajax: {
-            url: '{{ route('mobile.getData.ringkasan') }}'
+            url: '{{ route('mobile.getData.ringkasan') }}',
+            data: function (d) {
+                d.wilayah = $('select[name=wilayah]').val();
+            }
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', width: '20px' },
+            { data: 'wilayah', name: 'wilayah' },
             { data: 'waktu', name: 'waktu' },
             { 
                 data: 'pm10', 
@@ -134,6 +150,12 @@
         ]
     });
 
+    $('.wilayah').on('change', function (e) {
+        table_ringkasan.draw();
+        $('#table_ringkasan').DataTable().ajax.reload();
+        e.preventDefault();
+    });
+
     $('#modal_rincian').on('show.bs.modal', function (event) {
         var nilai = $(event.relatedTarget);
         var id          =  nilai.data('id');
@@ -146,7 +168,7 @@
         var created_at  =  nilai.data('created_at');
 
         $('#id_rincian').val(id);
-        $('#pm10_rincian').html(pm10).append("<small> u/m3</small>");
+        $('#pm10_rincian').html(pm10).append("<small> ug/m3</small>");
         $('#co_rincian').html(co).append("<small> ppm</small>");
         // $('#asap_rincian').html(asap).append("<small> ppm</small>");
         $('#suhu_rincian').html(suhu).append("<small> C</small>");

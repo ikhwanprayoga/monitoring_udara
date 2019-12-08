@@ -7,8 +7,8 @@ use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 
 use App\Data;
-use App\DataSementara;
-use App\DataPermenit;
+use App\NodeSensor;
+use App\MasterWilayah;
 use App\KategoriUdara;
 
 class DataController extends Controller
@@ -16,12 +16,24 @@ class DataController extends Controller
     public function index()
     {
         $kategori_udara = KategoriUdara::all();
-    	return view('backend.data.index', compact('kategori_udara'));
+        $sensor = NodeSensor::all();
+        $wilayah = MasterWilayah::all();
+    	return view('backend.data.index', compact('kategori_udara', 'sensor', 'wilayah'));
     }
 
     public function getData(Request $request)
     {
-    	$data = Data::select(['id','pm10','co', 'asap','suhu','kelembapan','created_at','waktu','kategori_udara_id']);
+        // $data = Data::with('nodeSensor')->orderBy('id', 'asc');
+        // $node = NodeSensor::join('master_wilayah', 'master_wilayah.id', '=', 'node_sensor.wilayah_id');
+        $data = Data::join('node_sensor', 'node_sensor.id', '=', 'data.node_sensor_id')
+                    ->join('master_wilayah', 'master_wilayah.id', '=', 'wilayah_id')
+                    ->select([
+                        'node_sensor.id',
+                        'node_sensor.nama',
+                        'node_sensor.wilayah_id',
+                        'master_wilayah.wilayah',
+                        'data.*',
+                    ]);
 
             if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null) {
                 $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
@@ -31,7 +43,20 @@ class DataController extends Controller
                 $data->where('kategori_udara_id', $request->kategori_udara);
             }
 
+            if ($request->has('node_sensor') && $request->node_sensor != null) {
+                $data->where('node_sensor_id', $request->node_sensor);
+            }
+
+            if ($request->has('wilayah') && $request->wilayah != null) {
+                $data->where('wilayah_id', $request->wilayah);
+            }
+
         return Datatables::of($data)
+        // ->addColumn('wilayah', function ($data) {
+        //     $wilayah = NodeSensor::with('nama_wilayah')->first();
+
+        //     return $wilayah->nama_wilayah->wilayah;
+        // })
         ->addColumn('kategori_udara', function ($data) {
             if ($data->kategori_udara_id == 1) {
                 return '<div class="badge badge-success">Baik</div>';
@@ -46,7 +71,7 @@ class DataController extends Controller
             }
         })
         ->addColumn('waktu', function ($data){
-            return 'Pukul '.$data->waktu.' , '.date('d-m-Y', strtotime($data->created_at));
+            return 'Pukul '.$data->waktu.' <br> '.date('d-m-Y', strtotime($data->created_at));
         })
         ->rawColumns(['kategori_udara', 'waktu'])
         ->make(true);

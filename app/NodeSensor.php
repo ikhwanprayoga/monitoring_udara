@@ -15,4 +15,9 @@ class NodeSensor extends Model
     {
     	return $this->belongsTo('App\MasterWilayah', 'wilayah_id');
     }
+
+    public function data()
+    {
+    	return $this->hasMany('App\Data', 'node_sensor_id');
+    }
 }
