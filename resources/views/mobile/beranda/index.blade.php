@@ -138,19 +138,24 @@
                         $('#pm10_wilayah_'+element.wilayah_id).html(element.pm10.toFixed(2))
 
                         if (element.pm10 <= max_baik_pm10 && element.co <= max_baik_co) {
-                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-green.svg') }}" alt="" style="width: 175px;">');
+                            $('#logoKualitasUdara_'+element.wilayah_id).attr('src', '{{ asset('logo/ic-face-green.svg') }}');
+                            // $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-green.svg') }}" alt="" style="width: 175px;">');
                             $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-success" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Baik</div>');
                         } else if (element.pm10 <= max_sedang_pm10 && element.co <= max_sedang_co) {
-                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-blue.svg') }}" alt="" style="width: 175px;">')
+                            $('#logoKualitasUdara_'+element.wilayah_id).attr('src', '{{ asset('logo/ic-face-blue.svg') }}');
+                            // $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-blue.svg') }}" alt="" style="width: 175px;">')
                             $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-primary" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Sedang</div>');
                         } else if (element.pm10 <= max_tidaksehat_pm10 && element.co <= max_tidaksehat_co) {
-                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-yellow.svg') }}" alt="" style="width: 175px;">')
+                            $('#logoKualitasUdara_'+element.wilayah_id).attr('src', '{{ asset('logo/ic-face-yellow.svg') }}');
+                            // $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-yellow.svg') }}" alt="" style="width: 175px;">')
                             $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-warning" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Tidak Sehat</div>');
                         } else if (element.pm10 <= max_sangattidaksehat_pm10 && element.co <= max_sangattidaksehat_co) {
-                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-red.svg') }}" alt="" style="width: 175px;">')
+                            $('#logoKualitasUdara_'+element.wilayah_id).attr('src', '{{ asset('logo/ic-face-red.svg') }}');
+                            // $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-red.svg') }}" alt="" style="width: 175px;">')
                             $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-danger" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Sangat Tidak Sehat</div>');
                         } else {
-                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-purple.svg') }}" alt="" style="width: 175px;">')
+                            $('#logoKualitasUdara_'+element.wilayah_id).attr('src', '{{ asset('logo/ic-face-purple.svg') }}');
+                            // $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-purple.svg') }}" alt="" style="width: 175px;">')
                             $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-secondary" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Berbahaya</div>');
                         }
 

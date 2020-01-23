@@ -28,9 +28,10 @@ class BerandaController extends Controller
 
     public function rekomendasi()
     {
+        $wilayahs = MasterWilayah::has('nodeSensors')->get();
         $data = Rekomendasi::orderBy('kategori_udara_id', 'ASC')->get();
         $aktif = Notifikasi::orderBy('id', 'DESC')->first()->kategori_udara_id;
         
-        return view('mobile.beranda.index', compact('data', 'aktif'));
+        return view('mobile.beranda.index', compact('data', 'wilayahs', 'aktif'));
     }
 }

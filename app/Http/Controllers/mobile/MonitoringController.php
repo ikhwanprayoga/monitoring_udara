@@ -13,7 +13,10 @@ class MonitoringController extends Controller
 {
     public function monitoring()
     {
-        $waktu = date('Y-m-d H:i');
+        $date = new \DateTime();
+        $date->modify('-1 minutes');
+        $waktu = $date->format('Y-m-d H:i:s');
+        // return $waktu;
         $wilayahs = MasterWilayah::has('nodeSensors')->with('nodeSensors')->get();
         $monitorings = Monitoring::all();
 
@@ -25,11 +28,12 @@ class MonitoringController extends Controller
             }
 
             foreach ($monitorings as $keyM => $monitoring) {
-                $data[$keyW]['pm10'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('pm10');
-                $data[$keyW]['co'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('co');
-                $data[$keyW]['asap'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('asap');
-                $data[$keyW]['suhu'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('suhu');
-                $data[$keyW]['kelembapan'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('kelembapan');
+                $data[$keyW]['pm10'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('pm10');
+                $data[$keyW]['co'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('co');
+                $data[$keyW]['asap'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('asap');
+                $data[$keyW]['suhu'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('suhu');
+                $data[$keyW]['kelembapan'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('kelembapan');
+                $data[$keyW]['waktuDataBase'] = $waktu;
             }
             
         }
@@ -39,7 +43,9 @@ class MonitoringController extends Controller
 
     public function detail($wilayahId)
     {
-        $waktu = date('Y-m-d H:i');
+        $date = new \DateTime();
+        $date->modify('-1 minutes');
+        $waktu = $date->format('Y-m-d H:i:s');
         $wilayah = MasterWilayah::where('id', $wilayahId)->has('nodeSensors')->with('nodeSensors')->first();
         $monitorings = Monitoring::all();
 
@@ -51,11 +57,11 @@ class MonitoringController extends Controller
             }
             // return $nodeSensorId;
             // foreach ($monitorings as $keyM => $monitoring) {
-                $data['pm10'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('pm10');
-                $data['co'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('co');
-                $data['asap'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('asap');
-                $data['suhu'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('suhu');
-                $data['kelembapan'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', $waktu)->avg('kelembapan');
+                $data['pm10'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('pm10');
+                $data['co'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('co');
+                $data['asap'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('asap');
+                $data['suhu'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('suhu');
+                $data['kelembapan'] = Monitoring::whereIn('node_sensor_id', $nodeSensorId)->where('updated_at', '>', $waktu)->avg('kelembapan');
                 $waktu = Monitoring::orderBy('updated_at', 'desc')->first()->updated_at;
                 $data['waktu'] = date('H:i', strtotime($waktu));
             // }
