@@ -16,7 +16,7 @@ class BerandaController extends Controller
     {
     	$date = date('Y-m-d');
 		// return $data = Data::where('created_at', 'LIKE', '%' .$date. '%')->get();
-		$data = Data::where('created_at', 'LIKE', '%' .$date. '%')
+		$data = Data::where('tanggal', 'LIKE', '%' .$date. '%')
 							->select(
 								'waktu',
 								DB::raw('AVG(pm10) as pm10'), 
@@ -25,6 +25,7 @@ class BerandaController extends Controller
 								DB::raw('AVG(kelembapan) as kelembapan')
 							)
 							->groupBy('waktu')
+							->orderBy('id', 'asc')
 							->get();
 		$wilayah = MasterWilayah::all();
 		$sensor = NodeSensor::all();

@@ -47,7 +47,7 @@ class DataController extends Controller
                         'master_wilayah.wilayah',
                         'data.*',
                     ])
-                    ->where('data.created_at', 'like', '%'.$today.'%');
+                    ->where('data.tanggal', 'like', '%'.$today.'%');
 
         if ($request->has('wilayah') && $request->wilayah != null) {
             $data->where('wilayah_id', $request->wilayah);
@@ -55,7 +55,7 @@ class DataController extends Controller
 
         return Datatables::of($data)
         ->addColumn('waktu', function ($data){
-            return 'Pukul '.$data->waktu.' , '.date('d-m-Y', strtotime($data->created_at));
+            return 'Pukul '.$data->waktu.' , '.date('d-m-Y', strtotime($data->tanggal));
         })
         ->addColumn('kualitas', function ($data){
             if ($data->kategori_udara_id == 1) {
@@ -129,7 +129,7 @@ class DataController extends Controller
                     ]);
 
         if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null ) {
-            $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
+            $data->whereBetween('tanggal', [$request->mulai, $request->akhir]);
         }
 
         if ($request->has('wilayah') && $request->wilayah != null) {
@@ -138,7 +138,7 @@ class DataController extends Controller
 
         return Datatables::of($data)
         ->addColumn('waktu', function ($data){
-            return 'Pukul '.$data->waktu.' , '.date('d-m-Y', strtotime($data->created_at));
+            return 'Pukul '.$data->waktu.' , '.date('d-m-Y', strtotime($data->tanggal));
         })
         ->addColumn('kualitas', function ($data){
             if ($data->kategori_udara_id == 1) {

@@ -16,8 +16,8 @@ class MasterWilayah extends Model
     	return $this->hasMany('App\NodeSensor', 'wilayah_id');
     }
 
-    public function nodeSensor()
-    {
-    	return $this->hasOne('App\NodeSensor', 'wilayah_id');
-    }
+    // public function nodeSensor()
+    // {
+    // 	return $this->hasOne('App\NodeSensor', 'wilayah_id');
+    // }
 }

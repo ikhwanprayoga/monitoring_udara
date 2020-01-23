@@ -11,6 +11,11 @@ class NodeSensor extends Model
     public $timestamps = true;
     protected $primaryKey = 'id';
 
+    public function monitoring()
+    {
+        return $this->hasOne('App\Monitoring', 'id', 'node_sensor_id');
+    }
+
     public function nama_wilayah()
     {
     	return $this->belongsTo('App\MasterWilayah', 'wilayah_id');

@@ -37,6 +37,7 @@ Route::get('kirim_data/{node_sensor_id}/{pm10}/{co}/{asap}/{suhu}/{kelembapan}',
 
 //monitoring mobile rata2 nilai sensor per 3 detik yang update hari ini
 Route::get('mobile/monitoring', 'mobile\MonitoringController@monitoring')->name('mobile.monitoring');
+Route::get('mobile/monitoring/{wilayahId}', 'mobile\MonitoringController@detail')->name('mobile.monitoring.detail');
 
 //tutorial web push
 Route::post('/save-subscription/{id}',function($id, Request $request){

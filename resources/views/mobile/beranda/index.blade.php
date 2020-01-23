@@ -16,70 +16,48 @@
 @section('content')
     <div class="app-content content">
       <div class="content-wrapper">
+        <div class="content-wrapper-before"></div>
+        <div class="content-header row">
+        </div>
         <div class="content-body">
             <div class="row">
-                <div class="col-xs-12 col-md-4">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="card-body text-center">
-                                <div class="card-header pt-0 pb-0">
-                                    {{-- <p class="danger darken-2">Total Customers</p> --}}
-                                    <h2 class="display- blue-grey lighten-2">Pontianak</h2>
-                                </div>
-                                <div class="card-content">
-                                    {{-- <div id="new-customers" class="height-150 donutShadow"></div> --}}
-                                    <div id="logoKualitasUdara">
-                                        <img src="{{ asset('logo/ic-face-grenn.svg') }}" alt="" style="max-width: 175px;">
+                @foreach ($wilayahs as $wilayah)
+                <div class="col-lg-6 col-md-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card pull-up ">
+                                <div class="card-header ">
+                                    <h4 class="card-title primary">{{ ucfirst($wilayah->wilayah)  }}</h4>
+                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                    <div class="heading-elements">
+                                        <ul class="list-inline mb-0">
+                                            <li>
+                                                <a class="btn btn-sm btn-primary white box-shadow-1 round btn-min-width pull-right" id="detailWilayah_{{$wilayah->id}}" href="{{ route('mobile.beranda-detail', ['wilayahId'=>$wilayah->id]) }}">Detail</a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <ul class="list-inline clearfix mt-2 mb-0 pt-1">
-                                        <li>
-                                            {{-- <h1 class="blue-grey lighten-2 text-bold-400">1465</h1> --}}
-                                            <p class="darken-2" id="kat_kualitas_udara">Kategori Kualitas Udara</p>
-                                        </li>
-                                    </ul>
+                                </div>
+                                <div class="card-content collapse show ">
+                                    <div class="card-body">
+                                        <div class="media d-flex">
+                                            <div class="align-self-center width-100">
+                                                <img id="logoKualitasUdara_{{$wilayah->id}}" src="{{ asset('logo/ic-face-green.svg') }}" alt="" style="width: 100px;">
+                                                {{-- <div id="Analytics-donut-chart" class="height-100 donutShadow"></div> --}}
+                                            </div>
+                                            <div class="media-body text-right mt-1">
+                                                <h3 id="data_wilayah_{{$wilayah->id}}">
+                                                    <span style="font-size: 18px;">PM10 </span><span class="font-large-2 primary" id="pm10_wilayah_{{$wilayah->id}}">0</span> <span style="font-size: 12px;">ug/m3</span>
+                                                </h3>
+                                                <h6 class="mt-1"><span class="text-muted primary data_kategori_udara" id="kat_kualitas_udara_{{$wilayah->id}}">Kualitas Udara</span></h6>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
-                    <div class="card">
-                        <div class="card-header p-1">
-                            <h4 class="card-title float-left">Realtime - <span class="blue-grey lighten-2 font-small-3 mb-0">{{ Waktu::waktu_lengkap(date('Y-m-d'), true) }} - </span><span id="waktu" class="blue-grey lighten-2 font-small-3 mb-0">&nbsp;&nbsp; </span></h4>
-                        </div>
-                        <div class="card-content collapse show">
-                            <div class="card-footer text-center p-1">
-                                <div class="row">
-                                    <div class="col-6 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400" id="m_pm10">0</p><br>
-                                        <p class="blue-grey lighten-2 mb-0">pm10 (u/m3)</p>
-                                    </div>
-                                    <div class="col-6 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400" id="m_co">0</p><br>
-                                        <p class="blue-grey lighten-2 mb-0">co (ppm)</p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-4 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400" id="m_asap">0</p><br>
-                                        <p class="blue-grey lighten-2 mb-0">asap</p>
-                                    </div>
-                                    <div class="col-4 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400" id="m_suhu">0</p><br>
-                                        <p class="blue-grey lighten-2 mb-0">suhu (C)</p>
-                                    </div>
-                                    <div class="col-4 border-right-blue-grey border-right-lighten-5 text-center">
-                                        <p class="font-medium-1 text-bold-400" id="m_kelembapan">0</p><br>
-                                        <p class="blue-grey lighten-2 mb-0">kelembapan (%)</p>
-                                    </div>
-                                </div>
-                                {{-- <hr> --}}
-                                {{-- <span class="text-muted"><a href="#" class="danger darken-2">Project X</a> Statistics</span> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <section id="basic-tabs-components">
                 <div class="row match-height" id="rekomendasi">
@@ -144,43 +122,46 @@
     $(document).ready(function () {
         function realtime_mobile() {
             $.get('{{ route('mobile.monitoring') }}', function (data) {
-                // console.log(data.co);
-                $('#m_pm10').html(data.pm10.toFixed(2));
-                $('#m_co').html(data.co.toFixed(2));
-                // $('#m_asap').html(data.asap.toFixed(2));
-                $('#m_suhu').html(data.suhu.toFixed(2));
-                $('#m_kelembapan').html(data.kelembapan.toFixed(2));
-                $('#waktu').html(' '+data.waktu);
+                console.log(data);
 
-                var n_pm10 = data.pm10;
-                var n_co = data.co;
-                var n_asap = data.asap;
-                console.log('pm10: '+n_pm10+' co: '+data.co+' asap: '+data.asap+' suhu: '+data.suhu+' kelembapan: '+data.kelembapan+ ' waktu: '+data.waktu)
+                data.forEach(element => {
+                    console.log('pm10_wilayah_'+element.pm10)
+                    if (element.pm10 != null) {
 
-                if (n_pm10 <= max_baik_pm10 && n_co <= max_baik_co) {
-                    $('#logoKualitasUdara').html('<img id="logoKualitasUdara" src="{{ asset('logo/ic-face-green.svg') }}" alt="" style="width: 175px;">')
-                    $('#kat_kualitas_udara').html('<div class="badge badge-success" id="kat_kualitas_udara">Kualitas Udara Baik</div>');
-                } else if (n_pm10 <= max_sedang_pm10 && n_co <= max_sedang_co) {
-                    $('#logoKualitasUdara').html('<img id="logoKualitasUdara" src="{{ asset('logo/ic-face-blue.svg') }}" alt="" style="width: 175px;">')
-                    $('#kat_kualitas_udara').html('<div class="badge badge-primary" id="kat_kualitas_udara">Kualitas Udara Sedang</div>');
-                } else if (n_pm10 <= max_tidaksehat_pm10 && n_co <= max_tidaksehat_co) {
-                    $('#logoKualitasUdara').html('<img id="logoKualitasUdara" src="{{ asset('logo/ic-face-yellow.svg') }}" alt="" style="width: 175px;">')
-                    $('#kat_kualitas_udara').html('<div class="badge badge-warning" id="kat_kualitas_udara">Kualitas Udara Tidak Sehat</div>');
-                } else if (n_pm10 <= max_sangattidaksehat_pm10 && n_co <= max_sangattidaksehat_co) {
-                    $('#logoKualitasUdara').html('<img id="logoKualitasUdara" src="{{ asset('logo/ic-face-red.svg') }}" alt="" style="width: 175px;">')
-                    $('#kat_kualitas_udara').html('<div class="badge badge-danger" id="kat_kualitas_udara">Kualitas Udara Sangat Tidak Sehat</div>');
-                } else {
-                    $('#logoKualitasUdara').html('<img id="logoKualitasUdara" src="{{ asset('logo/ic-face-purple.svg') }}" alt="" style="width: 175px;">')
-                    $('#kat_kualitas_udara').html('<div class="badge badge-secondary" id="kat_kualitas_udara">Kualitas Udara Berbahaya</div>');
-                }
+                        $('#detailWilayah_'+element.wilayah_id).removeClass('disabled')
 
-                if (n_asap == 1) {
-                    //asap tidak terdeteksi
-                    $('#m_asap').html('<div class="badge badge-success">Tidak<br>Terdeteksi</div>');
-                } else {
-                    //asap terdeteksi
-                    $('#m_asap').html('<div class="badge badge-danger">Terdeteksi</div>');
-                }
+                        // $('#data_wilayah_'+element.wilayah_id).html('<span style="font-size: 18px;">PM10 </span><span class="font-large-2 primary" id="pm10_wilayah_{{$wilayah->id}}">0</span> <span style="font-size: 12px;">ug/m3</span>')
+                        $('#data_wilayah_'+element.wilayah_id).removeClass('hidden')
+                        $('#logoKualitasUdara_'+element.wilayah_id).removeClass('hidden')
+                        $('#kat_kualitas_udara_'+element.wilayah_id).removeClass('hidden')
+
+                        $('#pm10_wilayah_'+element.wilayah_id).html(element.pm10.toFixed(2))
+
+                        if (element.pm10 <= max_baik_pm10 && element.co <= max_baik_co) {
+                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-green.svg') }}" alt="" style="width: 175px;">');
+                            $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-success" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Baik</div>');
+                        } else if (element.pm10 <= max_sedang_pm10 && element.co <= max_sedang_co) {
+                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-blue.svg') }}" alt="" style="width: 175px;">')
+                            $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-primary" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Sedang</div>');
+                        } else if (element.pm10 <= max_tidaksehat_pm10 && element.co <= max_tidaksehat_co) {
+                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-yellow.svg') }}" alt="" style="width: 175px;">')
+                            $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-warning" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Tidak Sehat</div>');
+                        } else if (element.pm10 <= max_sangattidaksehat_pm10 && element.co <= max_sangattidaksehat_co) {
+                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-red.svg') }}" alt="" style="width: 175px;">')
+                            $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-danger" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Sangat Tidak Sehat</div>');
+                        } else {
+                            $('#logoKualitasUdara_'+element.wilayah_id).html('<img id="logoKualitasUdara_'+element.wilayah_id+'" src="{{ asset('logo/ic-face-purple.svg') }}" alt="" style="width: 175px;">')
+                            $('#kat_kualitas_udara_'+element.wilayah_id).html('<div class="badge badge-secondary" id="kat_kualitas_udara_'+element.wilayah_id+'">Kualitas Udara Berbahaya</div>');
+                        }
+
+                    } else {
+                        $('#detailWilayah_'+element.wilayah_id).addClass('disabled')
+                        $('#data_wilayah_'+element.wilayah_id).addClass('hidden')
+                        $('#kat_kualitas_udara_'+element.wilayah_id).html('offline')
+                        $('#logoKualitasUdara_'+element.wilayah_id).addClass('hidden')
+                        // $('#kat_kualitas_udara_'+element.wilayah_id).addClass('hidden')
+                    }
+                });
             });
         }
         setInterval(realtime_mobile, 3000);

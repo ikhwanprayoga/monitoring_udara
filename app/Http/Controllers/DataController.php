@@ -36,7 +36,7 @@ class DataController extends Controller
                     ]);
 
             if ($request->has('mulai') && $request->has('akhir') && $request->mulai != null && $request->akhir != null) {
-                $data->whereBetween('created_at', [$request->mulai, $request->akhir]);
+                $data->whereBetween('tanggal', [$request->mulai, $request->akhir]);
             }
 
             if ($request->has('kategori_udara') && $request->kategori_udara != null) {
@@ -71,7 +71,7 @@ class DataController extends Controller
             }
         })
         ->addColumn('waktu', function ($data){
-            return 'Pukul '.$data->waktu.' <br> '.date('d-m-Y', strtotime($data->created_at));
+            return 'Pukul '.$data->waktu.' <br> '.date('d-m-Y', strtotime($data->tanggal));
         })
         ->rawColumns(['kategori_udara', 'waktu'])
         ->make(true);

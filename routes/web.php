@@ -89,6 +89,7 @@ Route::get('notifikasi-tes/{kategori_kualitas_udara}', 'NotifikasiController@tes
 //route mobile
 Route::group(['prefix' => 'mobile', 'namespace' => 'mobile', 'middleware' => ['auth', 'role:guest']], function () {
     Route::get('beranda', 'BerandaController@index')->name('mobile.beranda');
+    Route::get('beranda-detail/{wilayah_id}', 'BerandaController@detail')->name('mobile.beranda-detail');
     Route::get('beranda/rekomendasi', 'BerandaController@rekomendasi')->name('mobile.beranda.rekomendasi');
 
     Route::get('data', 'DataController@index')->name('mobile.data');
