@@ -65,6 +65,6 @@ Route::get('/delete-subscription/{id}', function ($id, Request $request) {
 })->name('delete.subscription');
 
 Route::get('/tes', function () {
-  $user = \App\User::find(1);
+  $user = \App\User::find(13);
   $user->notify(new \App\Notifications\GenericNotification("Welcome To WebPush", "You will now get all of our push notifications"));
 });
